@@ -1,0 +1,53 @@
+.list-group-item {
+    color: rgb(168, 168, 168) !important;
+    border-top: 1px solid transparentize( #FFF, 0.95 );
+    border-bottom: 1px solid transparentize( #FFF, 0.95 );
+}
+
+
+.list-item-value {
+    color: rgb(0, 255, 200) !important;
+}
+
+input, select {
+    border: solid 1px steelblue;
+    background: none;
+    color: rgb(0, 255, 200) !important;
+    text-align: right; 
+    outline: none;
+}
+
+form { 
+    width:100%;
+}
+
+div.form-group > input{
+    display: inline-block;     
+}
+
+input[type=text], input[type=number],  select 
+{    
+    display: inline-block;
+    width : 200px ;       
+}
+
+input[type=checkbox]{
+    width:50px;
+    display: inline-block;
+}
+
+
+select  option {     
+    background: transparent;
+    color: rgb(0, 255, 200) !important;    
+    text-align: right; 
+}
+
+button {
+    width:100px;
+}
+
+
+select {
+    text-align-last: right;
+}

@@ -1,0 +1,5 @@
+form, div.container {
+    min-width: 700px;
+}
+
+#titleBar { font-size:1.2em; font-weight: bold;}

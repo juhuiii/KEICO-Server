@@ -1,0 +1,10 @@
+<div class="xg-header">
+  <app-admin-header></app-admin-header>
+</div>
+<div class="xg-body router-wrapper" [@slide]="getState(o)">
+  <router-outlet #o="outlet"></router-outlet>
+</div>
+<div class="xg-bottom">
+  <app-admin-bottom></app-admin-bottom>
+</div>
+<!-- <ng4-loading-spinner [threshold]="0" [timeout]="30000" [zIndex]="9999"></ng4-loading-spinner> -->

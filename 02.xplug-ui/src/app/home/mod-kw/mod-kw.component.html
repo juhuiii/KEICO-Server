@@ -1,0 +1,36 @@
+<div class="xg-card h-100">
+    <div class="xg-card-header">
+        Current Energy
+        <fa class="float-right pr-2" name="ellipsis-v"></fa>
+    </div>
+    <!-- fxLayout="column" fxLayoutAlign="center center" -->
+    <div class="xg-card-body h-100" fxFlex fxLayout="row">
+        
+        <div class="mwl-container" fxFlex="40">
+            <mwl-gauge class="kw"
+                [max]="100" 
+                [dialStartAngle]="-90" 
+                [dialEndAngle]="-90.001"
+                [value]="percent" 
+                [animated]="true" 
+                [animationDuration]="1">
+                </mwl-gauge>
+            <div class="value-text text-center">
+                {{percent | number: "0.1-1"}}<small>%</small>
+            </div>
+            <!-- <span class="value-unit text-center">%</span> -->
+        </div>
+
+
+        <div fxFlex="60" fxLayout="column" fxLayoutAlign="center">
+            <div class="fs-110">
+                <small><fa class="text-green" name="cube"></fa></small> 현재전력
+            </div>
+            <div class="text-right pt-1 pr-1 text-white" style="font-size:2rem">
+                {{value | number : '0.3-3' }}
+                <span style="font-size:1rem">kW</span>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,22 @@
+.title {
+    font-size: 0.9rem;
+}
+
+.data {
+    padding-top: 6px;
+    font-size: 1.5rem;
+}
+
+.data.total { color: whitesmoke !important; }
+.data.on    { color: greenyellow !important; }
+.data.off   { color: darkred !important; }
+.data.warr  { color: orange !important; }
+.data.time  { 
+    color: greenyellow !important; 
+    font-size: 1rem;
+     padding-top: 10px; 
+}
+
+hr {
+    border-color: transparentize(mediumslateblue, 0.8 );
+}

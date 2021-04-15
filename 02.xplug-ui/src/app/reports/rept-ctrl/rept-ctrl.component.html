@@ -1,0 +1,47 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100 board-test">
+
+  <div fxFlex class="xg-card">
+    <div class="xg-card-header text-white">
+      제어내역 
+      <fa class="float-right pr-2" name="ellipsis-v"></fa>
+    </div>
+    <div fxFlex class="xg-card-body" fxLayout="column">
+
+      <div class="xg-form-group form-group row mb-0 align-items-center">
+        <label for="txdate" class="col-2 col-form-label">조회일자 :</label>
+        <div class="col-4">
+          <input type="date" class="form-control form-control-sm" id="txdate" name="txdate" [(ngModel)]="txdate">
+        </div>
+        <div class="col-6 pl-0">
+          <button type="button" class="btn btn-sm btn-primary text-white" (click)="updateData()">조회</button>
+        </div>
+      </div>
+
+      <div fxFlex class="overflow-auto">
+        <table class="table xg-table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center text-white">일자</th>
+              <th class="text-center text-white">시간</th>
+              <th class="text-center text-white">명렁</th>
+              <th class="text-center text-white">유형</th>
+              <th class="text-center text-white">제어대상</th>              
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of reports; trackBy: trackIndex">
+              <td class="text-center">{{item.TXDATE | date: 'yyyy-MM-dd'}}</td>
+              <td class="text-center">{{item.TXDATE | date: 'HH:mm:ss'}}</td>
+              <td class="text-center">{{item.CTL_CMD_NM}}</td>
+              <td class="text-center">{{item.CTL_TYPE_NM}}</td>
+              <td class="text-center" *ngIf="item.CTL_OBJ == 3 ">{{item.CTL_OBJ_NM}}</td>
+              <td class="text-center" *ngIf="item.CTL_OBJ == 2 ">{{item.CTL_OBJ_NM}} ({{item.GRP_NM}})</td>
+              <td class="text-center" *ngIf="item.CTL_OBJ == 1 ">{{item.CTL_OBJ_NM}} ({{item.DEV_NM}})</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

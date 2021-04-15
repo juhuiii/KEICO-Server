@@ -1,0 +1,18 @@
+<div class="xg-page" fxLayout="column">
+  <div class="container-fluid">
+    <ul class="nav nav-tabs justify-content-end border-info">
+      <li class="nav-item">
+        <a class="nav-link text-white" routerLink="/app/control/controlGroup" routerLinkActive="active">그룹제어</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white bg-info" routerLink="/app/control/controlPlug" routerLinkActive="active">개별제어</a>
+      </li>
+    </ul>
+  </div>
+  <div class="container-fluid overflow-auto pt-2">
+    <div class="row ">
+      <app-mod-button class="col-4" style="padding: 8px 16px;" *ngFor="let item of plugs; trackBy: trackPlug" [plug]="item">
+      </app-mod-button>
+    </div>
+  </div>
+</div>

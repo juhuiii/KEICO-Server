@@ -1,0 +1,59 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 10
+    },
+    "auditLog": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\.f85adedbb0fa212c25c0687f21659ad4b2cada52-audit.json",
+    "files": [
+        {
+            "date": 1591665507976,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-06-09",
+            "hash": "2a9459459eb14d06129fedd4715c3477"
+        },
+        {
+            "date": 1591736108321,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-06-10",
+            "hash": "9604e7e25a0234e33b120f299152ee3c"
+        },
+        {
+            "date": 1591955211218,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-06-12",
+            "hash": "a1c675c08b7d5ff418faf14b1a47d725"
+        },
+        {
+            "date": 1593590580824,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-07-01",
+            "hash": "9f45f5a09b5c30277be29780dd29276b"
+        },
+        {
+            "date": 1593740401318,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-07-03",
+            "hash": "2c18ed36dca335c9cf090142f1cb662f"
+        },
+        {
+            "date": 1594269896689,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-07-09",
+            "hash": "2d1ebd426033b5ba3e52d9a7c5c7d9c0"
+        },
+        {
+            "date": 1594467334235,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-07-11",
+            "hash": "b0aea5fc440e6485fab101f12b14fe13"
+        },
+        {
+            "date": 1594673827230,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-07-14",
+            "hash": "5ed591e65f35c11060b3e4467d8d8b03"
+        },
+        {
+            "date": 1594763322895,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-07-15",
+            "hash": "a4bec2ca12366a660cefbe52a9d3a1b4"
+        },
+        {
+            "date": 1595403735641,
+            "name": "c:\\Work\\workspace.nodejs\\03.xplug-cloud\\log\\xplug-colud.log.2020-07-22",
+            "hash": "4c0c19ecb7a2de141c98ea2e3243fd6c"
+        }
+    ]
+}

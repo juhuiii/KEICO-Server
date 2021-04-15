@@ -1,0 +1,50 @@
+
+<div fxLayout="column" fxLayoutGap="10px" class="h-100 board-test">
+
+  <div fxFlex class="xg-card">
+    <div class="xg-card-header text-white">
+      플러그정보
+      <fa class="float-right pr-2" name="ellipsis-v"></fa>
+    </div>
+    <div fxFlex class="xg-card-body overflow-auto">
+      <table class="table xg-table table-striped">
+        <thead>
+          <tr>
+            <th class="text-center text-white">NO</th>
+            <th class="text-center text-white">플러그명</th>    
+            <th class='text-center text-white'>그룹</th>                    
+            <th class="text-right  text-white">소비전력(W)</th>            
+            <th class="text-center text-white">상태</th>
+            <th class="text-center text-white">통신시간</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of plugs; let i=index; trackBy: trackPlug">
+            <td class="text-center">{{i+1}}</td>
+            <td class="text-center">{{item.DEV_NM}}</td>           
+            <td class='text-center'>{{api.isEmpty(item.GRP_SQ) || item.GRP_SQ == "null" ? "-" : api.getGroup(item.GRP_SQ)['GRP_NM']}}</td>                            
+
+            <td class="text-right "              *ngIf="item.DEV_ST===1">{{item.KW   | number: '0.3-3' }}</td>
+            <td class="text-right  text-danger " *ngIf="item.DEV_ST!==1">-</td>
+
+            <!-- <td class="text-right "              *ngIf="item.DEV_ST===1">{{item.AKWH | number: '0.1-1' }}</td>
+            <td class="text-right  text-danger " *ngIf="item.DEV_ST!==1">-</td> -->
+
+            <td class="text-center text-success" *ngIf="item.DEV_ST===1 && item.SW_ST ===1">ON</td>
+            <td class="text-center text-danger " *ngIf="item.DEV_ST===1 && item.SW_ST !==1">OFF</td>
+            <td class="text-center text-danger " *ngIf="item.DEV_ST!==1">통신이상</td>
+
+            <td class="text-center">{{item.RCV_DT | amParse:'YYYYMMDD' | amDateFormat: 'YYYY-MM-DD'}} {{ (item.RCV_TM+"").padStart(6, '0') | amParse:'HHmmss' | amDateFormat: 'HH:mm:ss' }}</td>
+
+
+            <!-- <td class="text-right "              *ngIf="item.DEV_ST===1">{{item.AKWH * 0.001| number: '0.3-3' }}</td>
+            <td class="text-right  text-danger " *ngIf="item.DEV_ST!==1">-</td> -->
+            
+            <!-- <td class="text-center">{{item.ZB_ADDR.substr(0,4)}}<td> -->
+          </tr>
+        </tbody>
+      </table> 
+
+    </div>
+  </div>
+</div>

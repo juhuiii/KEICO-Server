@@ -1,0 +1,54 @@
+<div class="xg-card h-100">
+  <div class="xg-card-header">
+    Control
+    <fa class="float-right pr-2" name="ellipsis-v"></fa>
+  </div>
+
+  <div class="xg-card-body h-100" fxLayout="column">
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-around" class="p-3">
+
+      <button fxFlex="45" class="btn text-center" (click)="onClick_AllOn()">
+        <img src="assets/purple/on.png" width="60px">
+        <div class="text-white">출근 (ON)</div>
+      </button>
+
+      <button fxFlex="45" class="btn text-center" (click)="onClick_AllOff()">
+        <img src="assets/purple/off.png" width="60px">
+        <div class="text-white">퇴근 (OFF)</div>
+      </button>
+      
+    </div>
+    <!-- <div class="text-center fs-40">조작 후 기기의 상태를 확인바랍니다.</div> -->
+      
+
+    <!-- <div class="pl-3"> -->
+      <!-- <li class="fs-50">조작 후 기기의 상태를 확인바랍니다.</li> -->
+      <!-- <li class="h8">업무 시간 중 조작 시 관리자의 인증이 필요합니다.</li> -->
+    <!-- </div> -->
+
+
+  </div>
+</div>
+
+
+<!-- <button fxFlex fxLayout="row" fxLayoutAlign="center center" class="btn text-center" (click)="onClick_AllOn()">
+        <img fxFlex="30" src="assets/purple/on.png" width="24px">
+        <div fxFlex="70" >
+          <span class="h6 text-white align-middle">전체 켜기<br>(ON)</span>
+        </div>
+      </button>
+
+      <button fxFlex fxLayout="row" fxLayoutAlign="center center" class="btn text-center" (click)="onClick_AllOff()">
+          <img fxFlex="30" src="assets/purple/off.png" width="24px">
+          <div fxFlex="70" >
+            <span class="h6 text-white align-middle">전체 끄기<br>(OFF)</span>
+          </div>
+      </button>
+
+    </div>
+    
+    <div fxFlex="60" fxLayout="column" fxLayoutAlign="end start">
+      <li class="h5"><small>조작 후 기기의 상태를 확인바랍니다.</small></li>
+      <li class="h5"><small>업무 시간 중 조작 시 관리자의 인증이 필요합니다.</small></li>
+    </div> -->

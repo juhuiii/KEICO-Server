@@ -1,0 +1,1319 @@
+const C_AREA        = require('../common-area');
+
+var express         = require('express');
+var bodyParser      = require('body-parser')
+
+var cors            = require('cors');
+var xpUtils         = require("../utils/xg-datetime");
+C_AREA.webService   = require("./service")();
+
+
+
+var network         = require('network');
+var wifi            = require("node-wifi-scanner");
+var fs              = require('fs');
+
+// var dbSql = require('../database/db-sql');
+// dbSql.open();
+
+var dbSql = C_AREA.db_sql;
+
+const DEBUG = false;
+
+function  getRES_PACKET(rcd = 0, rms='', data={}) {
+    return { rcd:rcd, rms:rms, data:data };
+}
+
+module.exports = {
+    app: null,
+    viewApp: null,
+    restApp: null,
+    server: null,
+    mqttClient : null, 
+    blService : null,
+
+    init() {
+        if (this.app) return;
+       
+        this.app = express();        
+        this.app.set('view engine', 'ejs');
+        this.app.engine('html', require('ejs').renderFile );
+        this.app.use(cors());
+        this.app.use(bodyParser.json());
+
+        this.restApp = express.Router();
+        this.viewApp = express.Router();
+
+        this.app.use("/rest", this.restApp);        
+        this.app.use("/", express.static(__dirname + '/views'));
+        
+
+        ////////////////////// Rest API //////////////////////
+        ////////////////////// Rest API //////////////////////
+        ////////////////////// Rest API //////////////////////
+
+        // 지그비 채널검색 
+        this.restApp.get('/find_channel', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            try
+            {
+                await this.blService.findZBChannel();
+
+                res.send( getRES_PACKET(0, `Zigbee Find Channel OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+        //지그비 퍼밋 조인
+        this.restApp.get('/permit_join/:SEC', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SEC = req.params.SEC || ''; 
+            try
+            {       
+                await this.blService.permitJoin( SEC );                                
+                res.send(getRES_PACKET(0, `Zigbee Permit Join OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        
+        
+
+        //Report Config (리포트 주기 설정)
+        this.restApp.get('/report_config', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let param = {};
+            param["ZB_ADDR"] = req.query.addr64 || '';       //64 bit Address 
+            param["KIND"]    = req.query.knd    || '';       //KIND  0(ON/OFF),  1(KW) ,2(KWH)
+            param["MIN"]     = req.query.min    || '';       //min
+            param["MAX"]     = req.query.max    || '';       //max 
+            param["VAL"]     = req.query.val    || '';       //change value  
+            
+            try
+            {           
+                await this.blService.setReportConfig( param );                                       
+                res.send(getRES_PACKET(0, `Zigbee Set Report Config  OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+        //Network(16 BIT) Address 요청 
+        this.restApp.get('/nwk_addr', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.query.addr64 || '';      // 64 bit Address 
+            
+            try
+            { 
+                await this.blService.getGet16BitAddr( ZB_ADDR );
+                res.send(getRES_PACKET(0, `Network Addr(16BIT) Request OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+        
+        //시간동기화 (태블릿 터치로 부터 시간 동기화 메세지 보냄)
+        this.restApp.get('/time_sync', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let TIME = req.query.time || '';       //Current Time
+            try
+            {       
+                await this.blService.setTimeSync( TIME );
+                                       
+                res.send(getRES_PACKET(0, `시간동기 ${TIME} OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+
+
+        this.restApp.get('/sites', async (req, res) => {             //현장정보 조회 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try
+            {       
+                let rows = await this.blService.selSites();
+
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+            
+        });
+
+
+        this.restApp.post('/sites/:STE_SQ', async (req, res) => {     //현장정보 수정 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                        
+            let STE_SQ = req.params.STE_SQ || ''; 
+
+            
+            delete req.body["INS_DT_STR"];   //업데이트 되면 안되는 항목들 
+            delete req.body["INS_DT"];       //업데이트 되면 안되는 항목들 
+
+            delete req.body["REG_DTIME"];
+            delete req.body["WORK_ETM_STR"];
+            delete req.body["WORK_STM_STR"];
+
+            try
+            {       
+                let rtn = await this.blService.udtSites( req.body, STE_SQ);
+
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+
+        //플러그 목록조회
+        this.restApp.get('/devices', async (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try
+            {       
+                let rows = await this.blService.selDevices();
+
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //플러그 개별조회
+        this.restApp.get('/devices/:ZB_ADDR', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+            
+            let ZB_ADDR = req.params.ZB_ADDR || ''; 
+
+            try
+            {       
+                let rows = await this.blService.selDevices(ZB_ADDR);
+                res.send(_this.makeDataRespons(rows, true ));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+
+        });
+
+        //플러그 삭제
+        this.restApp.delete('/devices/:ZB_ADDR',  async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.params.ZB_ADDR || ''; 
+
+            try
+            {               
+                await this.blService.delDevice(ZB_ADDR);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });        
+
+        //플러그 정보수정 
+        this.restApp.post('/devices/:ZB_ADDR', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                        
+            let ZB_ADDR = req.params.ZB_ADDR || ''; 
+
+            
+            delete req.body["SW_ST"];       //업데이트 되면 안되는 항목들 
+            delete req.body["KW"];
+            delete req.body["AKWH"];
+            delete req.body["RCV_DT"];
+            delete req.body["RCV_TM"];
+            delete req.body["BIGO"];
+            delete req.body["REG_DTIME"];
+
+            
+            delete req.body["ZB_RGRP_AID"];
+            delete req.body["ZB_ONGRP_AID"];
+            delete req.body["ZB_OFFGRP_AID"];
+            delete req.body["ZB_RGRP_RID"];
+            delete req.body["ZB_ONGRP_RID"];
+            delete req.body["ZB_OFFGRP_RID"];
+
+            if( req.body["MANU_CTL_ALLOW"] == 0 ) {   //전체제어 허용여부 {허용안하는경우 ON/OFF Zigbee그룹에서 제외 }
+                req.body["ZB_ONGRP_AID"] = 0;
+                req.body["ZB_OFFGRP_AID"] = 0;
+            }
+        
+            if( req.body["OFF_DELY"] > 0 )    //OFF지연값 설정시 OFF Zigbee그룹에서 제외
+            {
+                req.body["ZB_OFFGRP_AID"] = 0;
+            }
+            
+            try
+            {               
+                await this.blService.udtDevice(ZB_ADDR, req.body);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            } 
+        });
+       
+
+        //그룹 목록 조회
+        this.restApp.get('/groups', async (req, res) => {
+
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try {
+                let rows = await this.blService.selGroups();
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }           
+        });
+
+
+        //그룹 신규등록
+        this.restApp.post('/groups', async (req, res) => {              
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            try {
+                let rtn = await this.blService.insGroup(req.body);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //그룹 개별조회
+        this.restApp.get('/groups/:GRP_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+
+            try {
+                let rows = await this.blService.selGroups(GRP_SQ);
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //그룹 삭제
+        this.restApp.delete('/groups/:GRP_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+            try
+            {
+                let rtn = await this.blService.delGroup(GRP_SQ);
+                                
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        }); 
+
+        //그룹 정보수정 
+        this.restApp.post('/groups/:GRP_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+
+            try
+            {
+                let rtn = await this.blService.udtGroup(GRP_SQ, req.body );
+                                
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+
+        this.restApp.get('/devices/:ZB_ADDR/on', async (req, res) => {   //플러그 ON 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.params.ZB_ADDR || '';
+
+            try 
+            {
+          
+                let filter = await this.blService.plugOn(ZB_ADDR);
+
+                let manuFilterMsg = "";
+                if( filter.maun_ctl_allow_filter.length > 0 )
+                    manuFilterMsg = `수동제어 불가(${filter.maun_ctl_allow_filter.length})`;
+
+                if( filter.direct_control.length <= 0 )
+                {
+                    res.send(getRES_PACKET(0, `ON제어할 기기를 찾지 못했습니다. ${manuFilterMsg}, `, filter));
+                    return; 
+                }
+
+                let totControlCnt = filter.direct_control.length ;        //제어된 갯수 
+                let totExceptCnt  = filter.maun_ctl_allow_filter.length   //예외된 갯수
+
+                res.send(getRES_PACKET(0, `${totControlCnt}개의 기기를 ON하였습니다. 예외기기=${totExceptCnt}`, filter));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+
+        });
+     
+
+
+        this.restApp.get('/groups/:GRP_SQ/on', async (req, res) => {   //그룹 ON 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+
+
+            try
+            {
+
+                let filter = await this.blService.groupOn( GRP_SQ );
+
+                let manuFilterMsg = "";
+                if( filter.maun_ctl_allow_filter.length > 0 )
+                    manuFilterMsg = `수동제어 불가(${filter.maun_ctl_allow_filter.length})`;
+
+                if( filter.direct_control.length <= 0 )
+                {
+                    res.send(getRES_PACKET(0, `ON 제어 할 기기를 찾지 못했습니다. ${manuFilterMsg}, `, filter));
+                    return; 
+                }
+            
+                let totControlCnt = filter.direct_control.length ;          //제어된 갯수 
+                let totExceptCnt  = filter.maun_ctl_allow_filter.length     //예외된 갯수
+
+                res.send( getRES_PACKET(0, `${totControlCnt}개의 기기를 ON 하였습니다. 예외기기=${totExceptCnt}`, result));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        
+
+
+        //전체 ON 제어 ( Zigbee Group )
+        this.restApp.get('/all/on', async (req, res) => {   //전체 ON 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try
+            {
+                let onGroupDevs = await this.blService.plugAllOn();
+
+                if( onGroupDevs.length <= 0 )
+                {                    
+                    res.send( getRES_PACKET(0, `Zigbee ON Group을 찾지 못했습니다.`));
+                    return; 
+                }      
+
+                res.send(getRES_PACKET(0, `${onGroupDevs.length }개의 플러그를 ON하였습니다.`)); 
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+           
+        });
+    
+    
+
+
+        this.restApp.get('/devices/:ZB_ADDR/off', async (req, res) => {   //플러그 OFF 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.params.ZB_ADDR || '';
+            let FILTER  = req.query.FILTER   || ''; //대기전력 무시 여부
+
+            try 
+            {
+                let filter = await this.blService.plugOff( ZB_ADDR,  FILTER );
+                
+                let manuFilterMsg = "";
+                if( filter.maun_ctl_allow_filter.length > 0 )
+                    manuFilterMsg = `수동제어 불가(${filter.maun_ctl_allow_filter.length})`;    
+                
+                let useKwFilterMsg = "";
+                if( filter.use_kw_filter.length > 0 )
+                    useKwFilterMsg = `사용중(${filter.use_kw_filter.length})`;
+                
+                if( filter.direct_control.length <= 0 && filter.reserv_control.length <= 0 )    //제어된 플러그가 없는경우 
+                {
+                    res.send(getRES_PACKET(0, `OFF 가능한 기기가 아닙니다. ${useKwFilterMsg},${manuFilterMsg}`, filter));
+                    return; 
+                }
+
+                let totControlCnt = filter.direct_control.length + filter.reserv_control.length;        //제어된 갯수 
+                let totExceptCnt  = filter.maun_ctl_allow_filter.length + filter.use_kw_filter.length;  //예외된 갯수(수동제어불허, 대기전력 체크)
+
+                res.send(getRES_PACKET(0, `${totControlCnt}개의 기기를 OFF 하였습니다. 예외기기=${totExceptCnt}`, filter));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+
+        });
+
+
+        //그룹 OFF 제어 
+        this.restApp.get('/groups/:GRP_SQ/off', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ  || ''; 
+            let FILTER = req.query.FILTER   || ''; 
+
+            try
+            {
+                let filter = await this.blService.groupOff( GRP_SQ,  FILTER );
+
+                let manuFilterMsg = "";
+                if( filter.maun_ctl_allow_filter.length > 0 )
+                    manuFilterMsg = `수동제어 불가(${filter.maun_ctl_allow_filter.length})`;
+                
+                let useKwFilterMsg = "";
+                if( filter.use_kw_filter.length > 0 )
+                    useKwFilterMsg = `사용중(${filter.use_kw_filter.length})`;
+                
+                if( filter.direct_control.length <= 0 && filter.reserv_control.length <= 0 )
+                {
+                    res.send( getRES_PACKET(0, `OFF 가능한 기기를 찾지 못했습니다. ${useKwFilterMsg},${manuFilterMsg}`, filter));
+                    return; 
+                }
+
+                let totControlCnt = filter.direct_control.length + filter.reserv_control.length;        //제어된 갯수 
+                let totExceptCnt  = filter.maun_ctl_allow_filter.length + filter.use_kw_filter.length; //예외된 갯수
+ 
+                res.send( getRES_PACKET(0, `${totControlCnt}개의 기기를 OFF 하였습니다. 예외기기=${totExceptCnt}`, filter));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }           
+        });
+
+
+        
+
+
+
+        // Zigbee Group 을 이용한 전체 OFF제어  2Version
+        this.restApp.get('/all/off', async (req, res) => {   //전체 OFF 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let FILTER = req.query.FILTER || 'n';      //기준전력 체크 유무 
+
+            try
+            {
+                let offGroupDevs = await this.blService.plugAllOff( FILTER );                
+                if( offGroupDevs.length <= 0 )
+                {                    
+                    res.send( getRES_PACKET(0, `Zigbee OFF Group Dev 을 찾지 못했습니다.`));
+                    return; 
+                }               
+
+                res.send(getRES_PACKET(0, `${offGroupDevs.length }개의 플러그를 OFF하였습니다.`)); 
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+
+        //휴일 목록조회
+        this.restApp.get('/holidays', async (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let YYYYMM = req.query.YYYYMM || '';
+
+            try {
+                let rows = await this.blService.selHolidays(YYYYMM);
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //휴일 상세조회
+        this.restApp.get('/holidays/:HOLI_DT', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+
+            let HOLI_DT = req.params.HOLI_DT || ''; 
+            try {
+                let rows = await this.blService.selHoliday(HOLI_DT);
+                res.send(_this.makeDataRespons(rows, true));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+         //휴일 등록
+        this.restApp.post('/holidays', async (req, res) => {            
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try {
+                let rtn = await this.blService.insHoliday(req.body);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //휴일 삭제
+        this.restApp.delete('/holidays/:HOLI_DT', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let HOLI_DT = req.params.HOLI_DT || ''; 
+
+            try {
+                let rtn = await this.blService.delHoliday( HOLI_DT );
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });  
+        
+        //휴일 정보수정 
+        this.restApp.post('/holidays/:HOLI_DT', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let HOLI_DT = req.params.HOLI_DT || ''; 
+    
+            try {
+                let rtn = await this.blService.udtHoliday( HOLI_DT, req.body);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+
+
+        //금일 운전될 플러그 스케쥴 
+        this.restApp.get('/autodev_schedules', async (req, res) => {      
+            DEBUG &&  console.info(req.method, req.originalUrl); let _this = this;
+                                    
+            try {
+                let rows = await this.blService.selScheduleToday( );
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }        
+        });
+
+        //스케쥴 목록조회
+        this.restApp.get('/schedules', async (req, res) => {             
+            DEBUG &&  console.info(req.method, req.originalUrl); let _this = this;
+
+            try {
+                let rows = await this.blService.selSchedules( );
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //스케쥴 정보 상세 
+        this.restApp.get('/schedules/:SCHD_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+                        
+            let SCHD_SQ = req.params.SCHD_SQ || ''; 
+
+            try {
+                let rtn = await this.blService.selSchedule(  SCHD_SQ );
+                res.send(_this.makeDataRespons(rows, true));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //스케쥴 등록
+        this.restApp.post('/schedules', async (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            try {
+                let rtn = await this.blService.insSchedule(req.body);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //스케쥴 삭제
+        this.restApp.delete('/schedules/:SCHD_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let SCHD_SQ = req.params.SCHD_SQ || ''; 
+            
+            try {
+                let rtn = await this.blService.delSchedule( SCHD_SQ );
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });  
+        
+
+        //스케쥴 정보수정 
+        this.restApp.post('/schedules/:SCHD_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SCHD_SQ = req.params.SCHD_SQ || ''; 
+
+            try {
+                let rtn = await this.blService.udtSchedule( SCHD_SQ, req.body);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+
+        });
+
+
+
+
+
+
+
+        //시간스케쥴  목록조회
+        this.restApp.get('/schedules_times', async (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+      
+            try {
+                let rows = await this.blService.selScheduleTimes( );
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //시간스케쥴 상세
+        this.restApp.get('/schedules_times/:SCHD_TM_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+            
+            let SCHD_TM_SQ = req.params.SCHD_TM_SQ || ''; 
+            try {
+                let rows = await this.blService.selScheduleTime(  SCHD_TM_SQ );
+                res.send(_this.makeDataRespons(rows, true));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //시간스케쥴  등록
+        this.restApp.post('/schedules_times', async (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try {
+                let rtn = await this.blService.insScheduleTime(req.body);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        //시간스케쥴  삭제
+        this.restApp.delete('/schedules_times/:SCHD_TM_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SCHD_TM_SQ = req.params.SCHD_TM_SQ || ''; 
+
+            try {
+                let rtn = await this.blService.delScheduleTime( SCHD_TM_SQ );
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });        
+
+
+        //시간스케쥴  정보수정 
+        this.restApp.post('/schedules_times/:SCHD_TM_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SCHD_TM_SQ = req.params.SCHD_TM_SQ || ''; 
+
+            try {
+                let rtn = await this.blService.udtScheduleTime( SCHD_TM_SQ, req.body);
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+
+        //=======================================================================
+        // 스케쥴 일자 정보 및 시간정보 동시 처리 
+        //
+        //=======================================================================
+        //시간 스케쥴 조회
+        this.restApp.get('/schedule_once', async (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                         
+            try {
+                let rows = await this.blService.selScheduleTimes( );
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+        //한번에 스케쥴 일자정보, 시간정보 한번에 삭제 (1:1)
+        this.restApp.delete('/schedule_once/:SCHD_SQ', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SCHD_SQ = req.params.SCHD_SQ || ''; 
+
+            try{
+                let rtn = await this.blService.delSchedule( SCHD_SQ );
+
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });        
+
+        //한번에 스케쥴 일자정보, 시간정보 한번에 등록 (1:1)
+        this.restApp.post('/schedule_once', async (req, res) => {   
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try{            
+                
+                let rtn = await this.blService.insSchedule( req.body );
+                
+                req.body["SCHD_SQ"] =  rtn["lastID"];                
+                await this.blService.insScheduleTime(req.body );
+                
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });                
+
+
+
+
+
+        //일보고서 조회 
+        this.restApp.get('/report_day', async (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let frDate = req.query.FR_DATE || xpUtils.getCurDate() ; 
+            let toDate = req.query.TO_DATE || xpUtils.getCurDate() ; 
+            let offset = 0;
+           
+            try
+            {
+                let rows = await this.blService.selDayReport( frDate, toDate, offset );                
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+
+        //시간 보고서 조회 
+        this.restApp.get('/report_hour', async (req, res) => {            
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let frDate = req.query.FR_DATE || xpUtils.getCurDate() ; 
+            let toDate = req.query.TO_DATE || xpUtils.getCurDate() ; 
+            let offset = 0;
+
+            try
+            {
+                let rows = await this.blService.selHourReport( frDate, toDate, offset );                
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+        //종합 월 보고서 조회 
+        this.restApp.get('/report_mon/total', async (req, res) => {
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+        
+            let cDate = new Date() ;
+            let pDate = new Date().setDate(0);
+            
+            let frDate = req.query.FR_MONTH || xpUtils.getYYYYMM( pDate ) ; 
+            let toDate = req.query.TO_MONTH || xpUtils.getYYYYMM( cDate ) ; 
+            let offset = 0;
+            
+            try
+            {
+                let rows = await this.blService.selMonReportTot( frDate, toDate, offset );                
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+         //종합 일보고서 조회 
+         this.restApp.get('/report_day/total', async (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                             
+            let frDate = req.query.FR_DATE || xpUtils.getCurDate() ; 
+            let toDate = req.query.TO_DATE || xpUtils.getCurDate() ; 
+            let offset = 0;
+
+            try
+            {
+                let rows = await this.blService.selDayReportTot( frDate, toDate, offset );                
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            } 
+        });
+
+
+
+
+        //종합 시간 보고서 조회 
+        this.restApp.get('/report_hour/total', async (req, res) => {            
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+    
+            let frDate = req.query.FR_DATE || xpUtils.getCurDate() ; 
+            let toDate = req.query.TO_DATE || xpUtils.getCurDate() ; 
+            let offset = 0;
+
+            try
+            {
+                let rows = await this.blService.selHourReportTot( frDate, toDate, offset );                
+                res.send(_this.makeDataRespons(rows));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////  ADMIN ////////////////////////////////
+        ////////////////////////////////  ADMIN ////////////////////////////////
+        ////////////////////////////////  ADMIN ////////////////////////////////        
+        ////////////////////////////////////////////////////////////////////////
+        
+        // 지그비 그룹 초기화         
+        this.restApp.get('/admin/reset_zbgroup', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            try
+            {       
+                await this.blService.zbGroupReset();                
+                res.send(getRES_PACKET(0, `ZIGBEE GROUP RESET OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+        //지그비그룹핑 상태 또는 진행율  조회
+        this.restApp.get('/admin/stat_zbgroup',  async (req, res) => {    
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+            
+            try
+            {
+                let rows = await this.blService.selZbGroups( );                
+                res.send(_this.makeDataRespons(rows, true));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+
+        });
+
+
+
+        //디바이스명 초기화 
+        this.restApp.get('/admin/devices/devnm_init', async (req, res) => {             //플러그 디바이스명 초기화 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ignore_pre_set = req.query.ignore_pre_set || 'n' ;     //이전설정 무시여부 (기본 무시 하지 않음)
+
+            try
+            {  
+                let devRows = await dbSql.selectDevicesOrderByAddr();
+                let idx = 0;
+                for ( let devRow of devRows )
+                {
+                    idx++;
+                    let devName =  this.lpadZero(idx, 3);                    
+                    
+                    if( ignore_pre_set == 'y' ) // 이전 설정 무시라면 ==> 그냥 업데이트
+                    {                        
+                        await dbSql.updateDevice( {DEV_NM : devName }, devRow["ZB_ADDR"] );       
+                    }
+                    else                           
+                    {
+                        //이전설정 무시가 아니라면 ==> 지그비주소와 이름이 같은 경우만 변경 
+                        if(  devRow["ZB_ADDR"] == devRow["DEV_NM"] )                        
+                            await dbSql.updateDevice( {DEV_NM : devName }, devRow["ZB_ADDR"] );                            
+                    }
+                }         
+
+                res.send(getRES_PACKET(0, ` ${idx} 개디바이스 수정완료 `,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }        
+        });
+
+
+
+        //네트워크목록  읽기 
+        this.restApp.get('/admin/network', async (req, res) => {    
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+
+            try{
+
+                network.get_interfaces_list( (err, list) => { 
+                    console.log( list );   
+                    res.send(getRES_PACKET(0, "OK", list));
+                });
+                
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+        //와이파이 목록  읽기 
+        this.restApp.get('/admin/wifi', async (req, res) => {    
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+            
+            try{
+                
+                console.log( "process.platform : ", process.platform);
+
+                wifi.scan( (err, wifis) => {
+                    if ( err ) {              
+                        console.error(reason.message);
+                        res.send(_this.makeErrorResponse(1, reason));
+                    }
+                    else
+                    {
+                        console.log(wifis);
+                        res.send(getRES_PACKET(0, "OK", wifis));
+                    }
+                });
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+        //와이파이 설정파일 읽기 
+        this.restApp.get('/admin/network_file', async (req, res) => {    
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+
+            try{                
+                let ifFilePath = "/etc/network/interfaces"
+                let ifstr = fs.readFileSync(ifFilePath, 'utf8');
+                
+                res.send(getRES_PACKET(0, "/etc/network/interfaces 파일내용", ifstr));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+        //와이파이 설정파일 읽기 
+        this.restApp.get('/admin/wifi_file', async (req, res) => {    
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+
+            try{                
+                let ifFilePath = "/etc/wpa_supplicant/wpa_supplicant.conf"
+                let ifstr = fs.readFileSync(ifFilePath, 'utf8');
+                res.send(getRES_PACKET(0, "/etc/wpa_supplicant/wpa_supplicant.conf 파일내용", ifstr));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+        
+        //save network 설정 
+        this.restApp.post('/admin/network', async (req, res) => {    
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+
+            let e_yn    = req.body["e_yn"]   || '';
+            let e_addr  = req.body["e_addr"] || '';
+            let e_mask  = req.body["e_mask"] || '';
+            let e_gate  = req.body["e_gate"] || '';
+
+            let w_yn   = req.body["e_yn"]    || '';
+            let w_addr = req.body["w_addr"]  || '';
+            let w_mask = req.body["w_mask"]  || '';
+            let w_gate = req.body["w_gate"]  || '';
+
+            try{                
+                let ifFilePath = "/etc/network/interfaces_test"
+
+                let ifstr = "";
+                ifstr += `auto lo\n`;
+                ifstr += `iface lo inet loopback\n\n`;
+
+                ifstr += `auto eth0\n`;
+                ifstr += `iface eth0 inet static\n`;
+                ifstr += `address ${e_addr}\n`;
+                ifstr += `\tnetmask ${e_mask}`;
+                ifstr += `\tgateway ${e_gate}\n\n\n`;
+
+                ifstr += `auto wlan0\n`;
+                ifstr += `allow-hotplug wlan0\n`;
+                ifstr += `iface wlan0 inet static\n`;
+                ifstr += `\twpa-conf /etc/wpa_supplicant/wpa_supplicant.conf\n`;
+                ifstr += `\taddress ${w_addr}\n`;
+                ifstr += `\tgateway ${w_mask}\n`;
+                ifstr += `\tnetmask ${w_gate}\n`;
+                ifstr += `\tdns-nameserver 168.126.63.1\n`;
+                ifstr += `\tdns-nameserver 168.126.63.2\n`;
+                ifstr += `\tdns-nameserver 8.8.8.8\n`;
+
+                fs.writeFileSync(ifFilePath, ifstr, 'utf8');
+                res.send(getRES_PACKET(0, "저장 되었습니다.", ifstr));
+
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+        //유선설정정보 조회 
+        //유션설정 
+        //Wifi 목록
+        //Wifi 설정 저장         
+        //Wifi 설정 조회
+
+
+    },    
+    start( HTTP_PORT  ) {
+        this.mqttClient = C_AREA.mqtt_adapter ;        
+        this.blService  = C_AREA.webService ; 
+
+        this.server = this.app.listen(HTTP_PORT, () => {
+            let host = this.server.address().address;
+            let port = this.server.address().port;
+            DEBUG &&  console.info("Web App listening at %s", HTTP_PORT)
+        });
+    },
+    makeDataRespons(rows, isSingleData = false) {
+        
+        let resdata = getRES_PACKET();
+        if (isSingleData) {
+            if (rows && rows.length > 0)
+                resdata.data = rows[0];
+        }
+        else {
+            resdata.data = rows;
+        }
+        return resdata;
+    },
+    makeErrorResponse(rcd, rms) {        
+        return getRES_PACKET(1, rms.message, rms );
+    },    
+    sendMqtt( message ){    
+        this.mqttClient.publish("adapter/gw", `${message}`);    
+    }, 
+    makeMqttMessage( cmd, cmd_param ){
+
+        let obj = {
+            "pkn"  : 1,	            //M=패킷구분  			[0:통보(응답불필요),1:요청(응답요구),2:요청(응답불필요),3:응답 ]	                    
+            "cmd"  : cmd,	        //M=명령종류  				
+            "tno"  : 0, 	        //M=트랜잭션번호 		
+            "data" : JSON.parse(cmd_param) 
+        };
+        return  JSON.stringify(obj);
+    },     
+    lpadZero(n, width) {
+        n = n + '';
+        return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+    }, 
+    
+
+
+};

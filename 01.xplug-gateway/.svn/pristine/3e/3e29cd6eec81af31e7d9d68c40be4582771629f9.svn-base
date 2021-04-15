@@ -1,0 +1,256 @@
+'use strict';
+
+const C_AREA        = require('../common-area');
+
+const config        = require("config");
+const utils         = require("../utils/xg-datetime");
+const module_mqtt   = require('mqtt');
+
+const _BLCloud      = require('./bl-cloud');
+const blAdapter     = require('./bl-adapter')();
+
+var _cloudThread    = null;
+
+class CloudThread 
+{   
+    
+    constructor( dbSql )
+    {
+        console.info( "[CloudThread] Startup...");
+
+        _cloudThread = this;
+
+        this.dbSql  = C_AREA.db_sql;
+
+        //Cloud ID 
+        this.colud_id           = "";
+        this.gateway_id         = "";
+
+        //Gateway MQTT 
+        this.gw_mqtt_addr      = config.get('mqtt.addr');
+        this.gw_mqtt_port      = config.get('mqtt.port');
+        this.gw_topic_pub      = config.get('mqtt.topic_pub');      //adapter/gw ==> 목적지/출발지
+        this.gw_topic_sub      = config.get('mqtt.topic_sub');      //gw/#;      ==> 목적지/출발지
+
+        //Cloud MQTT 
+        this.cl_mqtt_addr      = config.get('mqtt_cloud.addr');
+        this.cl_mqtt_port      = config.get('mqtt_cloud.port');
+        this.cl_mqtt_id        = config.get('mqtt_cloud.id') || "";
+        this.cl_mqtt_pw        = config.get('mqtt_cloud.pw') || "";
+
+        this.cl_topic_pub      = "";    //cloud/{ste_id}/{gateway_id} ==> 목적지/출발지 //set by function of checkCloudId
+        this.cl_topic_sub      = "";    //{ste_id}/{gateway_id}/#;    ==> 목적지/출발지 //set by function of checkCloudId
+
+
+        setInterval ( () => {
+            this.checkCloudId();             
+        }, 10000);
+
+        this.checkCloudId();
+    }
+
+    
+    //클라우드 아이디 체크 
+    checkCloudId(){
+       
+        _cloudThread = this;
+
+        this.dbSql.selectSite().then((rows) => {
+            
+            let cloud_id        = rows[0]["CLOUD_ID"];
+            let gateway_id      = rows[0]["GATEWAY_ID"]; 
+
+            if( utils.isNotEmpty( cloud_id ) && utils.isNotEmpty( gateway_id ) )
+            {
+                if( cloud_id != this.colud_id || gateway_id != this.gateway_id ){
+                    this.disconnectGateway();
+                    this.disconnectCloud();
+                }
+                this.colud_id   = cloud_id;
+                this.gateway_id = gateway_id;
+
+                this.connectGateway();
+                this.connectCloud();
+
+            } else {
+
+                this.disconnectGateway();
+                this.disconnectCloud();
+
+            }
+
+
+        }).catch(function (reason) {
+            console.error("[CloudThread] " + reason.message);            
+        });     
+    }
+
+
+    /**
+     * 아답터 메세지 수신및 처리 로직 
+     */
+    connectGateway()
+    {        
+        if( this.gw_mqtt_client != null && this.gw_mqtt_client.connected  ) {
+            console.debug("[CloudThread] Gateway MQTT already connected");            
+            return;
+        }
+        this.gw_mqtt_client  = module_mqtt.connect(`mqtt://${this.gw_mqtt_addr}:${this.gw_mqtt_port}`);
+
+        this.gw_mqtt_client.on('connect',  ( connack ) => {
+            console.info(`[CloudThread] Gateway MQTT Connected OK`);
+            console.info(`[CloudThread] Gateway MQTT subscribe '${this.gw_topic_sub}'`);            
+            this.gw_mqtt_client.subscribe( this.gw_topic_sub );
+        });
+
+        this.gw_mqtt_client.on('close',  () => {
+            console.info(`[CloudThread] Gateway MQTT on disconnect`);            
+        });
+
+        this.gw_mqtt_client.on('disconnect', ( packet ) => {
+            console.info(`[CloudThread] Gateway MQTT on disconnect`);            
+        });
+
+        this.gw_mqtt_client.on('error', (error) => {
+            console.info(`[CloudThread] Gateway MQTT on error : ${error}` );            
+        });
+
+        this.gw_mqtt_client.on('message',  (topic, message) => {              
+            this.onMessageFromGateway( topic, message );
+        });
+
+        this.blCloud = _BLCloud(  this.gw_mqtt_client );
+    }
+
+
+    //게이트웨이 MQTT 접속취소
+    disconnectGateway(){        
+
+        if( this.gw_mqtt_client == null ||  this.gw_mqtt_client.connected == false ) {
+            console.debug("[CloudThread] Gateway MQTT already disconnect");
+            this.gw_mqtt_client = null;
+            return;
+        }
+        
+        this.gw_mqtt_client.end();
+        this.gw_mqtt_client = null;        
+        console.debug("[CloudThread] Gateway MQTT disconnect");
+    }
+
+    //게이트웨이로 데이터 전송 
+    publishToGateway( data ){
+        this.gw_mqtt_client.publish(this.gw_topic_pub , `${data}`);
+        console.info(`[CloudThread] Gateway MQTT Publish : >>${data}<<` );
+    }
+    
+    //게이트웨이로부터 데이터 수신
+    async onMessageFromGateway( topic, message ){
+        console.info(`[CloudThread] Gateway MQTT onMessage[topic(${topic})] : >>${message}<<` );
+        
+        let result = await blAdapter.onMessageAdapter( message );
+
+        let colud_msg = 
+        {
+            hd : {
+                cmd : "ADAPTER"
+            },
+            bd : result
+        };
+
+        this.publishToCloud( JSON.stringify( colud_msg ) );     //클라우드로 전송        
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    /**
+     * 클라우드 메세지 수신 및 처리로직 
+     */
+    connectCloud(){
+
+        if( this.cl_mqtt_client != null && this.cl_mqtt_client.connected  ) {
+            console.debug("[CloudThread] Cloud MQTT already connected");            
+            return;
+        }
+
+        if( this.cl_mqtt_id  != "" && this.cl_mqtt_pw  != ""  )
+            this.cl_mqtt_client  = module_mqtt.connect(`mqtt://${this.cl_mqtt_addr}:${this.cl_mqtt_port}`, {username: this.cl_mqtt_id, password:this.cl_mqtt_pw});
+        else
+            this.cl_mqtt_client  = module_mqtt.connect(`mqtt://${this.cl_mqtt_addr}:${this.cl_mqtt_port}`);
+
+        this.cl_topic_pub      = `cloud/${this.colud_id}/${this.gateway_id}`;    //cloud/{cloud_id}/{gateway_id} ==> 목적지/출발지 //set by function of checkCloudId
+        this.cl_topic_sub      = `${this.colud_id}/${this.gateway_id}/#`;        //{cloud_id}/{gateway_id}/#;    ==> 목적지/출발지 //set by function of checkCloudId
+
+        this.cl_mqtt_client.on('connect',  ( connack ) => {
+            console.info(`[CloudThread] Cloud MQTT Connected OK`);
+            console.info(`[CloudThread] Cloud MQTT subscribe '${this.cl_topic_sub}'`);            
+            this.cl_mqtt_client.subscribe( this.cl_topic_sub );
+        });
+
+        this.cl_mqtt_client.on('close',  () => {
+            console.info(`[CloudThread] Cloud MQTT on disconnect`);            
+        });
+
+        this.cl_mqtt_client.on('disconnect', ( packet ) => {
+            console.info(`[CloudThread] Cloud MQTT on disconnect`);            
+        });
+
+        this.cl_mqtt_client.on('error', (error) => {
+            console.info(`[CloudThread] Cloud MQTT on error : ${error}` );            
+        });
+ 
+        this.cl_mqtt_client.on('message',   (topic, message) =>{
+            this.onMessageFromCloud( topic, message );
+        });
+    }
+
+    //클라우드 MQTT 접속취소
+    disconnectCloud(){        
+        if( this.cl_mqtt_client == null ||  this.cl_mqtt_client.connected == false ) {
+            console.debug("[CloudThread] Cloud MQTT already disconnect");
+            this.cl_mqtt_client = null;
+            return;
+        }        
+        this.cl_mqtt_client.end();
+        this.cl_mqtt_client = null;        
+        console.debug("[CloudThread] Cloud MQTT disconnect");
+    }
+
+    //클라우드로 데이터 전송 
+    publishToCloud( data ){
+        this.cl_mqtt_client.publish(this.cl_topic_pub , `${data}`);
+        console.info(`[CloudThread] Cloud MQTT Publish[topic(${this.cl_topic_pub})] : >>${data}<<` );
+    }
+    
+    //클라우드로부터 데이터 수신
+    async onMessageFromCloud(topic, message){
+        console.info(`[CloudThread] Cloud MQTT onMessage[topic(${topic})] : >>${message}<<` );
+        
+        let result = this.blCloud.onMessageColud( message );
+
+        if ( result !== undefined && result !== null )  
+        {                       
+            console.info(  result );            
+            // this.publishToCloud ( rtn ) ; //응답 전송??
+        }        
+        //this.publishToGateway( message ); //게이트웨이로 전송  
+    }    
+}
+
+module.exports = function( ){
+    new CloudThread();
+}

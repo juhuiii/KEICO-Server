@@ -1,0 +1,112 @@
+<div fxLayout="column" fxLayoutGap="20px" class="xg-page">  
+  
+  <div fxFlex="90" fxLayout="row" fxLayoutGap="20px">
+    <div class="xg-card h-100" fxFlex="50" >
+      <div class="xg-card-header">
+        유선네트워크 -  eth0 <fa class="float-right pr-2" name="ellipsis-v"></fa>
+      </div>
+      <div class="xg-card-body" style="padding: 20px 10px;">        
+        <form>
+          <div class="form-group row">
+            <label for="SSID" class="col-sm-4 col-form-label"> 유선사용 </label>
+            <div class="col-sm-8">
+              <button type="button" class="btn btn-primary" style="width: 150px;height: 30px; line-height:1px;"  (click)="onClickNetUseYN()">{{ netFile.e_yn == 1 ? '활성' : '비활성' }}</button> 
+            </div>
+          </div>
+          <div class="form-group row">
+              <label for="" class="col-sm-4 col-form-label">IP Address</label>
+              <div class="col-sm-8" style="color:black;">
+                  <input type="text" class="bg-transparent form-control" name="e_addr" [(ngModel)]="netFile.e_addr" #e_addr> 
+              </div>
+          </div>
+          <div class="form-group row">
+            <label for="" class="col-sm-4 col-form-label">NetMask</label>
+            <div class="col-sm-8" style="color:black;">
+                <input type="text" class="bg-transparent form-control" name="e_mask" [(ngModel)]="netFile.e_mask" #e_mask>
+            </div>
+          </div>          
+          <div class="form-group row">
+              <label for="" class="col-sm-4 col-form-label">Gateway</label>
+              <div class="col-sm-8" style="color:black;">
+                  <input type="text" class="bg-transparent form-control" name="e_gate" [(ngModel)]="netFile.e_gate" #e_gate>
+              </div>
+          </div>
+
+       
+        </form>          
+      </div>          
+    </div>
+
+
+    
+    <div class="xg-card h-100" fxFlex="50">
+        <div class="xg-card-header">
+          무선네트워크 - wlan0 <fa class="float-right pr-2" name="ellipsis-v"></fa>
+        </div>
+        <div class="xg-card-body" style="padding: 20px 10px;" >
+            <form>
+              <div class="form-group row">
+                <label class="col-sm-4 col-form-label"> 무선사용 </label>
+                <div class="col-sm-8">                  
+                  <button type="button" class="btn btn-primary" style="width: 150px;height: 30px; line-height:1px;" (click)="onClickWifiUseYN()">{{ netFile.w_yn == 1 ? '활성' : '비활성' }}</button> 
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="SSID" class="col-sm-4 col-form-label"> 무선 WIFI </label>
+                <div class="col-sm-8">
+
+                  <div class="btn-group" dropdown [isDisabled]="(netFile.w_yn == 0)">
+                    <button  dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle" aria-controls="dropdown-disabled-menu" style="width: 150px;">
+                      선택  <span class="caret"></span>
+                    </button>
+                    <ul  id="dropdown-disabled-menu" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-disabled-menu">
+                      <li class="dropdown-item" *ngFor="let item of wifi_scan_list" (click)="onClickSSID(item)">{{ item?.ssid || '' }}</li>                
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label">SSID</label>
+                <div class="col-sm-8" style="color:black;">                  
+                  <input type="text" name="ssid"  class="bg-transparent form-control"  [(ngModel)]="wifiFile.ssid" #ssid> 
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label">비밀번호</label>
+                <div class="col-sm-8" style="color:black;">
+                  <input type="text" name="psk"  class="bg-transparent form-control" [(ngModel)]="wifiFile.psk" #psk  >
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label">IP Address</label>
+                <div class="col-sm-8" style="color:black;">
+                    <input type="text" name="w_addr"  class="bg-transparent form-control"  [(ngModel)]="netFile.w_addr" #w_addr> 
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label">NetMask</label>
+                <div class="col-sm-8" style="color:black;">
+                    <input type="text" name="w_mask" class="bg-transparent form-control"  [(ngModel)]="netFile.w_mask" #w_mask>
+                </div>
+              </div>              
+              <div class="form-group row">
+                <label for="" class="col-sm-4 col-form-label">Gateway</label>
+                <div class="col-sm-8" style="color:black;">
+                    <input type="text" name="w_gate" class="bg-transparent form-control" [(ngModel)]="netFile.w_gate" #w_gate>
+                </div>
+              </div>
+
+            </form>
+        </div>    
+    </div>    
+  </div>  
+
+  <div fxFlex="10" fxLayout="row" fxLayoutGap="3px" class="form-group row" style="display: flex; justify-content: flex-end;padding-right: 15px;">    
+      <button type="button" class="btn btn-primary" style="margin-right: 5px;" (click)="readAll()">새로고침</button>
+      <button type="button" class="btn btn-primary" style="margin-right: 5px;" (click)="saveAll()">설정저장</button>
+      <!-- <button type="button" class="btn btn-primary" style="margin-right: 5px;" (click)="restartNetwork()">NET재시작</button> -->
+      <button type="button" class="btn btn-primary" style="margin-right: 5px;" (click)="reboot()">재부팅</button>
+  </div>
+</div>    

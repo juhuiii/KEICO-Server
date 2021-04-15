@@ -1,0 +1,40 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100 ">
+  <div fxFlex class="xg-card">
+
+    <div class="xg-card-header text-white">
+      플러그검색<fa class="float-right pr-2" name="ellipsis-v"></fa>
+    </div>
+
+    <div fxFlex class="xg-card-body overflow-auto" fxLayoutAlign="center top ">    
+      <table class="table xg-table table-striped">
+        <thead>
+          <tr>
+            <th class='text-center text-white'>아이디</th>
+            <th class='text-center text-white'>플러그명</th>
+            <th class='text-center text-white'>제조사</th>
+            <th class='text-center text-white'>모델</th>
+            <th class='text-center text-white'>상태</th>
+            <th class='text-center text-white'>통신</th>
+          </tr>
+        </thead>
+        <tbody >
+            <tr *ngFor='let item of api.plugs | callback: filterPlug ; trackBy:trackPlug' [routerLink]="['/app/settings/set-plugs', item.ZB_ADDR]" routerLinkActive="active">
+              <td class='text-center'>{{item.ZB_ADDR}}</td>
+              <td class='text-center'>{{item.DEV_NM}}</td>
+              <td class='text-center'> - </td>
+              <td class='text-center'> - </td>
+              <td class='text-center'>{{ (item.SW_ST  == '1') ? 'ON'   : 'OFF' }}</td>
+              <td class='text-center'>{{ (item.DEV_ST == '1') ? '정상' : '이상'}}</td>              
+            </tr>
+            <!-- <tr *ngIf="count <= 0" class="alert">
+                <td class='text-center' colspan="6">검색된 플러그가 없습니다.</td>
+            </tr>             -->
+          
+        </tbody>
+      </table>
+    </div>
+    <div class="xg-card-footer m-2">        
+        <button class="pull-left  btn btn-primary text-white"  (click)="onFindChannel()">채널 검색</button>&nbsp;
+        <button class="pull-right btn btn-primary text-white" (click)="onPermitJoin()">플러그 검색</button>&nbsp;        
+    <div>    
+  </div>

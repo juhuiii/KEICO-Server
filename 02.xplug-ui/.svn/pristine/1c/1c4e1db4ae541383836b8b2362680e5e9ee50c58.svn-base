@@ -1,0 +1,33 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100 board-test">
+
+    <div fxFlex class="xg-card"> 
+      <div class="xg-card-header text-white">
+        일일 보고서
+        <fa class="float-right pr-2" name="ellipsis-v"></fa>
+      </div>
+      <div fxFlex class="xg-card-body overflow-auto">
+  
+        <table class="table xg-table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center text-white">일자</th>
+              <th class="text-right  text-white">적산시작(kWh)</th>
+              <th class="text-right  text-white">적산종료(kWh)</th>
+              <th class="text-right  text-white">소비전력(kWh)</th>
+              <th class="text-right  text-white">절전전력(kWh)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of reports">
+              <td class="text-center">{{item.TX_DT}}</td>
+              <td class="text-right ">{{item.S_AKWH * 0.001 | number: '0.3-3'}}</td>
+              <td class="text-right ">{{item.E_AKWH * 0.001 | number: '0.3-3'}}</td>
+              <td class="text-right ">{{item.SKWH   * 0.001 | number: '0.3-3'}}</td>
+              <td class="text-right ">{{0}}</td>
+            </tr>
+          </tbody>
+        </table> 
+  
+      </div>
+    </div>
+  </div>

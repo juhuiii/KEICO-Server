@@ -1,0 +1,193 @@
+'use strict';
+require('./utils/logger');
+
+const   C_AREA          = require('./common-area');
+
+var     mqtt            = require('mqtt');
+var     config          = require("config");
+
+const   HTTP_PORT       = config.get('http.port');
+const   DB_FILE         = config.get('database.file');
+const   ADT_MQTT_ADDR   = config.get('mqtt.addr');
+const   ADT_MQTT_PORT   = config.get('mqtt.port');
+const   ADT_TOPIC_PUB   = config.get('mqtt.topic_pub');     // adapter/gw ==> 목적지/출발지
+const   ADT_TOPIC_SUB   = config.get('mqtt.topic_sub');     // gw/#;      ==> 목적지/출발지
+
+
+
+
+
+
+
+console.silly  ('Check Log Level : silly'); // { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
+console.debug  ('Check Log Level : debug');
+console.verbose('Check Log Level : verbose');
+console.info   ('Check Log Level : info');
+console.warn   ('Check Log Level : warn');
+console.error  ('Check Log Level : error');
+
+
+// Internal Dependencies
+C_AREA.dbCmdListener    = require('./database/db-command');
+C_AREA.db_sql           = require('./database/db-sql');  
+C_AREA.db_sql.open();
+
+C_AREA.mqtt_adapter     = mqtt.connect(`mqtt://${ADT_MQTT_ADDR}:${ADT_MQTT_PORT}`);
+
+
+var web = require("./web");
+web.init();
+web.start(HTTP_PORT);
+
+
+
+console.info(`>>>>>>>>>>>> Start Zigbee Group Thread !! `);     // Zigbee Group Thread 기동 
+require('./thread/zb-group')();
+
+
+console.info(`>>>>>>>>>>>> Start WatchDog Thread !! `);         //  Watchdog Thread 기동
+require('./thread/watchdog')();
+
+
+//시간동기화 때문에 20초 지연후 로직 실행 
+setTimeout(()=>{
+    console.info(`>>>>>>>>>>>> Start Worker Thread !! `);
+    require('./thread/data-worker');                            //Work Thread  기동 
+ }, 20000);
+
+
+require("./cloud")();                           //  클라우드 연계 
+
+
+
+console.info(`>>>>>>>>>>>> Started xPlug Application `);
+console.info(`-> http.port = ${HTTP_PORT}` );
+console.info(`-> database  = ${DB_FILE}` );
+console.info(`-> mqtt.port = mqtt:${ADT_MQTT_ADDR}::${ADT_MQTT_PORT}` );
+
+
+
+
+
+
+
+
+C_AREA.mqtt_adapter.on('connect', function ()  {
+
+    console.info(`MQTT Connected OK !! [mqttp:${ADT_MQTT_ADDR}:${ADT_MQTT_PORT}]`);
+
+    C_AREA.mqtt_adapter.subscribe(ADT_TOPIC_SUB);
+});
+
+
+C_AREA.mqtt_adapter.on('message', function (topic, message) 
+{
+    
+    console.info(`onMessage from Zigbee MSG='${message}'` );
+
+    let jsonMsg = JSON.parse(message);     
+
+    switch( jsonMsg.cmd  )
+    {
+        case 'SC'           :   //Scan Channel
+        case 'JOIN_START'   :   //Permit Join Start 
+        case 'JOIN_STOP'    :   //Permit Join Stop                
+        case 'ON'           :   //Switch ON 
+        case 'OFF'          :   //Switch OFF
+        case 'DEV_DEL'      :   //Delete Device                
+            C_AREA.db_sql.updateCommandRecvAck(jsonMsg);             // Only Packet kind = 3
+            break;
+        case 'CH'           :       //Read Channel           //  Packet kind = 3 or 0
+            if( jsonMsg.pkn == 3 )  //ACK 응답  :  패킷구분 : [0:통보(응답불필요),1:요청(응답요구),2:요청(응답불필요),3:응답 ]	            
+                C_AREA.db_sql.updateCommandRecvAck(jsonMsg);
+            else if ( jsonMsg.pkn == 0 )
+                C_AREA.db_sql.updateCommandRecvData(jsonMsg);
+            break;
+        case 'ONOFF'        :                               // Packet Kind = 0
+        case 'DEV_ADD'      : 
+        case 'KW'           : 
+        case 'KWH'          :
+            C_AREA.db_sql.recvMeasData(jsonMsg);
+            break;
+        case 'GROUP'        :
+        case 'READ'         :
+            C_AREA.db_sql.recvMeasDataV2(jsonMsg);
+            break;
+        default :
+            console.error( `unknown command='${jsonMsg.cmd}'` );
+    }
+});
+
+
+
+C_AREA.dbCmdListener.on('oncommand', function(data) 
+{
+    console.info(`onCommand from DB : CMD='${data['CMD_CD']}', PARAM='${data['CMD_PARAM']}'` );
+    
+    let jsonStr  =  CommandParser.cmd2Json( data );
+    if( jsonStr ) {
+
+        data["SND_ST" ] = 1;    //송신처리상태(0:송신대기중,1:송신완료,2::송신실패)
+        data["PRCS_ST"] = 1;    //명령처리상태(0:대기중, 1:처리중, 2:완료성공, 3:실패완료)
+                                //응답수신상태(0:응답대기, 1:ACK응답수신완료, 2: Data응답수신완료, 3:응답수신실패)
+        
+        C_AREA.mqtt_adapter.publish(ADT_TOPIC_PUB, `${jsonStr}`);        
+        console.info(`Send to Zigbee MSG='${jsonStr}'`);
+        
+        C_AREA.db_sql.updateCommandSend(data).then((resolt) => {
+            console.info( "Send OK apply to updateCommandSend" );
+        }).catch(function (reason) {
+            console.error( reason);
+        }); 
+    } else {
+        data["SND_ST"  ] = 1;
+        data["PRCS_ST" ] = 3;
+        
+        C_AREA.db_sql.updateCommandSend(data).then((resolt) => {
+
+            console.error( "Send fail apply to updateCommandSend Stat" );
+
+        }).catch(function (reason) {
+            console.error( reason);
+        });
+    }    
+});
+
+
+// DBCommand to JSON 
+const CommandParser = {
+
+    cmd2Json : (cmd) =>{
+        let obj = null;
+        switch( cmd.CMD_CD )
+        {
+            case 'SC'           :   //Scan Channel
+            case 'JOIN_START'   :   //Permit Join Start 
+            case 'JOIN_STOP'    :   //Permit Join Stop                
+            case 'ON'           :   //Switch ON 
+            case 'OFF'          :   //Switch OFF
+            case 'DEV_DEL'      :   //Delete Device 
+            case 'CH'           :   //Read Channel 
+                obj = {
+                    "pkn"  : 1   ,	            //M=패킷구분  			[0:통보(응답불필요),1:요청(응답요구),2:요청(응답불필요),3:응답 ]	                    
+                    "cmd"  : cmd['CMD_CD'],	    //M=명령종류  				
+                    "tno"  : cmd['CMD_SQ'], 	//M=트랜잭션번호 		
+                    "data" : cmd['CMD_PARAM'] ? cmd['CMD_PARAM'].split(",") : null
+                };
+                break;
+            case 'READ'         :   //Zigbee Group (Add Group or View Group)                
+            case 'CTL'          :   //Zigbee Group (Add Group or View Group)                
+            case 'GROUP'        :   //Zigbee Group (Add Group or View Group)
+                obj = {
+                    "pkn"  : 1   ,	            //M=패킷구분  			[0:통보(응답불필요),1:요청(응답요구),2:요청(응답불필요),3:응답 ]	                    
+                    "cmd"  : cmd['CMD_CD'],	    //M=명령종류  				
+                    "tno"  : cmd['CMD_SQ'], 	//M=트랜잭션번호 		
+                    "data" : JSON.parse(cmd['CMD_PARAM'] ) 
+                };
+                break;            
+            default : 
+                console.error(`Unkowun Command ${cmd.CMD_CD}`);
+        }
+        return JSON.stringify(obj);
+    }
+};

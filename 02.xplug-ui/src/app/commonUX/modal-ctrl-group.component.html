@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{this['title']}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="onClickClose()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body row">
+  <div class="offset-1 col-5 text-center p-2" (click)="onClickOn()">
+    <img src="assets/on.png" height="100px">
+    <div class="fs-100 pt-2">켜기(ON)</div>
+  </div>
+  <div class="col-5 text-center p-2" (click)="onClickOff()">
+    <img src="assets/off.png" height="100px">
+    <div class="fs-100 pt-2">끄기(OFF)</div>
+  </div>
+</div>
+<div class="modal-footer text-center">
+</div>

@@ -1,0 +1,27 @@
+<div fxLayout="row" fxLayoutGap="10px" class="xg-page board-test">
+
+  <div fxFlex fxLayout="column" class="board-test router-wrapper" [@slide]="getState(o)">
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
+
+
+  <div fxFlex="20">
+    <div class="xg-card h-100">
+      <div class="xg-card-header text-white">
+        <span class="text-white">설정</span>
+        <fa class="float-right pr-2" name="ellipsis-v"></fa>
+      </div>
+
+      <div fxLayout="column" class="xg-card-body h-100">
+        <div class="nav flex-column nav-pills">          
+          <a class="nav-link" routerLink="set-plugs"    routerLinkActive="active">플러그설정</a>
+          <a class="nav-link" routerLink="set-find"     routerLinkActive="active">플러그검색</a>
+          <a class="nav-link" routerLink="set-groups"   routerLinkActive="active">그룹설정</a>
+          <a class="nav-link" routerLink="set-holidays" routerLinkActive="active">공휴일설정</a>
+          <a class="nav-link" routerLink="set-default"  routerLinkActive="active">기본설정</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>

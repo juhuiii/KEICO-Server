@@ -1,0 +1,664 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import * as moment from 'moment';
+import * as $ from 'jquery';
+import { XgModalService } from '../commonUX/xg-modal.service';
+import { PlugsService } from './plugs.service';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Accept': 'application/json',
+    'Authorization': 'Bearer eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImMxZGIzMTAyLTQ1YTEtNGViYS04ODA0LTU0OTFjOTQ1YThkMyJ9.eyJjbGllbnRfaWQiOiJsb2NhbC10b2tlbiIsInJvbGUiOiJhY2Nlc3NfdG9rZW4iLCJzY29wZSI6Ii90aGluZ3M6cmVhZHdyaXRlIiwiaWF0IjoxNTQ4NDgxNzM3LCJpc3MiOiJOb3Qgc2V0LiJ9.T1xR04nQCgPNC_px0N9dWCQ-eZW4wnuUBGAgYWr0X_sQs_K87wWcFmcW3B01JVk5XXjEc48zH1nHFaz2xLQwSQ',
+    'Content-Type': 'application/json; charset=utf-8',
+  }),
+  timeout: 3000,
+};
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiService {
+
+  public httpOption = httpOptions;
+
+  public control = true;
+
+  public simulation = false;
+
+  public url_server = 'http://' + $(location).attr('hostname') + '/rest';
+
+  //public url_server = 'http://192.168.0.19/rest';   //  선주PC
+  //private url_server = 'http://192.168.0.11:8080/rest';   //  미니PC
+  //public url_server = 'http://192.168.0.201/rest';   //  Gateway ng
+
+  public url_devices = this.url_server + '/devices';
+  public url_sites = this.url_server + '/sites';
+
+  private url_report_hour = this.url_server + '/report_hour';
+  private url_report_hour_total = this.url_server + '/report_hour/total';
+
+  private url_report_day = this.url_server + '/report_day';
+  private url_report_day_total = this.url_server + '/report_day/total';
+
+  private url_allOn = this.url_server + '/all/on';
+  private url_allOff = this.url_server + '/all/off';
+
+
+  private url_groups = this.url_server + '/groups';
+
+  private url_permit = this.url_server + '/permit_join';
+  private url_channel = this.url_server + '/find_channel'
+
+
+  private url_schedules_times = this.url_server + '/schedules_times';
+  private url_schedules = this.url_server + '/schedules';
+
+  private url_schedule_ones = this.url_server + '/schedule_once';
+
+  private url_atmSchd = this.url_server + '/autodev_schedules';
+
+  private url_savekwh = this.url_server + '/report_mon/total';
+  private url_holidays = this.url_server + '/holidays';
+
+
+  private url_stat_zbgroup = this.url_server + '/admin/stat_zbgroup';
+  private url_reset_zbgroup = this.url_server + '/admin/reset_zbgroup';
+
+
+  private url_report_config = this.url_server + '/report_config';
+  private url_nwk_addr = this.url_server + '/nwk_addr';
+
+  private url_time_sync = this.url_server + '/time_sync';
+
+  private url_network_info  = this.url_server + '/admin/network';   //게이트웨이 현재 네트워크 정보 ( 설정 파일 아님 ) 조호 및 설정 
+  private url_wifi_info  = this.url_server + '/admin/wifi';         //와이파이 스캔 및 정보저장 
+
+
+  private url_network_file  = this.url_server + '/admin/network_file';   //아이피설정파이정보 읽기 (/etc/network/interfaces)
+  private url_wifi_file  = this.url_server + '/admin/wifi_file';         //와이파이 설정 파일 정보 읽기(/etc/wpa_supplicant/wpa_supplicant.conf)
+
+  private url_reboot  = this.url_server + '/admin/reboot';         //재시작 
+  
+  
+
+  // get         /sites                          //현장정보 조회
+  // post        /site/:STE_SQ                   //현장정보 수정
+  // get         /groups                         //그룹 목록 조회
+  // post        /groups                         //그룹 신규등록
+  // get         /groups/:GRP_SQ                 //그룹 개별조회
+  // delete      /groups/:GRP_SQ                 //그룹 삭제
+  // post        /groups/:GRP_SQ                 //그룹 정보수정
+  // get         /groups/:GRP_SQ/on              //그룹 ON 제어
+  // get         /groups/:GRP_SQ/off             //그룹 OFF 제어
+  // get         /all/on                         //전체 ON 제어
+  // get         /all/off                        //전체 OFF 제어
+  // get         /holidays                       //휴일 목록조회
+  // get         /holidays/:HOLI_DT              //휴일 개별조회
+  // post        /holidays                       //휴일 등록
+  // delete      /holidays/:HOLI_DT              //휴일 삭제
+  // post        /holidays/:HOLI_DT              //휴일 정보수정
+  // get         /schedules                      //스케쥴 목록조회
+  // get         /schedules/:SCHD_SQ             //스케쥴 개별조회
+  // post        /schedules                      //스케쥴 등록
+  // delete      /schedules/:SCHD_SQ             //스케쥴 삭제
+  // post        /schedules/:SCHD_SQ             //스케쥴 정보수정
+  // get         /schedules_times                //스케쥴시간 목록조회
+  // get         /schedules_times/:SCHD_TM_SQ    //스케쥴시간 개별조회
+  // post        /schedules_times                //스케쥴시간 등록
+  // delete      /schedules_times/:SCHD_TM_SQ    //스케쥴시간 삭제
+  // post        /schedules_times/:SCHD_TM_SQ    //스케쥴시간 정보수정
+  // get         /report_day                     //일보고서 조회
+  // get         /permit_join/:SEC                //플러그 조인
+
+
+  public siteInfo = {
+    WORK_STM: 830,
+    WORK_ETM: 1830,
+    WORK_STM_STR: "08:30",
+    WORK_ETM_STR: "18:30",
+  };
+  public plugs = [];
+  public groups: any;
+
+  public schedules: any;
+  public schedule_times: any;
+
+  public devGubuns: Array<object> = [{ DEVGB_SQ: 0, DEVGB_NM: "사무기기" }
+    , { DEVGB_SQ: 1, DEVGB_NM: "고객용기기" }
+    , { DEVGB_SQ: 2, DEVGB_NM: "에어컨" }
+    , { DEVGB_SQ: 999, DEVGB_NM: "자동화기기" }
+  ];
+
+  tm_boot = '';
+
+  constructor(
+    public plugSvc: PlugsService,
+    private http: HttpClient,
+    private router: Router) {
+
+    this.plugSvc.setApi(this);
+
+    this.updatePlugs();
+    this.updateData();
+
+    this.tm_boot = moment().format("HHmm");
+
+    setInterval(() => { this.crontab(); }, 1000);
+    setInterval(() => { this.updatePlugs(); }, 1000);
+    setInterval(() => { this.updateData(); }, 10000);
+
+    setInterval(() => { this.setTimeSync(); }, 10000);
+
+  }
+
+  crontab() {
+    let tm_curr = moment().format("HHmm");
+    if (tm_curr == this.tm_boot)
+      return;
+
+    console.log(moment().format("HHmm"));
+    if (tm_curr == '355' || tm_curr == '0355') {
+       window.location.reload();
+    }
+  }
+
+
+  reload() {
+    this.updateData();
+  }
+
+  updateData() {
+
+    this.getGroups().subscribe(data => {
+      if (data['rcd'] === 0) {
+        // console.log("allGropus", data);
+
+        this.groups = data['data'];
+      }
+      // console.log(this.groups);
+    }, error => {
+      console.log(error);
+    });
+
+    this.getScheduleTimes().subscribe(data => {
+      if (data['rcd'] === 0) {
+        // console.log("getScheduleTimes", data);
+        this.schedule_times = data['data'];
+      }
+      // console.log(this.schedule_times);
+    }, error => {
+      console.log(error);
+    });
+
+    this.getSchedules().subscribe(data => {
+      if (data['rcd'] === 0) {
+        // console.log("getSchedule", data);
+
+        this.schedules = data['data'];
+      }
+      // console.log(this.schedules);
+    }, error => {
+      console.log(error);
+    });
+
+    this.updateSiteInfo();
+  }
+
+  updateSiteInfo() {
+    this.getSites().subscribe(response => {
+
+      if (response['rcd'] === 0) {
+
+        // CLOUD_ID: null
+        // MNGR_PW: "m1234"
+        // OPER_PW: "o1234"
+        // REG_DTIME: "20190217111411"
+        // STE_NM: "현장명"
+        // STE_SQ: 1
+        // WORK_ETM: 1800
+        // WORK_STM: 800
+        // INS_DT: 20190217
+        // EDT_DTIME: "20190217111411"
+
+        if (response['data'].length > 0) {
+
+          this.siteInfo = response['data'][0];
+
+          if (this.isEmpty(this.siteInfo.WORK_STM))
+            this.siteInfo.WORK_STM = 830;
+
+          if (this.isEmpty(this.siteInfo.WORK_ETM))
+            this.siteInfo.WORK_ETM = 1830;
+
+          this.siteInfo.WORK_STM_STR = moment(this.siteInfo.WORK_STM, "Hmm").format("HH:mm");
+          this.siteInfo.WORK_ETM_STR = moment(this.siteInfo.WORK_ETM, "Hmm").format("HH:mm");
+        }
+
+      }
+      else {
+        console.log("updateSiteInfo Error :", response['rcd'], response['rms']);
+      }
+
+    }, error => {
+      console.log("updateSiteInfo Error :", error)
+    });
+  }
+
+  //  플러그정보 가져오기
+  updatePlugs() {
+
+    return this.http.get(this.url_devices, httpOptions).subscribe(response => {
+      if (response['rcd'] === 0) {
+        // console.log("getPlugs", response);
+        let tmp = response['data'];
+
+        //  TEST 반드시 지울것
+        if (this.simulation) {
+
+          tmp.forEach( item => {
+            // item.KW = Math.floor((Math.random() * 1000000) + 50) * 0.001;
+
+            item.KW  = this.rand( 50000, 100000 ) * 0.001;
+            item.DEV_ST = 1;
+            item.SW_ST = 1;
+          });
+
+          tmp[0].SW_ST = 0;
+          tmp[1].SW_ST = 0;
+          tmp[2].DEV_ST = 0;
+          tmp[3].DEV_ST = 0;
+          tmp[3].SW_ST = 0;
+          tmp[4].DEV_ST = 0;
+        }
+
+        this.plugs = tmp;
+      }
+      else {
+        console.log("getPlugs error: " + response['rms']);
+      }
+    }, error => {
+      console.log("getPlugs error: " + error);
+    });
+  }
+
+
+  //  현장정보
+  getSites() {
+    return this.http.get(this.url_sites, httpOptions);
+  }
+
+  updateSite(obj: any) {
+    return this.http.post(`${this.url_sites}/${obj.STE_SQ}`, JSON.stringify(obj), httpOptions);
+  }
+
+
+
+  //  플러그정보
+  getPlugs() {
+    return this.plugs;
+  }
+
+  //  플러그
+  getPlug(addr: any) {
+    return this.plugs.find(item => {
+      return item["ZB_ADDR"] === addr;
+    });
+  }
+
+  getPlugsByGroup(grp_sq: any) {
+
+    let arrPlugs: any[] = [];
+
+    this.plugs.forEach(item => {
+      if (item["GRP_SQ"] === grp_sq)
+        arrPlugs.push(item);
+    });
+
+    return arrPlugs;
+  }
+
+
+
+  getPlugCountByGroup(GRP_SQ: any) {
+
+    let count = 0;
+    this.plugs.forEach(item => {
+      if (item["GRP_SQ"] === GRP_SQ) count++;
+    });
+
+    return count;
+  }
+
+  addGroup(obj: any) {
+    return this.http.post(`${this.url_groups}`, JSON.stringify(obj), httpOptions);
+  }
+  deleteGroup(GRP_SQ: any) {
+    return this.http.delete(`${this.url_groups}/${GRP_SQ}`, httpOptions);
+  }
+
+  updateGroup(obj: any) {
+    return this.http.post(`${this.url_groups}/${obj.GRP_SQ}`, JSON.stringify(obj), httpOptions);
+  }
+
+  updatePlug(obj: any) {
+    return this.http.post(`${this.url_devices}/${obj.ZB_ADDR}`, JSON.stringify(obj), httpOptions);
+  }
+
+  deletePlug(obj: any) {
+    // return this.http.post(`${this.url_devices}/${obj.ZB_ADDR}`,  JSON.stringify(obj), httpOptions ) ;
+    return this.http.delete(`${this.url_devices}/${obj.ZB_ADDR}`, httpOptions);
+  }
+
+  //  절감량
+  getSaveEng() {
+    return this.http.get(this.url_savekwh, httpOptions);
+  }
+
+  //  보고서
+  getReportDay(fr_date: any, to_date: any) {
+    let url = this.url_report_day;
+    url += "?FR_DATE=" + fr_date;
+    url += "&TO_DATE=" + to_date;
+
+    return this.http.get(url, httpOptions);
+  }
+
+  //  보고서
+  getReportDayTotal(fr_dt, to_dt) {
+    let url = this.url_report_day_total;
+    url += "?FR_DATE=" + fr_dt;
+    url += "&TO_DATE=" + to_dt;
+
+    return this.http.get(url, httpOptions);
+  }
+
+  //  시간 보고서
+  getReportHourTotal(fr_dt, to_dt) {
+    let url = this.url_report_hour_total;
+    url += "?FR_DATE=" + fr_dt;
+    url += "&TO_DATE=" + to_dt;
+
+    return this.http.get(url, httpOptions);
+  }
+
+  allOn() {
+    return this.http.get(this.url_allOn, httpOptions);
+  }
+
+  allOff(yn) {
+    return this.http.get(this.url_allOff + '?FILTER=' + yn, httpOptions);
+  }
+
+
+  //그룹정보
+  getGroups() {
+    return this.http.get(this.url_groups);
+  }
+
+  getGroup(grp_sq: any) {
+    return this.groups.find(item => {
+      return item.GRP_SQ === grp_sq;
+    });
+  }
+
+  permitJoin(jointime: number = 20) {
+    console.log("permitJoin", jointime);
+    return this.http.get(`${this.url_permit}/${jointime}`, httpOptions);
+  }
+
+  findChannel() {
+    console.log("findChannel");
+    return this.http.get(`${this.url_channel}`, httpOptions);
+  }
+
+
+
+
+
+
+  //스케쥴 일자정보,시간정보 동시등록
+  addScheduleOnce(obj: any) {
+    return this.http.post(`${this.url_schedule_ones}`, JSON.stringify(obj), httpOptions);
+  }
+  //스케쥴 일자정보,시간정보 동시삭제
+  deleteScheduleOnce(SCHD_SQ: any) {
+    return this.http.delete(`${this.url_schedule_ones}/${SCHD_SQ}`, httpOptions);
+  }
+  //스케줄  일자정보,시간정보 동시조회
+  getScheduleOnce() {
+    return this.http.get(this.url_schedule_ones, httpOptions);
+  }
+
+
+
+  //  스케줄 등록
+  addSchedule(obj: any) {
+    return this.http.post(`${this.url_schedules}`, JSON.stringify(obj), httpOptions);
+  }
+  //  스케줄 목록
+  getSchedules() {
+    return this.http.get(this.url_schedules, httpOptions);
+  }
+  //  스케줄
+  getSchedule(schd_sq: any) {
+    return this.schedules.find(item => {
+      return item.SCHD_SQ === schd_sq;
+    });
+  }
+  getScheduleByGroup(grp_sq: any) {
+    return this.schedules.find(item => {
+      return item.GRP_SQ === grp_sq;
+    });
+  }
+  getSchedulesByGroup(grp_sq: any) {
+
+    let arrSchedules: any[] = [];
+    this.schedules.find(item => {
+      if (item.GRP_SQ === grp_sq) arrSchedules.push(item);
+    });
+    return arrSchedules;
+  }
+  getScheduleGroup(GRP_SQ: any) {
+    let count = 0;
+    this.schedules.find(item => {
+      if (item.GRP_SQ === GRP_SQ) count++;
+    });
+    return count;
+  }
+  updateSchedule(obj: any) {
+    return this.http.post(`${this.url_schedules}/${obj.SCHD_SQ}`, JSON.stringify(obj), httpOptions);
+  }
+  deleteSchedule(obj: any) {
+    return this.http.delete(`${this.url_schedules}/${obj.SCHD_SQ}`, httpOptions);
+  }
+
+  //시간스케쥴등록
+  addScheduleTime(obj: any) {
+    return this.http.post(`${this.url_schedules_times}`, JSON.stringify(obj), httpOptions);
+  }
+
+  //  스케줄시간 목록
+  getScheduleTimes() {
+    return this.http.get(this.url_schedules_times, httpOptions);
+  }
+  //  스케줄시간 목록
+  getScheduleTimesByGroup(grp_sq: any) {
+
+    let arrScheduleTimes: any[] = [];
+
+    this.schedule_times.find(item => {
+      if (item.GRP_SQ === grp_sq)
+        arrScheduleTimes.push(item);
+    });
+
+    return arrScheduleTimes;
+  }
+
+  getScheduleTimesByGroupAndSchd(grp_sq: any, schd_sq: any) {
+
+    let arrScheduleTimes: any[] = [];
+
+    this.schedule_times.find(item => {
+      if (item.GRP_SQ === grp_sq && item.SCHD_SQ === schd_sq)
+        arrScheduleTimes.push(item);
+    });
+
+    return arrScheduleTimes;
+  }
+
+  //  스케줄 시간
+  getScheduleTime(schd_tm_sq: any) {
+    return this.schedule_times.find(item => {
+      return item.SCHD_TM_SQ === schd_tm_sq
+    });
+  }
+  getScheduleTimeCountByGroup(GRP_SQ: any) {
+    let count = 0;
+    this.schedule_times.find(item => {
+      if (item.GRP_SQ === GRP_SQ) count++;
+    });
+
+    return count;
+  }
+  updateScheduleTime(obj: any) {
+    return this.http.post(`${this.url_schedules_times}/${obj.SCHD_TM_SQ}`, JSON.stringify(obj), httpOptions);
+  }
+  deleteScheduleTime(obj: any) {
+    return this.http.delete(`${this.url_schedules_times}/${obj.SCHD_TM_SQ}`, httpOptions);
+  }
+
+  //  onoff => 'on' or 'off'
+  //  filter => 'y' or 'n'  : 대기전력체크여부
+  onoff(addr64, onoff, filter) {
+    // get         /devices/:ZB_ADDR/on            //플러그 ON 제어
+    // get         /devices/:ZB_ADDR/off           //플러그 OFF 제어
+    let url = this.url_devices + "/" + addr64 + "/" + onoff + "?FILTER=" + filter;
+    return this.http.get(url, httpOptions);
+  }
+
+  groupOnOff(grp_sq, onoff, filter) {
+    // get         /devices/:ZB_ADDR/on            //플러그 ON 제어
+    // get         /devices/:ZB_ADDR/off           //플러그 OFF 제어
+    let url = this.url_groups + "/" + grp_sq + "/" + onoff + "?FILTER=" + filter;
+    return this.http.get(url, httpOptions);
+  }
+
+  getAtmSchd() {
+    return this.http.get(this.url_atmSchd, httpOptions);
+  }
+
+  getHolidays() {
+    return this.http.get(this.url_holidays, httpOptions);
+  }
+
+  addHoliday(obj: any) {
+    return this.http.post(`${this.url_holidays}`, JSON.stringify(obj), httpOptions);
+  }
+
+  delHoliday(holidt: any) {
+    return this.http.delete(`${this.url_holidays}/${holidt}`, httpOptions);
+  }
+
+  //네트워크(16BIT) 주소 확인요청 
+  setNetworkAddr(addr64) {
+    return this.http.get(this.url_nwk_addr + '?addr64=' + addr64, httpOptions);
+  }
+
+  //Report 전송 주기 설정 요청 
+  setReportConfig(addr64, kind, min, max, val ) {
+    let url = this.url_report_config + "?addr64=" + addr64 + "&knd=" +kind + "&min=" +min + "&max=" +max + "&val=" +val ;
+    return this.http.get(url, httpOptions);
+  }
+
+
+  //게이트웨이 시간 설정 
+  setTimeSync() {
+    let cTime = moment().format('YYYY-MM-DD HH:mm:ss');
+    console.log("req time sync : " + cTime );
+    return this.http.get(this.url_time_sync + '?time=' + cTime, httpOptions).subscribe(data => {
+      if (data['rcd'] === 0) {
+        console.log("time sync success ", cTime );
+      }
+      else{
+        console.log("time sync fail ", cTime);
+      }
+    }, error => {
+      console.log(error);
+    });
+  }
+  
+
+
+
+  //Common Utils
+
+  formatTM(date: any, time = ''): string {
+    let tTime = '';
+    if (!isNaN(Number(date)) && !isNaN(Number(time)))
+      tTime = ((date * 1000000) + time) + "";
+    else
+      tTime = date + '' + time;
+    return moment(tTime, 'YYYYMMDDHHmmss').format('YYYY-MM-DD HH:mm');
+  }
+
+  isEmpty(value: any) {
+    if (value === undefined || value === null) return true;
+    if (typeof value === "string" && value === "") return true;
+    if (typeof value === "object" && !Object.keys(value).length) return true;
+    return false
+  }
+  rand(min, max) {
+    return Math.floor((Math.random() * (max - min)) + min);
+  }
+
+
+
+
+
+
+  ///admin
+  getZbGroupStat() {
+    return this.http.get(this.url_stat_zbgroup, httpOptions);
+  }
+
+  getZbGroupReset() {
+    return this.http.get(this.url_reset_zbgroup, httpOptions);
+  }
+
+
+
+    // 게이트웨이 네트워크 정보 
+    getNetworkList() {
+      return this.http.get(this.url_network_info, httpOptions);
+    }
+
+    saveNetworinfo(obj: any) {      
+        return this.http.post(`${this.url_network_info}`, JSON.stringify(obj), httpOptions);
+    }
+
+
+    // 게이트웨이 검색된 와이파이 목록
+    getWifiScanList() {
+      return this.http.get(this.url_wifi_info, httpOptions);
+    }
+
+    // 게이트웨이 검색된 와이파이 목록
+    saveWifi(obj: any) {      
+      return this.http.post(`${this.url_wifi_info}`, JSON.stringify(obj), httpOptions);
+    }
+
+    // 게이트웨이 재시작 
+    reboot() {
+      return this.http.get(this.url_reboot, httpOptions);
+    }
+    
+
+
+
+
+  
+  
+  
+
+}

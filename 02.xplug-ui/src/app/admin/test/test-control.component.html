@@ -1,0 +1,75 @@
+<div fxLayout="column" fxLayoutGap="20px" class="xg-page">
+  <div fxFlex="100" fxLayout="column" fxLayoutGap="20px" class="board-test">
+      <div class="xg-card h-100">
+          <div class="xg-card-header">
+            CONTROL TEST
+            <fa class="float-right pr-2" name="ellipsis-v"></fa>
+          </div>
+          <div class="xg-card-body overflow-auto" style="padding: 3px 20px;">
+
+
+            <table class="table xg-table table-striped">
+              <thead>
+                <tr>
+                  <th class="text-center text-white">NO</th>
+                  <!-- <th class="text-center text-white">플러그명</th> -->
+                  <th class='text-center text-white'>ID</th>
+                  <th class="text-right  text-white">소비전력(W)</th>
+                  <th class="text-center text-white">상태</th>
+                  <th class="text-center text-white">통신시간</th>
+
+                  <th class="text-center text-white">ON 시험(횟수) </th>
+                  <th class="text-center text-white">OFF 시험(횟수) </th>
+                  <th class="text-center text-white">설정</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of plugs; let i=index; trackBy: trackPlug">
+                  <td class="text-center">{{i+1}}</td>
+                  <!-- <td class="text-center">{{item.DEV_NM}}</td> -->
+                  <td class='text-center'>{{item.ZB_ADDR}}</td>
+
+                  <td class="text-right "              *ngIf="item.DEV_ST===1">{{ item.KW | number: '0.3-3' }}</td>
+                  <td class="text-right  text-danger " *ngIf="item.DEV_ST!==1">-</td>
+                  <td class="text-center text-success" *ngIf="item.DEV_ST===1 && item.SW_ST ===1">ON</td>
+                  <td class="text-center text-danger " *ngIf="item.DEV_ST===1 && item.SW_ST !==1">OFF</td>
+                  <td class="text-center text-danger " *ngIf="item.DEV_ST!==1">통신이상</td>
+                  <td class="text-center">{{item.RCV_DT | amParse:'YYYYMMDD' | amDateFormat: 'YYYY-MM-DD'}} {{ (item.RCV_TM+"").padStart(6, '0') | amParse:'HHmmss' | amDateFormat: 'HH:mm:ss' }}</td>
+
+                  <td [ngClass]="item.testInfo.onclass">
+                    {{ item.testInfo.onTestTime  != null ? (item.testInfo.onTestTime  | date:'yyyy-MM-dd HH:mm:ss') : 'YYYY-MM-DD HH:MI:SS' }} ({{item.testInfo.onTestCnt }}회)
+                  </td>
+                  <td [ngClass]="item.testInfo.offclass" >
+                    {{ item.testInfo.offTestTime != null ? (item.testInfo.offTestTime | date:'yyyy-MM-dd HH:mm:ss') : 'YYYY-MM-DD HH:MI:SS' }} ({{item.testInfo.offTestCnt }}회)
+                  </td>
+
+                  <td class="text-center text-danger">
+                    <select class="form-control form-control-sm" [disabled]="item.testInfo.isTesting == true" #frmItvl (change)="onchangeItvl(item,frmItvl.value)">
+                      <option value="10">10초</option>
+                      <option value="20">20초</option>
+                      <option value="30">30초</option>
+                      <option value="60">60초</option>
+                      <option value="120">120초</option>
+                    </select>
+
+                      &nbsp;
+                    <button type="button" class="btn btn-sm btn-primary text-white"  (click)="onClickRun(item)">
+                      {{ (item.testInfo.isTesting == true) ? "중지" : "시작"}}
+                    </button>
+                  </td>
+                </tr>
+                <!-- <tr *ngIf="plugs.length > 0">
+                  <td class="text-center" colspan="3">일괄테스트</td>
+                  <td class="text-right">{{ totKw | number: '0.3-3' }}</td>
+                  <td class="text-center"colspan="3">
+                    TOTAL : {{plugs.length}} &nbsp;/&nbsp; <span class="text-success">ON : {{onCnt}}</span> &nbsp;/&nbsp; <span class="text-danger">OFF : {{offCnt}} </span>
+                  </td>
+                </tr> -->
+              </tbody>
+            </table>
+
+
+          </div>
+        </div>
+    </div>
+  </div>

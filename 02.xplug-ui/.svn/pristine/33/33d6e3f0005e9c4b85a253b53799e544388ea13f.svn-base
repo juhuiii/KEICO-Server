@@ -1,0 +1,274 @@
+/* You can add global styles to this file, and also import other style files */
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+.h1 { font-size: 2.00em !important; }
+.h2 { font-size: 1.50em !important; }
+.h3 { font-size: 1.17em !important; }
+.h5 { font-size: 0.83em !important; }
+.h6 { font-size: 0.75em !important; }
+.h7 { font-size: 0.65em !important; }
+.h8 { font-size: 0.50em !important; }
+
+.fs-400 { font-size: 4.00rem !important; }
+.fs-300 { font-size: 3.00rem !important; }
+.fs-200 { font-size: 2.00rem !important; }
+.fs-180 { font-size: 1.80rem !important; }
+.fs-170 { font-size: 1.70rem !important; }
+.fs-160 { font-size: 1.60rem !important; }
+.fs-150 { font-size: 1.50rem !important; }
+.fs-140 { font-size: 1.40rem !important; }
+.fs-130 { font-size: 1.30rem !important; }
+.fs-120 { font-size: 1.20rem !important; }
+.fs-110 { font-size: 1.10rem !important; }
+.fs-100 { font-size: 1.00rem !important; }
+.fs-90  { font-size: 0.90rem !important; }
+.fs-80  { font-size: 0.80rem !important; }
+.fs-60  { font-size: 0.60rem !important; }
+.fs-50  { font-size: 0.50rem !important; }
+.fs-40  { font-size: 0.40rem !important; }
+
+
+
+// .h1, .h2, .h3, .h4, .h5, .h6  { font-weight: bold }
+
+$full_width : 1024px;
+// $full_width : 960px;
+$full_height: 600px;
+
+$head_height: 60px;
+$bott_height: 40px;
+$body_height: $full_height - $head_height - $bott_height;
+
+html, body {
+    width: $full_width;
+    height: $full_height;
+    background: black;
+}
+
+body {
+    background: #eee;
+    overflow: hidden;
+    width: $full_width;
+    height: $full_height;
+    background-image:    url(assets/purple/background.png);
+    background-size:     cover;                     
+    background-repeat:   no-repeat;
+    background-position: center center;     
+}
+
+* {
+    font-size: 1em;
+    // color: transparentize( #7487c4, .3 ) !important;
+    color: transparentize(white, .6 ) !important;
+}
+
+.board-test {
+    // outline: 1px solid red;
+    outline-offset: -1px;
+}
+
+.modal-header,
+.modal-header *, 
+.modal-footer, 
+.modal-footer *, 
+.modal-body,
+.modal-body * {
+    color: #333 !important;
+} 
+
+.xg-header {
+    height: $head_height;
+}
+.xg-body {
+    height: $body_height;
+}
+.xg-bottom {
+    height: $bott_height;
+}
+
+.xg-page {
+    width: $full_width;
+    height: $body_height;
+    padding: 20px;
+}
+
+.router-wrapper {
+    position: relative;
+    overflow: hidden;
+    perspective: 1920px;
+    transform-style: preserve-3d;
+}
+
+.text-orange {
+    color: orange !important;
+}
+
+g[class*="-creditgroup"] {
+    display: none;
+}
+
+// .card-header-samll {
+//     padding: 2px !important;
+//     padding-left: 10px !important;
+// }
+// .card 
+// .card-header, 
+// .card-body {
+//     background: transparent !important;
+//     background-color: transparentize( #212f56, 0.1 ) !important;
+//     border-color: black;
+//     box-shadow: none;
+// }
+
+// .card {
+//     color: #eee;
+//     background-color: none;
+//     background: transparentize( #212f56, 0.1 );
+// }
+
+fa.text-green > i {
+    color: #0cfaa3 !important;
+}
+
+fa.text-orange > i {
+    color:orange !important;
+}
+
+fa.text-purple  > i {
+    color:#ba9aff !important;
+}
+
+.xg-card {
+    position: relative;
+    flex-direction: column;
+    box-sizing: border-box;
+    display: flex;
+    border-radius: 6px;
+    background: transparentize( #212f56, 0.1 );
+    border: 1px solid transparentize( #000, 0.9 );
+    
+    .xg-card-header {
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        border-bottom: 1px solid transparentize( #10558e, 0.7 );
+        padding: 4px;
+        padding-bottom: 6px;
+        padding-left: 16px;
+    }
+
+    .xg-card-body {
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+        padding: 4px;
+    }
+
+    .xg-card-footer {
+        border-top: 1px solid transparentize( #10558e, 0.7 );
+        padding: 4px;
+        padding-top:10px;
+    }
+
+
+}
+
+.mwl-container {
+    position: relative;  
+    .value-text {
+        line-height: 1rem;
+        position: absolute;
+        top: calc(50% - 1rem/2);
+        left: 0;
+        width: 100%;
+    }
+}
+
+mwl-gauge.kw {
+    width: 100%;
+    height: 100%;
+    display: block;
+    margin: 0px;
+    padding: 10px;
+    padding-top: 20px;
+    // outline: 1px solid red;
+}
+
+mwl-gauge.kw > .gauge > .dial {
+    stroke: #10558e;
+    stroke-width: 6;
+    stroke-linecap: round;
+    fill: rgba(0,0,0,0);
+}
+
+mwl-gauge.kw > .gauge > .value {
+    stroke: #0cfaa3;
+    stroke-width: 6;
+    stroke-linecap: round;
+    fill: rgba(0,0,0,0);
+}
+
+mwl-gauge.kw > .gauge > .value-text {
+    fill: transparentize( #7487c4, 0 ) !important;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: 1.2em;
+    transform: translate(0px, 5px);
+    display: none;
+}
+
+// router-outlet {
+router-outlet ~ * {
+    // position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+
+.table.xg-table  thead  tr {
+    background: transparentize( #000, 0.8 );
+}
+
+.table.xg-table thead th,
+.table.xg-table tbody td {
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparentize( #FFF, 0.95 );
+}
+
+.modal-footer .btn {
+    min-width: 120px;
+    height: 60px;
+}
+
+.table > * {
+    font-size: 0.90em;
+}
+
+.xg-form-group {
+    margin: 1px !important;
+    padding: 2px !important;
+    background: transparentize(#000000, 0.6 );
+}
+ 
+input.form-control {
+    color: transparentize(#FFFFFF, 0.4 ) !important;
+    background: transparentize(#FFFFFF, 0.9 );
+    border: 1px solid transparentize(#000000, 0.8 );
+}
+
+.modal-footer .btn-force {
+    @extend .btn-danger; 
+    @extend .text-white;
+}
+
+.modal-footer .btn-confirm {
+    @extend .btn-primary; 
+    @extend .text-white;
+}
+
+.modal .btn-cancel {
+    @extend .btn-secondary; 
+    @extend .text-white;
+}
+
+.modal input {
+    color: black !important;
+}

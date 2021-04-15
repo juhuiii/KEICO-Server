@@ -1,0 +1,24 @@
+.list-group-item {
+    color: rgb(168, 168, 168) !important;
+    border-top: 1px solid transparentize( #FFF, 0.95 );
+    border-bottom: 1px solid transparentize( #FFF, 0.95 );
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.list-item-value {
+    color: rgb(0, 255, 200) !important;
+}
+
+input {
+    border: solid 1px steelblue;
+    background: none;
+    color: rgb(0, 255, 200) !important;
+    text-align: right; 
+    outline: none;
+}
+
+button
+{
+    width:100px;
+}

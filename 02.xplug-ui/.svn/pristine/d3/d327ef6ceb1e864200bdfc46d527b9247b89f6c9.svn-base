@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-sm portfolio-navbar xg-navbar">
+  <div class="container-fluid">
+
+    <a href="#" class="navbar-brand logo p-0">
+      <img class="p-0" src="assets/purple/logo.png" height="50px">
+      <!-- <span class="accent">ECO</span> Energy -->
+    </a>
+
+    <button data-toggle="collapse" data-target="#navbarNav" class="navbar-toggler">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="nav navbar-nav ml-auto">
+        <li role="presentation" class="nav-item text-right">
+          <a routerLink="/home" routerLinkActive="active" class="nav-link">
+            <i class="fa fa-home"></i>
+            홈
+          </a>
+        </li>
+        <li role="presentation" class="nav-item text-right">
+          <a routerLink="/controlGroup" routerLinkActive="active" class="nav-link">
+            <i class="fa fa-toggle-on"></i>
+            제어
+          </a>
+        </li>
+        <li role="presentation" class="nav-item text-right">
+          <a routerLink="/reports" routerLinkActive="active" class="nav-link">
+            <i class="fa fa-list-ul"></i>
+            이력
+          </a>
+        </li>
+        <li role="presentation" class="nav-item text-right">
+          <a *ngIf="api.control===false" class="nav-link" (click)="onClick()">
+            <i class="fa fa-cog"></i>
+            설정
+          </a>
+          <a *ngIf="api.control===true" routerLink="/settings" routerLinkActive="active" class="nav-link">
+            <i class="fa fa-cog"></i>
+            설정
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<br>

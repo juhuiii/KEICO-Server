@@ -1,0 +1,36 @@
+<div class="xg-card h-100">
+  <div class="xg-card-header">
+    Save Energy
+    <fa class="float-right pr-2" name="ellipsis-v"></fa>
+  </div>
+
+  <div class="xg-card-body" fxFlex fxLayout="row">
+
+    <div fxFlex="30" fxLayout="row" fxLayoutAlign="space-around" class="p-2">
+      <app-barchart class="purple" [max]="MAX_SAVE" [value]="PREV_SAVE" [background]="0" ></app-barchart>
+      <app-barchart class="green"  [max]="MAX_SAVE" [value]="CURR_SAVE" [background]="0" ></app-barchart>
+    </div>
+
+    <div fxFlex="10">&nbsp;</div>
+
+    <div fxFlex="60" fxLayout="column" fxLayoutAlign="center start">
+      <div class="row">
+        <div class="col-12 fs-110">
+          <small><fa class="text-purple" name="cube"></fa></small> 전월 절감량
+        </div>
+        <div class="col-12 text-right">
+            <span class="fs-160 text-white">{{PREV_SAVE | number:'0.1-1' }}</span>
+            <span class="fs-50 pr-3"> kWh</span>
+          </div>
+
+        <div class="col-12 fs-110">
+          <small><fa class="text-green" name="cube"></fa></small> 금월 절감량
+        </div>
+        <div class="col-12 text-right">
+          <span class="fs-160 text-white">{{CURR_SAVE | number:'0.1-1' }}</span>
+          <span class="fs-50 pr-3"> kWh</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

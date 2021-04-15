@@ -1,0 +1,14 @@
+2020-07-03 10:40:00.350 INFO   : Log Level      = info
+2020-07-03 10:40:00.350 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-03 10:40:00.725 INFO   : [QueryOwners] Created 
+2020-07-03 10:40:00.727 INFO   : [QuerySites] Created 
+2020-07-03 10:40:00.728 INFO   : [QueryUsers] Created 
+2020-07-03 10:40:00.730 INFO   : [QueryPlugs] Created 
+2020-07-03 10:40:00.736 INFO   : [QueryReports] Created 
+2020-07-03 10:40:00.739 INFO   : [QuerySites] Created 
+2020-07-03 10:40:00.739 INFO   : [database] Created 
+2020-07-03 10:40:01.316 INFO   : Check Log Level : info
+2020-07-03 10:40:01.316 WARN   : Check Log Level : warn
+2020-07-03 10:40:01.317 ERROR  : Check Log Level : error
+2020-07-03 10:40:01.317 INFO   : Start XPlug Cloud!!
+2020-07-03 10:40:01.325 INFO   : Web App listening at 8090

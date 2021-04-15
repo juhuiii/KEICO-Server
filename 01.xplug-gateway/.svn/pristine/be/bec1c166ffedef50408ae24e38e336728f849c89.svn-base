@@ -1,0 +1,26 @@
+{
+  "name": "xplugapi",
+  "version": "1.0.0",
+  "description": "xplug restApi&BL",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "todobe",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^3.0.1",
+    "cors": "^2.8.5",
+    "dateformat": "^3.0.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mqtt": "^2.18.8",
+    "network": "^0.4.1",
+    "node-sass": "^4.12.0",
+    "node-wifi-scanner": "^1.1.2-np",
+    "sqlite3": "^4.0.9",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^3.8.0"
+  }
+}

@@ -1,0 +1,42 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100 board-test">
+
+  <div fxFlex class="xg-card">
+
+      <div fxFlex="30px"  class="xg-card-header text-white">
+          공휴일설정
+      </div>
+
+    <div fxFlex class="xg-card-body overflow-auto" fxLayoutAlign="center top">
+
+        <table class="table xg-table table-striped">
+            <thead>
+              <tr>                
+                <th class='text-center text-white'>공휴일명</th>
+                <th class='text-center text-white'>일자</th>
+                <th class='text-center text-white'>삭제</th>                
+              </tr>
+            </thead>
+            <tbody>
+              <tr  *ngIf="list.length <= 0" class="alert">
+                    <td class='text-center' colspan="3">등록된 공휴일이 없습니다. </td>
+              </tr>
+              <tr *ngFor='let item of list; let idx=index;' routerLinkActive="active">
+                  <td class='text-center'>{{item.HOLI_NM}}</td>
+                  <td class='text-center'>{{item.HOLI_DT | amParse:'YYYYMMDD' | amDateFormat: 'YYYY-MM-DD'}}</td>                                  
+                  <td class='text-center'>
+                    <div class='row align-items-center justify-content-center'>
+                      <button style="width:80px;" class="pull-left btn-sm btn-primary text-white" (click)="onDelete(item.HOLI_DT)">삭제</button>
+                      </div>
+                  </td>
+                </tr>              
+            </tbody>
+          </table>
+    </div>
+
+    <div fxFlex="40px"  class="m-2">
+        <button class="pull-left  btn btn-primary text-white" (click)="onReload()">새로고침</button>
+        <button class="pull-right btn btn-primary text-white" (click)="onAdd() ">등록</button>
+    </div>
+  </div>
+
+</div>

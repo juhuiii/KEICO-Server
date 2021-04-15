@@ -1,0 +1,18 @@
+#bottom {
+    border-top: 1px solid transparentize( #000000, 0.7 );
+    background: transparentize( #000, .7 ) !important;
+}
+
+@-webkit-keyframes blinker { 
+    0% { opacity: 0; } 
+    50% { opacity: 1; } 
+    100% { opacity: 0; } 
+} 
+
+.css3-blink { 
+    -webkit-animation-name: blinker; 
+    -webkit-animation-iteration-count: infinite; 
+    -webkit-animation-duration: 2s; 
+}
+
+

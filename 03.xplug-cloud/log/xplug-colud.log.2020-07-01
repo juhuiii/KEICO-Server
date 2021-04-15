@@ -1,0 +1,61 @@
+2020-07-01 17:02:59.762 INFO   : Log Level      = info
+2020-07-01 17:02:59.763 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-01 17:03:00.126 INFO   : [QueryOwners] Created 
+2020-07-01 17:03:00.127 INFO   : [QuerySites] Created 
+2020-07-01 17:03:00.128 INFO   : [QueryUsers] Created 
+2020-07-01 17:03:00.130 INFO   : [QueryPlugs] Created 
+2020-07-01 17:03:00.132 INFO   : [QueryReports] Created 
+2020-07-01 17:03:00.133 INFO   : [QuerySites] Created 
+2020-07-01 17:03:00.134 INFO   : [database] Created 
+2020-07-01 17:03:00.693 INFO   : Check Log Level : info
+2020-07-01 17:03:00.694 WARN   : Check Log Level : warn
+2020-07-01 17:03:00.694 ERROR  : Check Log Level : error
+2020-07-01 17:03:00.694 INFO   : Start XPlug Cloud!!
+2020-07-01 17:03:01.141 INFO   : Web App listening at 8090
+2020-07-01 17:04:58.741 ERROR  : { Error: (conn=109153, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' OWN_SQ  , STE_SQ  , STE_ID  , STE_NM  , DATE_FORMAT( INS_DT, '%Y-%m-%d %H:%i:%s' at line 1
+sql:  SELECT   , OWN_SQ  , STE_SQ  , STE_ID  , STE_NM  , DATE_FORMAT( INS_DT, '%Y-%m-%d %H:%i:%s' ) INS_DT  , TEL_NO  , ADDR  , BIGO  , STAT  , DATE_FORMAT( EDT_DT, '%Y-%m-%d %H:%i:%s' ) EDT_DT  , DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) REG_DT  FROM TB_SITE  WHERE STAT = 1 AND STE_SQ  =  12 - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1064,
+  sqlState: '42000',
+  code: 'ER_PARSE_ERROR' }
+2020-07-01 17:04:58.741 ERROR  : { Error: (conn=109153, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' OWN_SQ  , STE_SQ  , STE_ID  , STE_NM  , DATE_FORMAT( INS_DT, '%Y-%m-%d %H:%i:%s' at line 1
+sql:  SELECT   , OWN_SQ  , STE_SQ  , STE_ID  , STE_NM  , DATE_FORMAT( INS_DT, '%Y-%m-%d %H:%i:%s' ) INS_DT  , TEL_NO  , ADDR  , BIGO  , STAT  , DATE_FORMAT( EDT_DT, '%Y-%m-%d %H:%i:%s' ) EDT_DT  , DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) REG_DT  FROM TB_SITE  WHERE STAT = 1 AND STE_SQ  =  12 - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1064,
+  sqlState: '42000',
+  code: 'ER_PARSE_ERROR' }
+2020-07-01 17:04:58.742 ERROR  : Response Error : {"rcd":1,"rms":"(conn=109153, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' OWN_SQ  , STE_SQ  , STE_ID  , STE_NM  , DATE_FORMAT( INS_DT, '%Y-%m-%d %H:%i:%s' at line 1\nsql:  SELECT   , OWN_SQ  , STE_SQ  , STE_ID  , STE_NM  , DATE_FORMAT( INS_DT, '%Y-%m-%d %H:%i:%s' ) INS_DT  , TEL_NO  , ADDR  , BIGO  , STAT  , DATE_FORMAT( EDT_DT, '%Y-%m-%d %H:%i:%s' ) EDT_DT  , DATE_FORMAT( REG_DT, '%Y-%m-%d %H:%i:%s' ) REG_DT  FROM TB_SITE  WHERE STAT = 1 AND STE_SQ  =  12 - parameters:[]","data":{"fatal":false,"errno":1064,"sqlState":"42000","code":"ER_PARSE_ERROR"}}
+2020-07-01 17:06:31.500 INFO   : Log Level      = info
+2020-07-01 17:06:31.501 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-01 17:06:31.615 INFO   : [QueryOwners] Created 
+2020-07-01 17:06:31.617 INFO   : [QuerySites] Created 
+2020-07-01 17:06:31.619 INFO   : [QueryUsers] Created 
+2020-07-01 17:06:31.620 INFO   : [QueryPlugs] Created 
+2020-07-01 17:06:31.621 INFO   : [QueryReports] Created 
+2020-07-01 17:06:31.622 INFO   : [QuerySites] Created 
+2020-07-01 17:06:31.622 INFO   : [database] Created 
+2020-07-01 17:06:31.796 INFO   : Check Log Level : info
+2020-07-01 17:06:31.796 WARN   : Check Log Level : warn
+2020-07-01 17:06:31.797 ERROR  : Check Log Level : error
+2020-07-01 17:06:31.797 INFO   : Start XPlug Cloud!!
+2020-07-01 17:06:31.799 INFO   : Web App listening at 8090

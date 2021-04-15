@@ -1,0 +1,41 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100" >
+
+<div fxFlex class="xg-card">
+  <div class="xg-card-header text-white">플러그설정
+      <fa class="float-right pr-2" name="ellipsis-v"></fa>
+  </div>
+  <div fxFlex id="contentBar"  class="xg-card-body overflow-auto" >
+      <table class="table xg-table table-striped ">
+          <thead>
+            <tr>
+              <th class='text-center text-white'>ID</th>
+              <th class='text-center text-white'>플러그명</th>
+              <th class='text-center text-white'>그룹</th>
+              <th class='text-center text-white'>전체제어</th>              
+              <th class='text-center text-white'>OFF지연</th>
+              <th class='text-center text-white'>대기전력</th>
+              <th class='text-center text-white'>상태</th>
+              <!-- <th class='text-center'>통신</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor='let item of api.plugs; let idx=index; trackBy: trackPlug' [routerLink]="['/settings/set-plugs', item['ZB_ADDR']]" routerLinkActive="active">
+                <td class='text-center'>{{item.ZB_ADDR}}</td>
+                <td class='text-center'>{{item.DEV_NM}}</td>
+                <td class='text-center'>{{api.isEmpty(item.GRP_SQ) || item.GRP_SQ == "null" ? "-" : api.getGroup(item.GRP_SQ)['GRP_NM']}}</td>                
+                <td class='text-center'>{{(item.MANU_CTL_ALLOW == '1') ? '허용' : '거부'}} </td>
+                <td class='text-center'>{{item.OFF_DELY}}</td>
+                <td class='text-center'>{{item.STBY_KW}}</td>                                
+                <td class='text-center' [ngClass]="item.SW_ST == 1 ? 'text-success' : 'text-danger'" >{{(item.DEV_ST == '1') ? ((item.SW_ST == '1') ? 'ON' : 'OFF') : '-'}}</td>
+
+                <!-- <td class='text-center'>{{(item.DEV_ST == '1') ? '정상' : '이상'}}</td>                 -->
+              </tr>              
+          </tbody>
+        </table>
+  </div>
+  <!-- <div fxFlex="40px" id="buttonBar" fxLayoutAlign="flex-end center">
+      <button (click)="onFindChannel()" class="btn btn-success">채널재선택</button>&nbsp;
+    <button (click)="onPermitJoin()" class="btn btn-success">플러그검색</button>
+  </div> -->
+</div>
+</div>

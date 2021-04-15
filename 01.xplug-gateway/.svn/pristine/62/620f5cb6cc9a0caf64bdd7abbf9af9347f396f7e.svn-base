@@ -1,0 +1,1751 @@
+const express = require('express');
+const bodyParser = require('body-parser')
+const os = require('os');
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
+
+const dbSql = require('../db-sql');
+const cors = require('cors');
+const xpUtils = require("../utils");
+const modBlService = require("./bl-service");
+
+
+
+dbSql.open();
+
+const DEBUG = false;
+
+
+function  getRES_PACKET(rcd = 0, rms='', data={}) {
+    return { rcd:rcd, rms:rms, data:data };
+}
+
+module.exports = {
+    app: null,
+    viewApp: null,
+    restApp: null,
+    server: null,
+    mqttClient : null, 
+    blService : null,
+
+    init() {
+        if (this.app) return;
+       
+        this.app = express();        
+        this.app.set('view engine', 'ejs');
+        this.app.engine('html', require('ejs').renderFile );
+        this.app.use(cors());
+        this.app.use(bodyParser.json());
+
+        this.restApp = express.Router();
+        this.viewApp = express.Router();
+
+        this.app.use("/rest", this.restApp);        
+        this.app.use("/", express.static(__dirname + '/views'));
+        
+
+        ////////////////////// Rest API //////////////////////
+        ////////////////////// Rest API //////////////////////
+        ////////////////////// Rest API //////////////////////
+
+        this.restApp.get('/find_channel', async (req, res) => {     //채널검색  수정             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            try
+            {
+                CMD = "SC";
+                CMD_PARAM = "";
+                await dbSql.insertCommand(CMD, CMD_PARAM);        //즉시제어 
+                res.send( getRES_PACKET(0, `${CMD} OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+        this.restApp.get('/permit_join/:SEC', async (req, res) => {     //퍼밋 조인  수정             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SEC = req.params.SEC || ''; 
+            try
+            {       
+                let CMD = "";   
+                let CMD_PARAM  = "";
+                if( !isNaN(Number(SEC)) && Number(SEC) > 0 ){
+                    CMD = "JOIN_START";
+                    CMD_PARAM = SEC;
+                }else {
+                    CMD = "JOIN_STOP";
+                    CMD_PARAM = 0;
+                }
+                await dbSql.insertCommand(CMD, CMD_PARAM);        
+                                
+                res.send(getRES_PACKET(0, `${CMD} OK`,""));
+
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+        
+        
+
+        //Report Config (리포트 주기 설정)
+        this.restApp.get('/report_config', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.query.addr64 || '';       //64 bit Address 
+            let KIND    = req.query.knd    || '';       //KIND  0(ON/OFF),  1(KW) ,2(KWH)
+            let MIN     = req.query.min    || '';       //min
+            let MAX     = req.query.max    || '';       //max 
+            let VAL     = req.query.val    || '';       //change value  
+
+            let CMD = "CONFIG";
+            try
+            {       
+                let set_param = `{"zb_addr":"${ ZB_ADDR}", "kind": ${ KIND }, "min": ${ MIN } , "max": ${ MAX } , "value": ${ VAL }  }`;
+                
+
+                let message1 = this.makeMqttMessage(CMD, set_param)              
+                this.sendMqtt(message1);
+                console.debug("Send to Mqtt( REPORT CONFIG ) : " + message1 );   
+                                       
+                res.send(getRES_PACKET(0, `${CMD} OK`,""));
+
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+        //Network(16 BIT) Address 요청 
+        this.restApp.get('/nwk_addr', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.query.addr64 || '';      // 64 bit Address 
+            let CMD = "ADDR";
+            try
+            {       
+                let set_param = `{"zb_addr":"${ ZB_ADDR}" }`;
+
+                let message1 = this.makeMqttMessage(CMD, set_param)              
+                this.sendMqtt(message1);
+                console.debug("Send to Mqtt( NETWORK(16Bit) ADDRESS Request ) : " + message1 );   
+                                       
+                res.send(getRES_PACKET(0, `${CMD} OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+        
+        //시간동기화 (태블릿 터치로 부터 시간 동기화 메세지 보냄)
+        this.restApp.get('/time_sync', async (req, res) => {     
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let TIME = req.query.time || '';       //Current Time
+            try
+            {       
+                
+                DEBUG && console.info("컴퓨터 이름:" + os.hostname());     // 
+                DEBUG && console.info("OS 이름    :" + os.type());         //  Windows_NT
+                DEBUG && console.info("OS 플랫폼  :" + os.platform());     //  win32
+                DEBUG && console.info("OS 아키텍처:" + os.arch());         //  x64
+                DEBUG && console.info("OS 버전    :" + os.release());      //  10.0.18362
+                
+                if ( os.platform() == "linux" &&  os.arch() == "arm" ){ // 게이트웨이라면 
+                  
+
+                    let arrDateTime = TIME.split(" ");
+                    let arrDate = arrDateTime[0].split("-");
+                    let arrTime = arrDateTime[1].split(":");
+
+                    let sDate = new Date();
+                    sDate.setFullYear( arrDate[0], arrDate[1] - 1, arrDate[2] );
+                    sDate.setHours(arrTime[0], arrTime[1], arrTime[2] );
+
+                    let elapse = parseInt(Math.abs(Date.now() - sDate.getTime()) / 1000, 10);
+                    console.info("Diff Time :", elapse);
+                    if( elapse > 60 ){
+                        const { stdout1, stderr1 } = await exec(`date -s "${TIME}"`);
+                        const { stdout2, stderr2 } = await exec(`hwclock -w`);
+                        console.info("Change Time OK : ", TIME );
+
+                    }else{
+                        console.info("Change Time Skip : ", TIME );
+                    }                    
+                }
+                else{
+                    throw new Error("시간동기실패 게이트웨이가 아닙니다.");
+                }
+                                       
+                res.send(getRES_PACKET(0, `${TIME} OK`,""));
+
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+
+
+
+        this.restApp.get('/sites', (req, res) => {             //현장정보 조회 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            dbSql.selectSite().then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+        this.restApp.post('/sites/:STE_SQ', (req, res) => {     //현장정보 수정 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                        
+            let STE_SQ = req.params.STE_SQ || ''; 
+
+            
+            delete req.body["INS_DT_STR"];       //업데이트 되면 안되는 항목들 
+            delete req.body["INS_DT"];       //업데이트 되면 안되는 항목들 
+
+            delete req.body["REG_DTIME"];
+            delete req.body["WORK_ETM_STR"];
+            delete req.body["WORK_STM_STR"];
+
+            dbSql.updateSite(req.body, STE_SQ).then((result) => {                
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+        this.restApp.get('/devices', (req, res) => {             //플러그 목록조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            dbSql.selectDevices().then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+        this.restApp.get('/devices/:ZB_ADDR', (req, res) => {   //플러그 개별조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+            
+            let ZB_ADDR = req.params.ZB_ADDR || ''; 
+
+            dbSql.selectDevice(ZB_ADDR).then((rows) => {                
+                res.send(_this.makeDataRespons(rows, true));
+            }).catch(function (reason) {         
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+        this.restApp.delete('/devices/:ZB_ADDR',  async (req, res) => {   //플러그 삭제
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.params.ZB_ADDR || ''; 
+            
+            try
+            {
+                await dbSql.deleteDayReport(ZB_ADDR);   //보고서 삭제
+                await dbSql.deleteHourReport(ZB_ADDR);  //보고서 삭제
+                await dbSql.deleteSwEvent(ZB_ADDR);     //스위치 변경이력 
+                await dbSql.deleteControl(ZB_ADDR);     //제어이력 삭제                
+                await dbSql.deleteDevice(ZB_ADDR);      //플러그 삭제 
+                
+                let CMD = "DEV_DEL";   
+                let CMD_PARAM  = ZB_ADDR;
+                await dbSql.insertCommand(CMD, CMD_PARAM);        //삭제전송 
+
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+
+        });        
+        this.restApp.post('/devices/:ZB_ADDR', (req, res) => {   //플러그 정보수정 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                        
+            let ZB_ADDR = req.params.ZB_ADDR || ''; 
+
+            
+            delete req.body["SW_ST"];       //업데이트 되면 안되는 항목들 
+            delete req.body["KW"];
+            delete req.body["AKWH"];
+            delete req.body["RCV_DT"];
+            delete req.body["RCV_TM"];
+            delete req.body["BIGO"];
+            delete req.body["REG_DTIME"];
+
+            
+            delete req.body["ZB_RGRP_AID"];
+            delete req.body["ZB_ONGRP_AID"];
+            delete req.body["ZB_OFFGRP_AID"];
+            delete req.body["ZB_RGRP_RID"];
+            delete req.body["ZB_ONGRP_RID"];
+            delete req.body["ZB_OFFGRP_RID"];
+
+            if( req.body["MANU_CTL_ALLOW"] == 0 ) {   //전체제어 허용여부 {허용안하는경우 ON/OFF Zigbee그룹에서 제외 }
+                req.body["ZB_ONGRP_AID"] = 0;
+                req.body["ZB_OFFGRP_AID"] = 0;
+            }
+        
+            if( req.body["OFF_DELY"] > 0 )    //OFF지연값 설정시 OFF Zigbee그룹에서 제외
+            {
+                req.body["ZB_OFFGRP_AID"] = 0;
+            }
+            
+            dbSql.updateDevice(req.body, ZB_ADDR).then((result) => {                
+                    res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+       
+
+
+        this.restApp.get('/groups', (req, res) => {             //그룹 목록 조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            dbSql.selectGroups().then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+        this.restApp.post('/groups', (req, res) => {             //그룹 신규등록 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+
+            dbSql.insertGroup(req.body).then((result) => {                
+                
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+        this.restApp.get('/groups/:GRP_SQ', (req, res) => {   //그룹 개별조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+
+            dbSql.selectGroup(GRP_SQ).then((rows) => {
+                res.send(_this.makeDataRespons(rows, true));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+        this.restApp.delete('/groups/:GRP_SQ', async (req, res) => {   //그룹 삭제
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+            try
+            {
+                // let grpRows = await dbSql.selectDevicesByGroup(GRP_SQ);
+                // if( grpRows & grpRows.length >  0 )                 
+                //     throw new Error("그룹에 속한 플러그가 있습니다.");
+
+                // let schRows = await dbSql.selectScheduleByGroup(GRP_SQ);
+                // if( schRows & schRows.length >  0 ) 
+                //     throw new Error("그룹에 스케쥴이 설정되어 있습니다."); 
+
+                //let devRows = await dbSql.selectDevicesByGroup(GRP_SQ);
+                //if( devRows & devRows.length >  0 )
+
+                await dbSql.updateDeviceGroupNull(GRP_SQ);      //플러그  그룹정보 NULL
+
+                let schRows = await dbSql.selectScheduleByGroup(GRP_SQ);
+                for ( let schRow of schRows )
+                {
+                    await dbSql.deleteScheduleTimeBySchdSq( schRow.SCHD_SQ );       //시간 스케쥴 정보 삭제 
+                }         
+
+                await dbSql.deleteScheduleByGroup(GRP_SQ);                          //일 스케쥴 삭제
+
+                await dbSql.deleteGroup(GRP_SQ);                                    // 그룹 삭제 
+                                
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        }); 
+        this.restApp.post('/groups/:GRP_SQ', (req, res) => {   //그룹 정보수정 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+
+            dbSql.updateGroup(req.body, GRP_SQ).then((result) => {                    
+                    res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+
+        this.restApp.get('/devices/:ZB_ADDR/on', async (req, res) => {   //플러그 ON 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.params.ZB_ADDR || '';
+
+            try 
+            {
+                let ctlObj = {
+                    ZB_ADDR:ZB_ADDR,    //지그비주소(IEEE-64BIT ADDR)
+                    GRP_SQ : null,      //그룹일련번호(그룹제어일경우 Not Null)
+                    CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+                    CTL_OBJ : 1,        //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+                    CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+                    SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+                    SCHD_SQ:null        //스케쥴일련번호                
+                };
+
+                let filter = await this.blService.plugOn(ctlObj);
+
+                let manuFilterMsg = "";
+                if( filter.maun_ctl_allow_filter.length > 0 )
+                    manuFilterMsg = `수동제어 불가(${filter.maun_ctl_allow_filter.length})`;
+
+                if( filter.direct_control.length <= 0 )
+                {
+                    res.send(getRES_PACKET(0, `ON제어할 기기를 찾지 못했습니다. ${manuFilterMsg}, `, filter));
+                    return; 
+                }
+
+                let totControlCnt = filter.direct_control.length ;        //제어된 갯수 
+                let totExceptCnt  = filter.maun_ctl_allow_filter.length   //예외된 갯수
+                res.send(getRES_PACKET(0, `${totControlCnt}개의 기기를 ON하였습니다. 예외기기=${totExceptCnt}`, filter));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+
+
+            // let controlObj = {
+            //     ZB_ADDR:ZB_ADDR,    //지그비주소(IEEE-64BIT ADDR)
+            //     GRP_SQ : null,      //그룹일련번호(그룹제어일경우 Not Null)
+            //     CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+            //     CTL_OBJ : 1 ,       //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+            //     CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+            //     SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+            //     SCHD_SQ:null        //스케쥴일련번호                
+            // };
+
+
+            // try
+            // {
+            //     let effCnt  = await dbSql.insertControl(controlObj);
+            //     let devRows = await dbSql.selectDevice(ZB_ADDR);
+
+            //     let result = await this.filterOnControlDev(devRows, "each");
+
+            //     let manuFilterMsg = "";
+            //     if( result.maun_ctl_allow_filter.length > 0 )
+            //         manuFilterMsg = `수동제어 불가(${result.maun_ctl_allow_filter.length})`;
+
+            //     if( result.direct_control.length <= 0 )
+            //     {
+            //         res.send(getRES_PACKET(0, `ON제어할 기기를 찾지 못했습니다. ${manuFilterMsg}, `, result));
+            //         return; 
+            //     }
+
+
+            //     let CMD_PARAM = "";                
+            //     for (let ZB_ADDR of result.direct_control) {                                      
+
+            //         if( CMD_PARAM === "" )  CMD_PARAM += `${ZB_ADDR}`;
+            //         else                    CMD_PARAM += `,${ZB_ADDR}`;
+            //     }
+                
+            //     await dbSql.insertCommand('ON', CMD_PARAM);        //즉시제어 
+
+
+            //     let totControlCnt = result.direct_control.length ;        //제어된 갯수 
+            //     let totExceptCnt  = result.maun_ctl_allow_filter.length   //예외된 갯수
+
+            //     res.send(getRES_PACKET(0, `${totControlCnt}개의 기기를 ON하였습니다. 예외기기=${totExceptCnt}`, result));
+            // }
+            // catch ( reason )
+            // {
+            //     console.error(reason.message);
+            //     res.send(_this.makeErrorResponse(1, reason));
+            // }
+        });
+     
+
+
+        this.restApp.get('/groups/:GRP_SQ/on', async (req, res) => {   //그룹 ON 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+
+            let controlObj = {
+                ZB_ADDR: null,     //지그비주소(IEEE-64BIT ADDR)
+                GRP_SQ : GRP_SQ,    //그룹일련번호(그룹제어일경우 Not Null)
+                CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+                CTL_OBJ : 2 ,       //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+                CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+                SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+                SCHD_SQ:null        //스케쥴일련번호                
+            };
+
+
+            try
+            {
+                let effCnt  = await dbSql.insertControl(controlObj);
+                let devRows = await dbSql.selectDevicesByGroup(GRP_SQ);
+
+                let result = await this.filterOnControlDev(devRows, "group");
+
+                let manuFilterMsg = "";
+                if( result.maun_ctl_allow_filter.length > 0 )
+                    manuFilterMsg = `수동제어 불가(${result.maun_ctl_allow_filter.length})`;
+
+                if( result.direct_control.length <= 0 )
+                {
+                    res.send(getRES_PACKET(0, `ON제어 가능한 기기를 찾지 못했습니다. ${manuFilterMsg}`, result));
+                    return; 
+                }
+
+                let CMD_PARAM = "";                
+                for (let ZB_ADDR of result.direct_control) {                                      
+
+                    if( CMD_PARAM === "" )  CMD_PARAM += `${ZB_ADDR}`;
+                    else                    CMD_PARAM += `,${ZB_ADDR}`;
+                }
+                
+                await dbSql.insertCommand('ON', CMD_PARAM);                 //즉시제어 
+
+                let totControlCnt = result.direct_control.length ;          //제어된 갯수 
+                let totExceptCnt  = result.maun_ctl_allow_filter.length     //예외된 갯수
+
+                res.send( getRES_PACKET(0, `${totControlCnt}개의 기기를 ON하였습니다. 예외기기=${totExceptCnt}`, result));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });
+
+        
+        // Zigbee Group  적용전 전체제어 
+        // this.restApp.get('/all/on', async (req, res) => {   //전체 ON 제어 
+        //     DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+        //     let controlObj = {
+        //         ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+        //         GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+        //         CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+        //         CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+        //         CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+        //         SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+        //         SCHD_SQ:null        //스케쥴일련번호                
+        //     };
+
+        //     try
+        //     {
+        //         let effCnt  = await dbSql.insertControl(controlObj);
+        //         let devRows = await dbSql.selectDevices();
+
+        //         let result = await this.filterOnControlDev(devRows, "all");
+
+        //         let manuFilterMsg = "";
+        //         if( result.maun_ctl_allow_filter.length > 0 )
+        //             manuFilterMsg = `수동제어 불가(${result.maun_ctl_allow_filter.length})`;
+
+        //         if( result.direct_control.length <= 0 )
+        //         {
+        //             //res.send(new RES_PACKET(0, `ON제어 가능한 기기를 찾지 못했습니다. ${manuFilterMsg}, `, result));
+        //             res.send( getRES_PACKET(0, `ON제어 가능한 기기를 찾지 못했습니다. ${manuFilterMsg}, `, result));
+        //             return; 
+        //         }
+
+        //         let CMD_PARAM = "";                
+        //         for (let ZB_ADDR of result.direct_control) {                                      
+
+        //             if( CMD_PARAM === "" )  CMD_PARAM += `${ZB_ADDR}`;
+        //             else                    CMD_PARAM += `,${ZB_ADDR}`;
+        //         }
+                
+        //         await dbSql.insertCommand('ON', CMD_PARAM);        //즉시제어 
+
+        //         let totControlCnt = result.direct_control.length ;        //제어된 갯수 
+        //         let totExceptCnt  = result.maun_ctl_allow_filter.length   //예외된 갯수
+
+        //         //res.send(new RES_PACKET(0, `${totControlCnt}개의 기기를 ON하였습니다. 예외기기=${totExceptCnt}`, result));
+        //         res.send(getRES_PACKET(0, `${totControlCnt}개의 기기를 ON하였습니다. 예외기기=${totExceptCnt}`, result));                
+        //     }
+        //     catch ( reason )
+        //     {
+        //         console.error(reason.message);
+        //         res.send(_this.makeErrorResponse(1, reason));
+        //     }  
+        // });
+
+
+        // //Zigbee 그룹을 이용한 전체 ON 제어 
+        // this.restApp.get('/all/on', async (req, res) => {   //전체 ON 제어 
+        //     DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+        //     let controlObj = {
+        //         ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+        //         GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+        //         CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+        //         CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+        //         CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+        //         SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+        //         SCHD_SQ:null        //스케쥴일련번호                
+        //     };
+
+        //     try
+        //     {
+        //         let effCnt  = await dbSql.insertControl(controlObj);    //명령기록 
+                                
+        //         let onGroupRows = await dbSql.selectZbOnGroup();   //ON Group 
+        //         for ( let group of onGroupRows )
+        //         {                
+        //             let ZB_ONGRP_RID = group['ZB_ONGRP_RID'];                    
+        //             let ctl_param = `{"cmd_mode":1, "id" : ${ ZB_ONGRP_RID }, "status":1}`;   
+        //             await dbSql.insertCommand('CTL', ctl_param);        //즉시제어 
+        //         }
+
+
+        //         if( onGroupRows.length <= 0 )
+        //         {                    
+        //             res.send( getRES_PACKET(0, `Zigbee ON Group을 찾지 못했습니다.`));
+        //             return; 
+        //         }                
+                
+        //         res.send(getRES_PACKET(0, `${onGroupRows.length }개의 Zigbee ON그룹을 ON하였습니다.`)); 
+        //     }
+        //     catch ( reason )
+        //     {
+        //         console.error(reason.message);
+        //         res.send(_this.makeErrorResponse(1, reason));
+        //     }  
+        // });
+
+
+
+        //Zigbee 그룹을 이용한 전체 ON 제어 
+        this.restApp.get('/all/on', async (req, res) => {   //전체 ON 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try
+            {
+                let ctObj = {
+                    ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+                    GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+                    CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+                    CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+                    CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+                    SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+                    SCHD_SQ:null        //스케쥴일련번호                
+                };
+
+                let onGroupDevs = await this.blService.plugAllOn( ctObj );
+
+                if( onGroupDevs.length <= 0 )
+                {                    
+                    res.send( getRES_PACKET(0, `Zigbee ON Group을 찾지 못했습니다.`));
+                    return; 
+                }      
+
+                res.send(getRES_PACKET(0, `${onGroupDevs.length }개의 플러그를 ON하였습니다.`)); 
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }                      
+
+            // let controlObj = {
+            //     ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+            //     GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+            //     CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+            //     CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+            //     CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+            //     SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+            //     SCHD_SQ:null        //스케쥴일련번호                
+            // };
+
+            // try
+            // {
+            //     let effCnt  = await dbSql.insertControl(controlObj);    //명령기록                                     
+            //     let onGroupDevs = await dbSql.selectZbOnGroupDev();   //ON Group 
+            //     if( onGroupDevs.length <= 0 )
+            //     {                    
+            //         res.send( getRES_PACKET(0, `Zigbee ON Group을 찾지 못했습니다.`));
+            //         return; 
+            //     }             
+            //     let lists = "[";
+            //     for ( let dev of onGroupDevs )
+            //     {                
+            //         let ZB_ONGRP_RID = dev['ZB_ONGRP_RID'];             
+            //         let ZB_ADDR = dev['ZB_ADDR'];                         
+            //         if ( lists.length > 1 ) lists += ",";
+            //         lists += `{"gid":"${ZB_ONGRP_RID}","zb_addr":"${ZB_ADDR}"}`;                        
+            //     }
+            //     lists += "]"
+
+            //     let ctl_param = `{"cmd_mode":1, "id" : ${lists}, "status":1}`;   
+            //     await dbSql.insertCommand('CTL', ctl_param);        //즉시제어 
+        
+                
+            //     res.send(getRES_PACKET(0, `${onGroupDevs.length }개의 플러그를 ON하였습니다.`)); 
+            // }
+            // catch ( reason )
+            // {
+            //     console.error(reason.message);
+            //     res.send(_this.makeErrorResponse(1, reason));
+            // }  
+        });
+    
+    
+
+
+        this.restApp.get('/devices/:ZB_ADDR/off', async (req, res) => {   //플러그 OFF 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let ZB_ADDR = req.params.ZB_ADDR || '';
+            let FILTER  = req.params.FILTER  || ''; //대기전력 무시 여부
+
+            try 
+            {
+                let ctlObj = {
+                    ZB_ADDR:ZB_ADDR,    //지그비주소(IEEE-64BIT ADDR)
+                    GRP_SQ : null,      //그룹일련번호(그룹제어일경우 Not Null)
+                    CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+                    CTL_OBJ : 1 ,       //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+                    CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+                    SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+                    SCHD_SQ:null ,       //스케쥴일련번호                
+                    FILTER_SDKWH : FILTER  //대기전력 체크 여부 ""
+                };
+
+                let filter = await this.blService.plugOff( ctlObj )
+                
+                let manuFilterMsg = "";
+                if( filter.maun_ctl_allow_filter.length > 0 )
+                    manuFilterMsg = `수동제어 불가(${filter.maun_ctl_allow_filter.length})`;    
+                
+                let useKwFilterMsg = "";
+                if( filter.use_kw_filter.length > 0 )
+                    useKwFilterMsg = `사용중(${filter.use_kw_filter.length})`;
+                
+                if( filter.direct_control.length <= 0 && filter.reserv_control.length <= 0 )    //제어된 플러그가 없는경우 
+                {
+                    res.send(getRES_PACKET(0, `OFF 가능한 기기가 아닙니다. ${useKwFilterMsg},${manuFilterMsg}`, filter));
+                    return; 
+                }
+
+                let totControlCnt = filter.direct_control.length + filter.reserv_control.length;        //제어된 갯수 
+                let totExceptCnt  = filter.maun_ctl_allow_filter.length + filter.use_kw_filter.length;  //예외된 갯수(수동제어불허, 대기전력 체크)
+
+                res.send(getRES_PACKET(0, `${totControlCnt}개의 기기를 OFF 하였습니다. 예외기기=${totExceptCnt}`, filter));
+
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+
+
+
+            
+
+
+            // let controlObj = {
+            //     ZB_ADDR:ZB_ADDR,    //지그비주소(IEEE-64BIT ADDR)
+            //     GRP_SQ : null,      //그룹일련번호(그룹제어일경우 Not Null)
+            //     CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+            //     CTL_OBJ : 1 ,       //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+            //     CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+            //     SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+            //     SCHD_SQ:null        //스케쥴일련번호                
+            // };
+
+
+            // try
+            // {
+            //     let effCnt  = await dbSql.insertControl(controlObj);
+            //     let devRows = await dbSql.selectDevice(ZB_ADDR);
+
+            //     let result = await this.filterOffControlDev(devRows, FILTER, "each");
+
+            //     let manuFilterMsg = "";
+            //     if( result.maun_ctl_allow_filter.length > 0 )
+            //         manuFilterMsg = `수동제어 불가(${result.maun_ctl_allow_filter.length})`;
+                
+            //     let useKwFilterMsg = "";
+            //     if( result.use_kw_filter.length > 0 )
+            //         useKwFilterMsg = `사용중(${result.use_kw_filter.length})`;
+                
+            //     if( result.direct_control.length <= 0 && result.reserv_control.length <= 0 )
+            //     {
+            //         res.send(getRES_PACKET(0, `OFF 가능한 기기가 아닙니다. ${useKwFilterMsg},${manuFilterMsg}`, result));
+            //         return; 
+            //     }
+
+
+            //     let CMD_PARAM = "";                
+            //     for (let ZB_ADDR of result.direct_control) {                                      
+
+            //         if( CMD_PARAM === "" )  CMD_PARAM += `${ZB_ADDR}`;
+            //         else                    CMD_PARAM += `,${ZB_ADDR}`;
+            //     }
+            //     if(result.direct_control.length > 0 )
+            //         await dbSql.insertCommand('OFF', CMD_PARAM);        //즉시제어 
+                    
+            //     for (let aResv of result.reserv_control) {                                      
+            //         await dbSql.insertCommandReserv('OFF', aResv.ZB_ADDR, aResv.RSV_DT, aResv.RSV_TM ); 
+            //     }
+
+            //     let totControlCnt = result.direct_control.length + result.reserv_control.length;        //제어된 갯수 
+            //     let totExceptCnt  = result.maun_ctl_allow_filter.length + result.use_kw_filter.length;  //예외된 갯수(수동제어불허, 대기전력 체크)
+
+            //     res.send(getRES_PACKET(0, `${totControlCnt}개의 기기를 OFF 하였습니다. 예외기기=${totExceptCnt}`, result));
+            // }
+            // catch ( reason )
+            // {
+            //     console.error(reason.message);
+            //     res.send(_this.makeErrorResponse(1, reason));
+            // }
+        });
+
+
+
+
+
+        this.restApp.get('/groups/:GRP_SQ/off', async (req, res) => {   //그룹 OFF 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+          
+
+            let GRP_SQ = req.params.GRP_SQ || ''; 
+            let FILTER = req.params.FILTER || ''; 
+
+            let controlObj = {
+                ZB_ADDR: null,      //지그비주소(IEEE-64BIT ADDR)
+                GRP_SQ : GRP_SQ,    //그룹일련번호(그룹제어일경우 Not Null)
+                CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+                CTL_OBJ : 2 ,       //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+                CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+                SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+                SCHD_SQ:null        //스케쥴일련번호                
+            };
+
+            try
+            {
+                let effCnt  = await dbSql.insertControl(controlObj);
+                let devRows = await dbSql.selectDevicesByGroup(GRP_SQ);
+
+                let result = await this.filterOffControlDev(devRows, FILTER, "group");
+
+                let manuFilterMsg = "";
+                if( result.maun_ctl_allow_filter.length > 0 )
+                    manuFilterMsg = `수동제어 불가(${result.maun_ctl_allow_filter.length})`;
+                
+                let useKwFilterMsg = "";
+                if( result.use_kw_filter.length > 0 )
+                    useKwFilterMsg = `사용중(${result.use_kw_filter.length})`;
+                
+                if( result.direct_control.length <= 0 && result.reserv_control.length <= 0 )
+                {
+                    res.send( getRES_PACKET(0, `OFF 가능한 기기를 찾지 못했습니다. ${useKwFilterMsg},${manuFilterMsg}`, result));
+                    return; 
+                }
+
+
+
+                let CMD_PARAM = "";                
+                for (let ZB_ADDR of result.direct_control) {                                      
+
+                    if( CMD_PARAM === "" )  CMD_PARAM += `${ZB_ADDR}`;
+                    else                    CMD_PARAM += `,${ZB_ADDR}`;
+                }
+
+                if(result.direct_control.length > 0 )
+                    await dbSql.insertCommand('OFF', CMD_PARAM);        //즉시제어 
+                    
+                for (let aResv of result.reserv_control) {                                      
+                    await dbSql.insertCommandReserv('OFF', aResv.ZB_ADDR, aResv.RSV_DT, aResv.RSV_TM ); 
+                }
+
+                let totControlCnt = result.direct_control.length + result.reserv_control.length;        //제어된 갯수 
+                let totExceptCnt  = result.maun_ctl_allow_filter.length + result.use_kw_filter.length; //예외된 갯수
+ 
+                res.send( getRES_PACKET(0, `${totControlCnt}개의 기기를 OFF 하였습니다. 예외기기=${totExceptCnt}`, result));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }           
+        });
+
+
+        
+
+        // this.restApp.get('/all/off', async (req, res) => {   //전체 OFF 제어 
+        //     DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+        //     let FILTER  = req.param('FILTER', '');  //y or n
+           
+        //     let controlObj = {
+        //         ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+        //         GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+        //         CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+        //         CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+        //         CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+        //         SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+        //         SCHD_SQ:null        //스케쥴일련번호                
+        //     };
+
+
+        //     try
+        //     {
+        //         let effCnt  = await dbSql.insertControl(controlObj);
+        //         let devRows = await dbSql.selectDevices();
+
+        //         let result = await this.filterOffControlDev(devRows, FILTER, "all");
+
+        //         let manuFilterMsg = "";
+        //         if( result.maun_ctl_allow_filter.length > 0 )
+        //             manuFilterMsg = `수동제어 불가(${result.maun_ctl_allow_filter.length})`;
+                
+        //         let useKwFilterMsg = "";
+        //         if( result.use_kw_filter.length > 0 )
+        //             useKwFilterMsg = `사용중(${result.use_kw_filter.length})`;
+                
+        //         if( result.direct_control.length <= 0 && result.reserv_control.length <= 0 )
+        //         {
+        //             //res.send(new RES_PACKET(0, `OFF 가능한 기기를 찾지 못했습니다. ${useKwFilterMsg},${manuFilterMsg}`, result));
+        //             return; 
+        //         }
+
+
+        //         let CMD_PARAM = "";                
+        //         for (let ZB_ADDR of result.direct_control) {                                      
+
+        //             if( CMD_PARAM === "" )  CMD_PARAM += `${ZB_ADDR}`;
+        //             else                    CMD_PARAM += `,${ZB_ADDR}`;
+        //         }
+
+
+        //         if(result.direct_control.length > 0 )
+        //             await dbSql.insertCommand('OFF', CMD_PARAM);        //즉시제어 
+                    
+        //         for (let aResv of result.reserv_control) {                                      
+        //             await dbSql.insertCommandReserv('OFF', aResv.ZB_ADDR, aResv.RSV_DT, aResv.RSV_TM ); 
+        //         }
+
+        //         let totControlCnt = result.direct_control.length + result.reserv_control.length;        //제어된 갯수 
+        //         let totExceptCnt  = result.maun_ctl_allow_filter.length + result.use_kw_filter.length; //예외된 갯수
+
+        //         //res.send(new RES_PACKET(0, `${totControlCnt}개의 기기를 OFF 하였습니다. 예외기기=${totExceptCnt}`, result));
+        //         res.send(getRES_PACKET(0, `${totControlCnt}개의 기기를 OFF 하였습니다. 예외기기=${totExceptCnt}`, result));
+        //     }
+        //     catch ( reason )
+        //     {
+        //         console.error(reason.message);
+        //         res.send(_this.makeErrorResponse(1, reason));
+        //     }
+        // });
+
+
+        //Zigbee Group 을 이용한 전체 OFF제어 
+        // this.restApp.get('/all/off', async (req, res) => {   //전체 OFF 제어 
+        //     DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+        //     let FILTER = req.params.FILTER || 'n';      //기준전력 체크 유무 
+           
+        //     let controlObj = {
+        //         ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+        //         GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+        //         CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+        //         CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+        //         CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+        //         SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+        //         SCHD_SQ:null        //스케쥴일련번호                
+        //     };
+
+
+        //     try
+        //     {
+        //         // let effCnt  = await dbSql.insertControl(controlObj);         //밑으로 이동함..
+        //         let devRows = await dbSql.selectDevices();
+
+        //         let result = await this.filterOffControlDev(devRows, FILTER, "all");
+
+        //         let manuFilterMsg = "";
+        //         if( result.maun_ctl_allow_filter.length > 0 )
+        //             manuFilterMsg = `수동제어 불가(${result.maun_ctl_allow_filter.length})`;
+                
+        //         let useKwFilterMsg = "";
+        //         if( result.use_kw_filter.length > 0 )
+        //             useKwFilterMsg = `사용중(${result.use_kw_filter.length})`;
+                
+              
+
+        //         let effCnt  = await dbSql.insertControl(controlObj);        //제어 이력 저장 
+        //         //즉시제어 (Zigbee 그룹으로 즉시제어 )
+        //         let offGroupRows = await dbSql.selectZbOffGroup();   //Off Group 
+        //         for ( let group of offGroupRows )
+        //         {                
+        //             let ZB_OFFGRP_RID = group['ZB_OFFGRP_RID'];                    
+        //             let ctl_param = `{"cmd_mode":1, "id" : ${ZB_OFFGRP_RID}, "status":0}`;   
+        //             await dbSql.insertCommand('CTL', ctl_param);        //즉시제어 
+        //         }
+        //         if( offGroupRows.length <= 0 )
+        //         {                    
+        //             res.send( getRES_PACKET(0, `Zigbee OFF Group을 찾지 못했습니다.`));
+        //             return; 
+        //         }               
+
+        //         //지연 OFF제어 플러그 
+        //         for (let aResv of result.reserv_control) {                                      
+        //             await dbSql.insertCommandReserv('OFF', aResv.ZB_ADDR, aResv.RSV_DT, aResv.RSV_TM ); 
+        //         }
+
+        //         res.send(getRES_PACKET(0, `${offGroupRows.length }개의 Zigbee OFF그룹을 OFF하였습니다.`)); 
+
+        //     }
+        //     catch ( reason )
+        //     {
+        //         console.error(reason.message);
+        //         res.send(_this.makeErrorResponse(1, reason));
+        //     }
+        // });
+
+
+
+        // Zigbee Group 을 이용한 전체 OFF제어  2Version
+        this.restApp.get('/all/off', async (req, res) => {   //전체 OFF 제어 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let FILTER = req.params.FILTER || 'n';      //기준전력 체크 유무 
+
+            try
+            {
+                let ctlObj = {
+                    ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+                    GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+                    CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+                    CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+                    CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+                    SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+                    SCHD_SQ:null,        //스케쥴일련번호    
+                    FILTER_SDKWH : FILTER  //대기전력 체크 여부 ""            
+                };
+
+
+                let offGroupDevs = await this.blService.plugAllOff( ctlObj );
+                
+                if( offGroupDevs.length <= 0 )
+                {                    
+                    res.send( getRES_PACKET(0, `Zigbee OFF Group Dev 을 찾지 못했습니다.`));
+                    return; 
+                }               
+
+                res.send(getRES_PACKET(0, `${offGroupDevs.length }개의 플러그를 OFF하였습니다.`)); 
+
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+
+
+
+            // let controlObj = {
+            //     ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+            //     GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+            //     CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+            //     CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+            //     CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+            //     SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+            //     SCHD_SQ:null,        //스케쥴일련번호    
+            //     FILTER_SDKWH : FILTER  //대기전력 체크 여부 ""            
+            // };
+
+
+            // try
+            // {
+            //     // let effCnt  = await dbSql.insertControl(controlObj);         //밑으로 이동함..
+            //     let devRows = await dbSql.selectDevices();
+
+            //     let result = await this.filterOffControlDev(devRows, FILTER, "all");
+
+            //     let manuFilterMsg = "";
+            //     if( result.maun_ctl_allow_filter.length > 0 )
+            //         manuFilterMsg = `수동제어 불가(${result.maun_ctl_allow_filter.length})`;
+                
+            //     let useKwFilterMsg = "";
+            //     if( result.use_kw_filter.length > 0 )
+            //         useKwFilterMsg = `사용중(${result.use_kw_filter.length})`;
+              
+
+            //     let effCnt  = await dbSql.insertControl(controlObj);        //제어 이력 저장 
+            //     //즉시제어 (Zigbee 그룹으로 즉시제어 )
+            //     let offGroupDevs = await dbSql.selectZbOffGroupDevs();   //Off Group 
+                
+
+
+            //     if( offGroupDevs.length <= 0 )
+            //     {                    
+            //         res.send( getRES_PACKET(0, `Zigbee OFF Group Dev 을 찾지 못했습니다.`));
+            //         return; 
+            //     }               
+
+            //     let lists = "[";
+            //     for ( let dev of offGroupDevs )
+            //     {                
+            //         let ZB_OFFGRP_RID = dev['ZB_OFFGRP_RID'];             
+            //         let ZB_ADDR = dev['ZB_ADDR']; 
+                    
+            //         if ( lists.length > 1 ) lists += ",";
+            //         lists += `{"gid":"${ZB_OFFGRP_RID}","zb_addr":"${ZB_ADDR}"}`;
+            //     }
+            //     lists += "]"
+
+            //     let ctl_param = `{"cmd_mode":1, "id" : ${lists}, "status":0}`;   
+            //     await dbSql.insertCommand('CTL', ctl_param);        //즉시제어 
+
+
+            //     //지연 OFF제어 플러그 
+            //     for (let aResv of result.reserv_control) {                                      
+            //         await dbSql.insertCommandReserv('OFF', aResv.ZB_ADDR, aResv.RSV_DT, aResv.RSV_TM ); 
+            //     }
+
+            //     res.send(getRES_PACKET(0, `${offGroupDevs.length }개의 플러그를 OFF하였습니다.`)); 
+
+            // }
+            // catch ( reason )
+            // {
+            //     console.error(reason.message);
+            //     res.send(_this.makeErrorResponse(1, reason));
+            // }
+        });
+
+
+
+
+
+        
+        
+
+
+
+        this.restApp.get('/holidays', (req, res) => {             //휴일 목록조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let YYYYMM = req.params.YYYYMM || ''; 
+            
+            dbSql.selectHolidays(YYYYMM).then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+
+        this.restApp.get('/holidays/:HOLI_DT', (req, res) => {   //휴일 개별조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+
+            let HOLI_DT = req.params.HOLI_DT || ''; 
+
+            dbSql.selectHoliday(HOLI_DT).then((rows) => {                
+                res.send(_this.makeDataRespons(rows, true));
+            }).catch(function (reason) {      
+                console.error(reason.message);          
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+        this.restApp.post('/holidays', (req, res) => {             //휴일 등록
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            dbSql.insertHoliday(req.body).then((result) => {                
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+        this.restApp.delete('/holidays/:HOLI_DT', (req, res) => {   //휴일 삭제
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let HOLI_DT = req.params.HOLI_DT || ''; 
+                        
+            dbSql.deleteHoliday(HOLI_DT).then((result) => {   //휴일 삭제                
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });        
+        this.restApp.post('/holidays/:HOLI_DT', (req, res) => {   //휴일 정보수정 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let HOLI_DT = req.params.HOLI_DT || ''; 
+
+            dbSql.updateHoliday(req.body, HOLI_DT).then((result) => {
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+
+
+        
+        this.restApp.get('/autodev_schedules', (req, res) => {      //금일 운전될 자동화기기 설정 내용 
+            DEBUG &&  console.info(req.method, req.originalUrl); let _this = this;
+                                    
+            dbSql.selectAutoDeviceScheduleTime().then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+        this.restApp.get('/schedules', (req, res) => {             //스케쥴 목록조회
+            DEBUG &&  console.info(req.method, req.originalUrl); let _this = this;
+                                    
+            
+            dbSql.selectSchedules().then((rows) => {            
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+        this.restApp.get('/schedules/:SCHD_SQ', (req, res) => {   //스케쥴 개별조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+                        
+            let SCHD_SQ = req.params.SCHD_SQ || ''; 
+
+            dbSql.selectSchedule(SCHD_SQ).then((rows) => {                
+                res.send(_this.makeDataRespons(rows, true));
+            }).catch(function (reason) {  
+                console.error(reason.message);              
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+        this.restApp.post('/schedules', (req, res) => {             //스케쥴 등록
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            dbSql.insertSchedule(req.body).then((result) => {
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+        this.restApp.delete('/schedules/:SCHD_SQ', async (req, res) => {   //스케쥴 삭제
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let SCHD_SQ = req.params.SCHD_SQ || ''; 
+
+            try{
+                await dbSql.deleteScheduleTimeBySchdSq( SCHD_SQ );       //시간 스케쥴 정보 삭제 
+
+                await dbSql.deleteSchedule(SCHD_SQ);                      //일 스케쥴 삭제
+
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });        
+        this.restApp.post('/schedules/:SCHD_SQ', (req, res) => {   //스케쥴 정보수정 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SCHD_SQ = req.params.SCHD_SQ || ''; 
+
+            dbSql.updateSchedule(req.body, SCHD_SQ).then((result) => {
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+
+
+
+
+        this.restApp.get('/schedules_times', (req, res) => {             //스케쥴시간  목록조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                                    
+            dbSql.selectScheduleTimes().then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+        this.restApp.get('/schedules_times/:SCHD_TM_SQ', (req, res) => {   //스케쥴시간  개별조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+            
+            let SCHD_TM_SQ = req.params.SCHD_TM_SQ || ''; 
+
+            dbSql.selectScheduleTime(SCHD_TM_SQ).then((rows) => {                
+                res.send(_this.makeDataRespons(rows, true));
+            }).catch(function (reason) {         
+                console.error(reason.message);       
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+        this.restApp.post('/schedules_times', (req, res) => {             //스케쥴시간  등록
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            dbSql.insertScheduleTime(req.body).then((result) => {                
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+        this.restApp.delete('/schedules_times/:SCHD_TM_SQ', (req, res) => {   //스케쥴시간  삭제
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SCHD_TM_SQ = req.params.SCHD_TM_SQ || ''; 
+                        
+            dbSql.deleteScheduleTime(SCHD_TM_SQ).then((result) => {
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });        
+        this.restApp.post('/schedules_times/:SCHD_TM_SQ', (req, res) => {   //스케쥴시간  정보수정 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SCHD_TM_SQ = req.params.SCHD_TM_SQ || ''; 
+
+            dbSql.updateScheduleTime(req.body, SCHD_TM_SQ).then((result) => {
+                res.send(getRES_PACKET());
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+        //=======================================================================
+        // 스케쥴 일자 정보 및 시간정보 동시 처리 
+        //
+        //=======================================================================
+        this.restApp.get('/schedule_once', (req, res) => {             //스케쥴 조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                                    
+            dbSql.selectScheduleTimes().then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorRespose(1, reason));
+            });
+        });
+        //한번에 스케쥴 일자정보, 시간정보 한번에 삭제 (1:1)
+        this.restApp.delete('/schedule_once/:SCHD_SQ', async (req, res) => {   //스케쥴 삭제 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let SCHD_SQ = req.params.SCHD_SQ || ''; 
+
+            try{
+                await dbSql.deleteScheduleTimeBySchdSq( SCHD_SQ );       //시간 스케쥴 정보 삭제 
+
+                await dbSql.deleteSchedule(SCHD_SQ);                      //일 스케쥴 삭제
+
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });        
+
+        //한번에 스케쥴 일자정보, 시간정보 한번에 등록 (1:1)
+        this.restApp.post('/schedule_once', async (req, res) => {   //스케쥴 삭제
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            try{            
+                let result =  await dbSql.insertSchedule(req.body);     //일자스케쥴 정보 등록 
+                req.body["SCHD_SQ"] =  result["lastID"];
+                dbSql.insertScheduleTime(req.body)
+
+                res.send(getRES_PACKET());
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }
+        });                
+
+
+
+        //일보고서 조회 
+        this.restApp.get('/report_day', (req, res) => {             
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            let frDate = req.params.FR_DATE || xpUtils.getCurDate() ; 
+            let toDate = req.params.TO_DATE || xpUtils.getCurDate() ; 
+            let offset = 0;
+           
+            dbSql.selectDayReportFromTo(frDate, toDate, offset).then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+
+        //시간 보고서 조회 
+        this.restApp.get('/report_hour', (req, res) => {             //스케쥴 목록조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+            let frDate = req.params.FR_DATE || xpUtils.getCurDate() ; 
+            let toDate = req.params.TO_DATE || xpUtils.getCurDate() ; 
+            let offset = 0;
+            
+            dbSql.selectHourReportFromTo(frDate, toDate, offset).then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+
+        //종합 월 보고서 조회 
+        this.restApp.get('/report_mon/total', (req, res) => {
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+        
+            let cDate = new Date() ;
+            let pDate = new Date().setDate(0);
+            
+            let frDate = req.params.FR_MONTH || xpUtils.getYYYYMM( pDate ) ; 
+            let toDate = req.params.TO_MONTH || xpUtils.getYYYYMM( cDate ) ; 
+            let offset = 0;
+            
+            dbSql.selectMonthReportFromToAtTotal(frDate, toDate, offset).then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+         //종합 일보고서 조회 
+         this.restApp.get('/report_day/total', (req, res) => {             //스케쥴 목록조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+                             
+            let frDate = req.params.FR_DATE || xpUtils.getCurDate() ; 
+            let toDate = req.params.TO_DATE || xpUtils.getCurDate() ; 
+            let offset = 0;
+           
+            dbSql.selectDayReportFromToAtTotal(frDate, toDate, offset).then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+
+
+        //종합 시간 보고서 조회 
+        this.restApp.get('/report_hour/total', (req, res) => {             //스케쥴 목록조회
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+
+    
+            let frDate = req.params.FR_DATE || xpUtils.getCurDate() ; 
+            let toDate = req.params.TO_DATE || xpUtils.getCurDate() ; 
+            let offset = 0;
+            
+            dbSql.selectHourReportFromToAtTotal(frDate, toDate, offset).then((rows) => {
+                res.send(_this.makeDataRespons(rows));
+            }).catch(function (reason) {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////  ADMIN ////////////////////////////////
+        ////////////////////////////////  ADMIN ////////////////////////////////
+        ////////////////////////////////  ADMIN ////////////////////////////////        
+        ////////////////////////////////////////////////////////////////////////
+        this.restApp.get('/admin/reset_zbgroup', async (req, res) => {     // 지그비 그룹 초기화 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this;
+            
+            try
+            {       
+                let CMD = "GROUP";   
+                let CMD_PARAM  = `{"cmd_mode":3, "zb_addr":"", "grp_id":""}`; //명령종류[0:등록,1:단일그룹삭제, 2:조회(확인), 3:전체그룹삭제]
+                
+                await dbSql.insertCommand(CMD, CMD_PARAM);        //지그비 초기화 명령 전송
+                await dbSql.insertCommand(CMD, CMD_PARAM);        //지그비 초기화 명령 전송
+
+                await dbSql.updateZbGroupResetAll();              //지그비 그룹정보 초기화 
+                
+                res.send(getRES_PACKET(0, `ZIGBEE ${CMD} RESET OK`,""));
+            }
+            catch ( reason )
+            {
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            }            
+        });
+
+
+        this.restApp.get('/admin/stat_zbgroup', (req, res) => {    //지그비그룹핑상태 또는 진행율 
+            DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+            
+
+            dbSql.selectZbGroupingStat().then((rows) => {                
+                res.send(_this.makeDataRespons(rows, true));
+            }).catch(function (reason) { 
+                console.error(reason.message);
+                res.send(_this.makeErrorResponse(1, reason));
+            });
+        });
+
+
+
+
+        // const exec = require('child_process').exec;
+
+        // this.restApp.get('/admin/exec', (req, res) => {    //   Linux 명령어 실행 
+            
+        //     DEBUG && console.info(req.method, req.originalUrl); let _this = this; 
+
+        //     let cmd  = req.params.CMD || '' ;
+
+        //     let child = exec(cmd, function (error, stdout, stderr) {
+        //         console.info('stdout: ' + stdout);
+        //         console.info('stderr: ' + stderr);
+
+        //         let rows = [ `{"stdout":"${stdout}" , "stderr":"${stderr}"}` ];
+
+                
+        //         if (error == null) {                    
+        //             res.send(_this.makeDataRespons(rows, true));                    
+        //         }
+        //         else 
+        //         {
+        //             console.error('exec error: ' + error);
+        //             let reason = {};
+        //             reason["message"] = error;
+        //             res.send(_this.makeErrorResponse(1, reason));
+        //         }
+        //     }).stderr.setEncoding('utf8');
+        // });
+        
+        
+        
+
+        //Wifi 목록
+        //Wifi 설정 저장 
+        //Wifi 설정 조회
+
+
+
+
+
+    },
+    async filterOffControlDev( devRows , filter, ctl_kind="all" )       //수동 OFF시 제어 대상 기기  검색 
+    {
+        let rtnResult =  {
+            maun_ctl_allow_filter : [],
+            use_kw_filter : [],    
+            direct_control : [],            
+            reserv_control : [],           
+        };
+        
+        if( typeof devRows !== 'object' && devRows.length <= 0 ) 
+            return rtnResult;
+
+        for (let row of devRows) {
+
+            if( ctl_kind == "all" && row.MANU_CTL_ALLOW !== 1 )              //전체제어  허용여부 체크 
+            {
+                DEBUG && console.info( `${row.ZB_ADDR} can not off because manual control not allow` );
+                rtnResult.maun_ctl_allow_filter.push(row.ZB_ADDR);
+                continue;
+            }
+
+            // if( row.DEV_ST !== 1 )              //통신상태 체크
+            // {
+            //     console.info( `${row.ZB_ADDR} can not off because com stat error` );
+            //     rtnResult.maun_ctl_allow_filter.push(row.ZB_ADDR);
+            //     continue;
+            // }
+           
+
+            if( filter === 'y' ||  filter === '' )     //기준 대기전력 체크 
+            {
+                if( typeof row.STBY_KW === "number" && typeof row.KW === "number" && row.STBY_KW > 0 && row.KW > 0 )    //현재 순시전력이 뜨고 대기전력 기준이 있다면 비교
+                {
+                    if( row.KW > row.STBY_KW )
+                    {
+                        DEBUG && console.info( `${row.ZB_ADDR} can not off because using KW(${row.KW}) > STBY_KW(${row.STBY_KW})` );
+                        rtnResult.use_kw_filter.push(row.ZB_ADDR);
+                        continue;
+                    }                        
+                }
+            }
+
+            if( typeof row.OFF_DELY === "number" && row.OFF_DELY > 0  )  {  //OFF 지연시간 
+
+                let  cData = new Date();
+                cData.setSeconds(cData.getSeconds() + row.OFF_DELY );
+
+                let rsv_dt = xpUtils.getYYYYMMDD(cData);
+                let rsv_tm = xpUtils.getHH24MISS(cData);
+
+                rtnResult.reserv_control.push({ 
+                    ZB_ADDR : row.ZB_ADDR, 
+                    RSV_DT : rsv_dt, 
+                    RSV_TM : rsv_tm
+                    });
+                
+            } else {
+                rtnResult.direct_control.push(row.ZB_ADDR);                
+            }            
+        }
+        return rtnResult;
+    },
+    async filterOnControlDev( devRows, ctl_kind="all" )        //수동 ON시 제어 대상 기기  검색 
+    {
+        let rtnResult =  {
+            maun_ctl_allow_filter : [],
+            direct_control : []
+        };
+        
+        if( typeof devRows !== 'object' && devRows.length <= 0 ) 
+            return rtnResult;
+
+        for (let row of devRows) {
+            
+            if( ctl_kind == "all" && row.MANU_CTL_ALLOW !== 1 )              //전체제어 전체제어 허용여부 체크 
+            {
+                console.info( `${row.ZB_ADDR} can not on because manual control not allow` );
+                rtnResult.maun_ctl_allow_filter.push(row.ZB_ADDR);
+                continue;
+            }
+            // if( row.DEV_ST !== 1 )              //통신상태 체크
+            // {
+            //     console.info( `${row.ZB_ADDR} can not on because com stat error` );
+            //     rtnResult.maun_ctl_allow_filter.push(row.ZB_ADDR);
+            //     continue;
+            // }
+           
+            rtnResult.direct_control.push(row.ZB_ADDR);                
+           
+        }
+        return rtnResult;
+    },
+    start(port, mqttClient ) {
+        this.mqttClient = mqttClient;
+        
+        this.blService  = modBlService(mqttClient);
+
+        this.server = this.app.listen(port, () => {
+            let host = this.server.address().address;
+            let port = this.server.address().port;
+            DEBUG &&  console.info("Web App listening at %s", port)
+        });
+    },
+    makeDataRespons(rows, isSingleData = false) {
+        
+        let resdata = getRES_PACKET();
+        if (isSingleData) {
+            if (rows && rows.length > 0)
+                resdata.data = rows[0];
+        }
+        else {
+            resdata.data = rows;
+        }
+        return resdata;
+    },
+    makeErrorResponse(rcd, rms) {        
+        return getRES_PACKET(1, rms.message, rms );
+    },    
+    sendMqtt( message ){    
+        this.mqttClient.publish("adapter/gw", `${message}`);    
+    }, 
+    makeMqttMessage( cmd, cmd_param ){
+
+        let obj = {
+            "pkn"  : 1,	            //M=패킷구분  			[0:통보(응답불필요),1:요청(응답요구),2:요청(응답불필요),3:응답 ]	                    
+            "cmd"  : cmd,	        //M=명령종류  				
+            "tno"  : 0, 	        //M=트랜잭션번호 		
+            "data" : JSON.parse(cmd_param) 
+        };
+
+        return  JSON.stringify(obj);
+    }
+
+
+
+
+
+    
+
+
+};

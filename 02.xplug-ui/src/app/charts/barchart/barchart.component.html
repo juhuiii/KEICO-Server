@@ -1,0 +1,30 @@
+<!--  -->
+<svg xmlns="http://www.w3.org/2000/svg"
+    class="barchart" width="100%" height="100%" viewBox="0 0 30 100" 
+      preserveAspectRatio="none" style="max-width: 50px"
+    >
+  <defs>
+    <linearGradient id="e" x1="0%" y1="0%" x2="0" y2="100%" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#7565e5" />
+      <stop offset="100%" stop-color="#4848ab" />
+    </linearGradient>
+  </defs>
+    
+  <!-- <rect width="100%" height="100%" fill="none" stroke="red"></rect> -->
+
+  <line *ngIf="background===0" class="base on" x1="50%" y1="90" x2="50%" y2="10" stroke-width="8" stroke-linecap="round" />
+  <line *ngIf="background===1" class="base off" x1="50%" y1="90" x2="50%" y2="10" stroke-width="8" stroke-linecap="round" />
+  <line *ngIf="background===2" class="base err" x1="50%" y1="90" x2="50%" y2="10" stroke-width="8" stroke-linecap="round" />
+  <line *ngIf="background===3" class="base disable" x1="50%" y1="90" x2="50%" y2="10" stroke-width="8" stroke-linecap="round" />
+
+  <line *ngIf="background===0" class="curr on"       x1="50%" y1="90" x2="50%" [attr.y2]="y2" stroke="url(#e)" stroke-linecap="round" stroke-width="8" />
+  <line *ngIf="background===1" class="curr off"      x1="50%" y1="90" x2="50%" [attr.y2]="y2" stroke-linecap="round" stroke-width="8" />
+  <line *ngIf="background===2" class="curr err"      x1="50%" y1="90" x2="50%" [attr.y2]="y2" stroke-linecap="round" stroke-width="8" />
+  <line *ngIf="background===3" class="curr disable"  x1="50%" y1="90" x2="50%" [attr.y2]="y2" stroke-linecap="round" stroke-width="8" />
+
+<!-- 
+  <text x="50%" y="100%" fill="#eee" font-size="5" text-anchor="middle">
+    {{label}}
+  </text> -->
+
+</svg>

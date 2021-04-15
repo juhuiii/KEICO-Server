@@ -1,0 +1,40 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100" >
+  <div fxFlex class="xg-card">
+
+    <div class="xg-card-header text-white">
+      그룹설정<fa class="float-right pr-2" name="ellipsis-v"></fa>
+    </div>
+
+    <div fxFlex class="xg-card-body overflow-auto" fxLayoutAlign="center top ">    
+        <table class="table xg-table table-striped">
+          <thead>
+            <tr>                
+              <th class='text-center text-white'>그룹명</th>
+              <th class='text-center text-white'>플러그갯수</th>
+              <th class='text-center text-white'>스케쥴설정</th>
+              <!-- <th class='text-center'>수정일시</th> -->
+              <th class='text-center text-white'>관리</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr  *ngIf="result.length <= 0" class="alert">
+                  <td class='text-center' colspan="4">등록된 그룹이 없습니다. </td>
+            </tr>
+            <tr *ngFor='let item of result; let idx=index;'>
+                <td class='text-center'>{{item.GRP_NM}}</td>
+                <td class='text-center'>{{api.getPlugCountByGroup(item.GRP_SQ)}}</td>                                  
+                <td class='text-center'>{{ (api.getScheduleTimeCountByGroup(item.GRP_SQ) > 0) ? '있음' : '-'  }}</td>
+                <!-- <td class='text-center'>{{ api.formatTM(item.EDT_DTIME) }}</td> -->
+                <td class='text-center'>
+                  <button style="width:70px;" class="btn btn-sm btn-primary text-white" (click)="goGroupDetail(item.GRP_SQ) ">그룹</button>&nbsp;
+                  <button style="width:70px;" class="btn btn-sm btn-primary text-white" (click)="goScheduleDetail(item.GRP_SQ) ">스케쥴</button>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+    </div>
+    <div fxFlex="40px" class="m-2">        
+      <button class="pull-right btn btn-primary text-white" (click)="createGroup() ">그룹등록</button>      
+    </div>
+
+  </div>

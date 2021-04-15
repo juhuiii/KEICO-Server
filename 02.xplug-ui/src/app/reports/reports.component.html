@@ -1,0 +1,28 @@
+<div fxLayout="row" fxLayoutGap="20px" class="xg-page">
+  <div fxFlex fxLayout="column" class="board-test router-wrapper" [@slide]="getState(o)">
+    <router-outlet #o="outlet"></router-outlet>
+  </div>
+
+  <div fxFlex="20">
+
+    <div class="xg-card h-100">
+      <div class="xg-card-header text-white">
+        <span class="text-white">이력</span>
+        <fa class="float-right pr-2" name="ellipsis-v"></fa>
+      </div>
+
+      <div fxLayout="column" class="xg-card-body h-100">
+        <div class="nav flex-column nav-pills">
+          <a class="nav-link" routerLink="rept-plug" routerLinkActive="active">플러그정보</a>
+          <a class="nav-link" routerLink="rept-hour" routerLinkActive="active">시간보고서</a>
+          <a class="nav-link" routerLink="rept-day" routerLinkActive="active">일일보고서</a>
+          <a class="nav-link" routerLink="rept-mon" routerLinkActive="active">월간보고서</a>
+          <a class="nav-link" routerLink="rept-ctrl" routerLinkActive="active">제어내역</a>
+          <!-- <a class="nav-link" routerLink="rept-switch" routerLinkActive="active">동작이력</a> -->
+          <!--<a class="nav-link" routerLink="rept-schd" routerLinkActive="active">스케쥴이력</a> -->
+        </div>
+
+      </div>
+    </div>
+
+  </div>

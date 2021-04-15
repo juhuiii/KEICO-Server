@@ -1,0 +1,115 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ApiService } from '../../../services/api.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { XgModalService } from 'src/app/commonUX/xg-modal.service';
+import { forEach } from '@angular/router/src/utils/collection';
+import { TabsetComponent } from 'ngx-bootstrap';
+import { isNgTemplate } from '@angular/compiler';
+
+
+
+@Component({
+  selector: 'app-schd-detail',
+  templateUrl: './schd-detail.component.html',
+  styleUrls: ['./schd-detail.component.scss']
+})
+export class SchdDetailComponent implements OnInit {
+
+  private grp_sq : number ;  
+  public  group : {};  
+
+  public  schedule : any = {    
+    GRP_SQ  : "", 
+    SCHD_NM : "",     
+    WEEK_BIT : "0000000",
+    HOLI_YN : false, 
+    CTL_TIME : "",
+    CTL_CMD  : "0" ,    
+    SUN : false,
+    MON : false, 
+    TUE : false, 
+    WED : false, 
+    THU : false, 
+    FRI : false, 
+    SAT : false
+  };  
+
+  public VALID_SCHD_NM = "none";
+  public VALID_WEEK  = "none";
+  public VALID_CTL_CMD = "none";
+  public VALID_CTL_TIME = "none";
+  
+  constructor( 
+    public api: ApiService, 
+    public modal: XgModalService,
+    private activatedRoute: ActivatedRoute,  
+    private router: Router  ,
+    ) { 
+    this.grp_sq = Number(activatedRoute.snapshot.params["GRP_SQ"]);    
+    this.schedule.GRP_SQ =  this.grp_sq ;
+  }
+
+  ngOnInit() {
+    this.group = Object.assign({}, this.api.getGroup( this.grp_sq) );   
+    console.log( this.group  )      ;
+  }
+  
+  goBack()
+  {
+    this.router.navigate(['/app/settings/set-groups/set-schedules', this.grp_sq]);
+  }
+
+  goSaveSchedule()
+  {    
+
+    this.VALID_SCHD_NM = "none";
+    this.VALID_CTL_CMD = "none";
+    this.VALID_WEEK  = "none";    
+    this.VALID_CTL_TIME = "none";
+    
+    if( this.schedule.SCHD_NM === undefined || this.schedule.SCHD_NM === null || this.schedule.SCHD_NM == "" )
+    {
+      this.VALID_SCHD_NM = "";
+      return;
+    }
+
+    if( this.schedule.CTL_CMD != "0" && this.schedule.CTL_CMD != "1" )
+    {
+      this.VALID_CTL_CMD = "";
+      return;
+    }
+
+    if( this.schedule.CTL_TIME === undefined || this.schedule.CTL_TIME === null || this.schedule.CTL_TIME == "" )
+    {
+      this.VALID_CTL_TIME = "";
+      return;
+    }
+
+    this.schedule["WEEK_BIT"] = "";
+    this.schedule["WEEK_BIT"] += this.schedule["SUN"] ? "1" : "0";
+    this.schedule["WEEK_BIT"] += this.schedule["MON"] ? "1" : "0";
+    this.schedule["WEEK_BIT"] += this.schedule["TUE"] ? "1" : "0";
+    this.schedule["WEEK_BIT"] += this.schedule["WED"] ? "1" : "0";
+    this.schedule["WEEK_BIT"] += this.schedule["THU"] ? "1" : "0";
+    this.schedule["WEEK_BIT"] += this.schedule["FRI"] ? "1" : "0";
+    this.schedule["WEEK_BIT"] += this.schedule["SAT"] ? "1" : "0";
+
+    if(  parseInt( this.schedule["WEEK_BIT"] ) <= 0 )
+    {
+      this.VALID_WEEK = "";
+      return;
+    }
+
+    this.schedule["HOLI_YN"]  = this.schedule["HOLI_YN"] ? "1" : "0";
+    this.schedule["CTL_TIME"] = (this.schedule["CTL_TIME"] + "").replace(/:/g, "");
+
+    console.log(this.schedule);
+
+    this.api.addScheduleOnce(this.schedule).subscribe( res => {
+      this.api.getScheduleOnce().subscribe(data => {          
+        this.api.schedule_times = data["data"];
+        this.goBack();     
+      });
+    });
+  }
+}

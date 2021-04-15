@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{this['title']}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <br>
+  {{this['message']}}
+  <br>
+  <br>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-cancel" (click)="bsModalRef.hide()">{{this['declineBtnName']}}</button>
+</div>

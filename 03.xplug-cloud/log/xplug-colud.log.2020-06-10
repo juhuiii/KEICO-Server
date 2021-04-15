@@ -1,0 +1,120 @@
+2020-06-10 05:55:07.469 INFO   : Log Level      = info
+2020-06-10 05:55:07.470 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-06-10 05:55:07.837 INFO   : [QueryOwners] Created 
+2020-06-10 05:55:07.838 INFO   : [QuerySites] Created 
+2020-06-10 05:55:07.840 INFO   : [QueryUsers] Created 
+2020-06-10 05:55:07.841 INFO   : [QueryPlugs] Created 
+2020-06-10 05:55:07.844 INFO   : [QueryReports] Created 
+2020-06-10 05:55:07.845 INFO   : [QuerySites] Created 
+2020-06-10 05:55:07.846 INFO   : [database] Created 
+2020-06-10 05:55:08.319 INFO   : Check Log Level : info
+2020-06-10 05:55:08.319 WARN   : Check Log Level : warn
+2020-06-10 05:55:08.320 ERROR  : Check Log Level : error
+2020-06-10 05:55:08.320 INFO   : Start XPlug Cloud!!
+2020-06-10 05:55:08.330 INFO   : Web App listening at 8090
+2020-06-10 05:55:21.731 ERROR  : { Error: (conn=96537, no: 1054, SQLState: 42S22) Unknown column 'D.DATA_DT' in 'field list'
+sql:  SELECT  S.STE_SQ,  S.STE_ID,  S.STE_NM,  S.OWN_SQ,  D.GTW_SQ,  D.GTW_ID,  D.DEV_SQ,  D.DEV_ID,  D.DEV_NM,  D.KND_CD,  D.MDL_CD,  IF( ABS(TIMESTAMPDIFF(SECOND, D.DATA_DT, NOW())) < 5400, 1,  2) COM_ST,  D.STAT,  M.SW_ST,  M.KW,  M.AKWH,  M.STBY_KW,  M.OFF_DELY,  M.MANU_CTL_ALLOW,  M.GRP_SQ,  M.ZB_RGRP_RID,  M.ZB_ONGRP_RID,  M.ZB_OFFGRP_RID,  M.ZB_RGRP_AID,  M.ZB_ONGRP_AID,  M.ZB_OFFGRP_AID  FROM TB_SITE S  JOIN TB_DEVICE D ON D.STE_SQ = S.STE_SQ  JOIN TM_PLUG M   ON D.DEV_SQ = M.DEV_SQ  WHERE D.STAT = 1 AND S.STAT = 1 AND S.OWN_SQ = 4 ORDER BY S.OWN_SQ, S.STE_NM, D.DEV_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-06-10 05:55:21.732 ERROR  : Response Error : {"rcd":1,"rms":"(conn=96537, no: 1054, SQLState: 42S22) Unknown column 'D.DATA_DT' in 'field list'\nsql:  SELECT  S.STE_SQ,  S.STE_ID,  S.STE_NM,  S.OWN_SQ,  D.GTW_SQ,  D.GTW_ID,  D.DEV_SQ,  D.DEV_ID,  D.DEV_NM,  D.KND_CD,  D.MDL_CD,  IF( ABS(TIMESTAMPDIFF(SECOND, D.DATA_DT, NOW())) < 5400, 1,  2) COM_ST,  D.STAT,  M.SW_ST,  M.KW,  M.AKWH,  M.STBY_KW,  M.OFF_DELY,  M.MANU_CTL_ALLOW,  M.GRP_SQ,  M.ZB_RGRP_RID,  M.ZB_ONGRP_RID,  M.ZB_OFFGRP_RID,  M.ZB_RGRP_AID,  M.ZB_ONGRP_AID,  M.ZB_OFFGRP_AID  FROM TB_SITE S  JOIN TB_DEVICE D ON D.STE_SQ = S.STE_SQ  JOIN TM_PLUG M   ON D.DEV_SQ = M.DEV_SQ  WHERE D.STAT = 1 AND S.STAT = 1 AND S.OWN_SQ = 4 ORDER BY S.OWN_SQ, S.STE_NM, D.DEV_NM  - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-06-10 05:56:20.207 INFO   : Log Level      = info
+2020-06-10 05:56:20.208 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-06-10 05:56:20.324 INFO   : [QueryOwners] Created 
+2020-06-10 05:56:20.325 INFO   : [QuerySites] Created 
+2020-06-10 05:56:20.326 INFO   : [QueryUsers] Created 
+2020-06-10 05:56:20.328 INFO   : [QueryPlugs] Created 
+2020-06-10 05:56:20.329 INFO   : [QueryReports] Created 
+2020-06-10 05:56:20.330 INFO   : [QuerySites] Created 
+2020-06-10 05:56:20.330 INFO   : [database] Created 
+2020-06-10 05:56:20.501 INFO   : Check Log Level : info
+2020-06-10 05:56:20.501 WARN   : Check Log Level : warn
+2020-06-10 05:56:20.502 ERROR  : Check Log Level : error
+2020-06-10 05:56:20.502 INFO   : Start XPlug Cloud!!
+2020-06-10 05:56:20.504 INFO   : Web App listening at 8090
+2020-06-10 05:58:53.291 INFO   : Log Level      = info
+2020-06-10 05:58:53.292 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-06-10 05:58:53.413 INFO   : [QueryOwners] Created 
+2020-06-10 05:58:53.414 INFO   : [QuerySites] Created 
+2020-06-10 05:58:53.416 INFO   : [QueryUsers] Created 
+2020-06-10 05:58:53.421 INFO   : [QueryPlugs] Created 
+2020-06-10 05:58:53.422 INFO   : [QueryReports] Created 
+2020-06-10 05:58:53.423 INFO   : [QuerySites] Created 
+2020-06-10 05:58:53.424 INFO   : [database] Created 
+2020-06-10 05:58:53.599 INFO   : Check Log Level : info
+2020-06-10 05:58:53.599 WARN   : Check Log Level : warn
+2020-06-10 05:58:53.599 ERROR  : Check Log Level : error
+2020-06-10 05:58:53.600 INFO   : Start XPlug Cloud!!
+2020-06-10 05:58:53.602 INFO   : Web App listening at 8090
+2020-06-10 06:11:04.921 INFO   : Log Level      = info
+2020-06-10 06:11:04.922 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-06-10 06:11:05.045 INFO   : [QueryOwners] Created 
+2020-06-10 06:11:05.049 INFO   : [QuerySites] Created 
+2020-06-10 06:11:05.050 INFO   : [QueryUsers] Created 
+2020-06-10 06:11:05.052 INFO   : [QueryPlugs] Created 
+2020-06-10 06:11:05.054 INFO   : [QueryReports] Created 
+2020-06-10 06:11:05.056 INFO   : [QuerySites] Created 
+2020-06-10 06:11:05.056 INFO   : [database] Created 
+2020-06-10 06:11:05.274 INFO   : Check Log Level : info
+2020-06-10 06:11:05.274 WARN   : Check Log Level : warn
+2020-06-10 06:11:05.274 ERROR  : Check Log Level : error
+2020-06-10 06:11:05.274 INFO   : Start XPlug Cloud!!
+2020-06-10 06:11:05.277 INFO   : Web App listening at 8090
+2020-06-10 19:12:05.328 INFO   : Log Level      = info
+2020-06-10 19:12:05.328 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-06-10 19:12:05.737 INFO   : [QueryOwners] Created 
+2020-06-10 19:12:05.741 INFO   : [QuerySites] Created 
+2020-06-10 19:12:05.744 INFO   : [QueryUsers] Created 
+2020-06-10 19:12:05.746 INFO   : [QueryPlugs] Created 
+2020-06-10 19:12:05.751 INFO   : [QueryReports] Created 
+2020-06-10 19:12:05.753 INFO   : [QuerySites] Created 
+2020-06-10 19:12:05.754 INFO   : [database] Created 
+2020-06-10 19:12:06.329 INFO   : Check Log Level : info
+2020-06-10 19:12:06.329 WARN   : Check Log Level : warn
+2020-06-10 19:12:06.329 ERROR  : Check Log Level : error
+2020-06-10 19:12:06.329 INFO   : Start XPlug Cloud!!
+2020-06-10 19:12:06.332 INFO   : Web App listening at 8090
+2020-06-10 19:12:10.442 ERROR  : { Error: (conn=96884, no: 1054, SQLState: 42S22) Unknown column '202005Su' in 'where clause'
+sql:  SELECT       S.OWN_SQ     , H.TX_DT     , SUM(H.S_AKWH) S_AKWH     , SUM(H.E_AKWH) E_AKWH     , SUM(H.E_AKWH) - SUM(H.S_AKWH) SKWH     , SUM(H.SAVE_KW) SAVE_KW     , SUM(H.SAVE_SEC) SAVE_SEC     , COUNT(*) DATA_CNT  FROM TR_DAY H   	LEFT JOIN TB_DEVICE D ON H.DEV_SQ = D.DEV_SQ  	LEFT JOIN TB_SITE   S ON D.STE_SQ = S.STE_SQ  WHERE S.OWN_SQ = 4 AND H.TX_DT >= 202005Su AND H.TX_DT <= 202006We   GROUP BY S.OWN_SQ, H.TX_DT   ORDER BY TX_DT DESC  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-06-10 19:12:10.442 ERROR  : { Error: (conn=96884, no: 1054, SQLState: 42S22) Unknown column '202005Su' in 'where clause'
+sql:  SELECT       S.OWN_SQ     , H.TX_DT     , SUM(H.S_AKWH) S_AKWH     , SUM(H.E_AKWH) E_AKWH     , SUM(H.E_AKWH) - SUM(H.S_AKWH) SKWH     , SUM(H.SAVE_KW) SAVE_KW     , SUM(H.SAVE_SEC) SAVE_SEC     , COUNT(*) DATA_CNT  FROM TR_DAY H   	LEFT JOIN TB_DEVICE D ON H.DEV_SQ = D.DEV_SQ  	LEFT JOIN TB_SITE   S ON D.STE_SQ = S.STE_SQ  WHERE S.OWN_SQ = 4 AND H.TX_DT >= 202005Su AND H.TX_DT <= 202006We   GROUP BY S.OWN_SQ, H.TX_DT   ORDER BY TX_DT DESC  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-06-10 19:12:10.443 ERROR  : Response Error : {"rcd":1,"rms":"(conn=96884, no: 1054, SQLState: 42S22) Unknown column '202005Su' in 'where clause'\nsql:  SELECT       S.OWN_SQ     , H.TX_DT     , SUM(H.S_AKWH) S_AKWH     , SUM(H.E_AKWH) E_AKWH     , SUM(H.E_AKWH) - SUM(H.S_AKWH) SKWH     , SUM(H.SAVE_KW) SAVE_KW     , SUM(H.SAVE_SEC) SAVE_SEC     , COUNT(*) DATA_CNT  FROM TR_DAY H   \tLEFT JOIN TB_DEVICE D ON H.DEV_SQ = D.DEV_SQ  \tLEFT JOIN TB_SITE   S ON D.STE_SQ = S.STE_SQ  WHERE S.OWN_SQ = 4 AND H.TX_DT >= 202005Su AND H.TX_DT <= 202006We   GROUP BY S.OWN_SQ, H.TX_DT   ORDER BY TX_DT DESC  - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}

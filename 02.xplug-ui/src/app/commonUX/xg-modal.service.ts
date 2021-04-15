@@ -1,0 +1,189 @@
+import { Injectable } from '@angular/core';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ModalConfirmComponent } from '../commonUX/modal-confirm.component';
+import { ModalAlertComponent } from '../commonUX/modal-alert.component';
+import { reject } from 'q';
+import { ModalProgrssComponent } from '../commonUX/modal-progrss.component';
+import { ModalInputComponent } from '../commonUX/modal-input.component';
+import { ModalAddGroupComponent } from '../commonUX/modal-add-group.component';
+import { ModalCtrlGroupComponent } from './modal-ctrl-group.component';
+import { ModalAddHolidayComponent } from "../commonUX/modal-add-holiday.component";
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class XgModalService {
+
+  bsModalRef: BsModalRef;
+
+  constructor(private modalService: BsModalService) { }
+
+  alert(_title: any, _message: any) {
+
+    const config = {
+      backdrop: true,
+      keyboard: true,
+      animated: true,
+      ignoreBackdropClick: true,
+
+      initialState: {
+        title: _title,
+        message: _message,
+        declineBtnName: "닫기"
+      }
+    };
+
+    this.bsModalRef = this.modalService.show(ModalAlertComponent, config);
+  }
+
+  confirmPass(_title: any, _message: any) {
+
+    const config = {
+      backdrop: true,
+      keyboard: true,
+      animated: true,
+      ignoreBackdropClick: true,
+
+      initialState: {
+        title: _title,
+        message: _message,
+        confirmBtnName: "확인",
+        declineBtnName: "취소"
+      }
+    };
+
+    const modal = this.modalService.show(ModalInputComponent, config);
+    return modal.content.onClose;
+  }
+
+  confirmOnOff(_title: any, _message: any) {
+
+    const config = {
+      backdrop: true,
+      keyboard: true,
+      animated: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        title: _title,
+        message: _message,
+        confirmBtnName: "예",
+        declineBtnName: "취소"
+      }
+    };
+
+    const modal = this.modalService.show(ModalConfirmComponent, config );
+    return modal.content.onClose;
+  }
+
+  confirmSwitch(_title: any, _message: any) {
+
+    const config = {
+      backdrop: true,
+      keyboard: true,
+      animated: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        title: _title,
+        message: _message,
+        ignoreBtnName: "강제끄기",
+        confirmBtnName: "제외",
+        declineBtnName: "취소"
+        }
+    };
+
+    const modal = this.modalService.show(ModalConfirmComponent, config );
+    return modal.content.onClose;
+  }
+
+  confirmGroupOnOff(_title: any, _message: any) {
+
+    const config = {
+      backdrop: true,
+      keyboard: true,
+      animated: true,
+      ignoreBackdropClick: true,
+      initialState: {
+        title: _title,
+        message: _message
+      }
+    };
+
+    const modal = this.modalService.show(ModalCtrlGroupComponent, config );
+    return modal.content.onClose;
+  }
+
+  confirm(_title: any, _message: any) {
+
+    const initialState = {
+      title: _title,
+      message: _message,
+      confirmBtnName: "확인",
+      declineBtnName: "취소"
+    };
+
+    const modal = this.modalService.show(ModalConfirmComponent, { initialState });
+    return modal.content.onClose;
+  }
+
+  openConfirm(initialState: any) {
+
+    this.bsModalRef = this.modalService.show(ModalConfirmComponent, { initialState });
+
+    return new Promise((resolve, reject) => {
+
+      this.modalService.onHide.subscribe(success => {
+
+        if (this.bsModalRef.content["result"]) {
+          resolve(this.bsModalRef.content);
+        } else {
+          reject();
+        }
+      })
+    });
+
+  }
+
+  openProcess(initialState: any) {
+    this.bsModalRef = this.modalService.show(ModalProgrssComponent, { 
+      ignoreBackdropClick: true,
+      initialState:initialState });
+
+    return new Promise((resolve, reject) => {
+      this.modalService.onHide.subscribe(success => {
+        if (this.bsModalRef.content["result"]) {
+          resolve(this.bsModalRef.content);
+        } else {
+          reject();
+        }
+      })
+    });
+  }
+
+  openAddGroup(_title: any, _message: any) {
+
+    const initialState = {
+      title: _title,
+      message: _message,
+      confirmBtnName: "등록",
+      declineBtnName: "취소"
+    };
+
+    const modal = this.modalService.show( ModalAddGroupComponent, { initialState });
+    return modal.content.onClose;
+  }
+
+  openAddHoliday(_title: any, _message: any) {
+
+    const initialState = {
+      title: _title,
+      message: _message,
+      confirmBtnName: "등록",
+      declineBtnName: "취소"
+    };
+
+    const modal = this.modalService.show( ModalAddHolidayComponent, { initialState });
+    return modal.content.onClose;
+  }
+}
+ 

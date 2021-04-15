@@ -1,0 +1,702 @@
+2020-07-09 13:44:55.720 INFO   : Log Level      = info
+2020-07-09 13:44:55.721 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 13:44:56.098 INFO   : [QueryOwners] Created 
+2020-07-09 13:44:56.099 INFO   : [QuerySites] Created 
+2020-07-09 13:44:56.102 INFO   : [QueryUsers] Created 
+2020-07-09 13:44:56.104 INFO   : [QueryPlugs] Created !!
+2020-07-09 13:44:56.110 INFO   : [QueryReports] Created 
+2020-07-09 13:44:56.113 INFO   : [QuerySites] Created 
+2020-07-09 13:44:56.113 INFO   : [database] Created 
+2020-07-09 13:44:56.687 INFO   : Check Log Level : info
+2020-07-09 13:44:56.687 WARN   : Check Log Level : warn
+2020-07-09 13:44:56.688 ERROR  : Check Log Level : error
+2020-07-09 13:44:56.688 INFO   : Start XPlug Cloud!!
+2020-07-09 13:44:56.696 INFO   : Web App listening at 8090
+2020-07-09 14:04:58.858 ERROR  : ReferenceError: ste_sq is not defined
+    at router.post (c:\Work\workspace.nodejs\03.xplug-cloud\src\web\center_api.js:197:42)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:281:22
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:354:14)
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:410:3)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:275:10)
+2020-07-09 14:04:58.859 ERROR  : Response Error : {"rcd":1,"rms":"ste_sq is not defined","data":{}}
+2020-07-09 14:08:48.987 ERROR  : ReferenceError: ste_sq is not defined
+    at router.post (c:\Work\workspace.nodejs\03.xplug-cloud\src\web\center_api.js:197:42)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:281:22
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:354:14)
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:410:3)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:275:10)
+2020-07-09 14:08:48.987 ERROR  : Response Error : {"rcd":1,"rms":"ste_sq is not defined","data":{}}
+2020-07-09 14:12:42.541 ERROR  : ReferenceError: ste_sq is not defined
+    at router.post (c:\Work\workspace.nodejs\03.xplug-cloud\src\web\center_api.js:197:42)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:281:22
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:354:14)
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:410:3)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:275:10)
+2020-07-09 14:12:42.541 ERROR  : Response Error : {"rcd":1,"rms":"ste_sq is not defined","data":{}}
+2020-07-09 14:16:24.273 INFO   : Log Level      = info
+2020-07-09 14:16:24.273 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 14:16:24.424 INFO   : [QueryOwners] Created 
+2020-07-09 14:16:24.426 INFO   : [QuerySites] Created 
+2020-07-09 14:16:24.427 INFO   : [QueryUsers] Created 
+2020-07-09 14:16:24.428 INFO   : [QueryPlugs] Created !!
+2020-07-09 14:16:24.430 INFO   : [QueryReports] Created 
+2020-07-09 14:16:24.432 INFO   : [QuerySites] Created 
+2020-07-09 14:16:24.432 INFO   : [database] Created 
+2020-07-09 14:16:24.650 INFO   : Check Log Level : info
+2020-07-09 14:16:24.650 WARN   : Check Log Level : warn
+2020-07-09 14:16:24.650 ERROR  : Check Log Level : error
+2020-07-09 14:16:24.651 INFO   : Start XPlug Cloud!!
+2020-07-09 14:16:24.653 INFO   : Web App listening at 8090
+2020-07-09 14:16:50.102 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17'
+2020-07-09 14:16:50.522 ERROR  : { Error: (conn=124194, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 14:16:50.523 ERROR  : { Error: (conn=124194, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 14:16:50.523 ERROR  : { Error: (conn=124194, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 14:16:50.524 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124194, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'\nsql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 15:04:05.330 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17'
+2020-07-09 15:04:05.705 ERROR  : { Error: (conn=124236, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:04:05.705 ERROR  : { Error: (conn=124236, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:04:05.705 ERROR  : { Error: (conn=124236, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:04:05.706 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124236, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'\nsql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-19T15:00:00.000Z' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 15:07:25.880 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = 'null' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17'
+2020-07-09 15:07:26.259 ERROR  : { Error: (conn=124237, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = 'null' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:07:26.260 ERROR  : { Error: (conn=124237, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = 'null' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:07:26.260 ERROR  : { Error: (conn=124237, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = 'null' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:07:26.261 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124237, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'\nsql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = 'null' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 15:08:45.034 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '20200320' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17'
+2020-07-09 15:08:46.108 ERROR  : { Error: (conn=124239, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '20200320' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:08:46.109 ERROR  : { Error: (conn=124239, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '20200320' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:08:46.109 ERROR  : { Error: (conn=124239, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '20200320' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:08:46.109 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124239, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'\nsql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '20200320' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 15:08:57.808 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-20' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17'
+2020-07-09 15:09:02.676 ERROR  : { Error: (conn=124242, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-20' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:09:02.676 ERROR  : { Error: (conn=124242, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-20' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:09:02.677 ERROR  : { Error: (conn=124242, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-20' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 15:09:02.677 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124242, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'\nsql: UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-20' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null' , STAT = '1' , STAT_NM = '정상' , EDT_DT = '2020-05-18 22:35:06' , REG_DT = '2020-03-19 10:58:57'  WHERE  STE_SQ='17' - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 15:09:18.478 INFO   : Log Level      = info
+2020-07-09 15:09:18.479 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 15:09:18.636 INFO   : [QueryOwners] Created 
+2020-07-09 15:09:18.638 INFO   : [QuerySites] Created 
+2020-07-09 15:09:18.639 INFO   : [QueryUsers] Created 
+2020-07-09 15:09:18.641 INFO   : [QueryPlugs] Created !!
+2020-07-09 15:09:18.643 INFO   : [QueryReports] Created 
+2020-07-09 15:09:18.644 INFO   : [QuerySites] Created 
+2020-07-09 15:09:18.644 INFO   : [database] Created 
+2020-07-09 15:09:18.877 INFO   : Check Log Level : info
+2020-07-09 15:09:18.877 WARN   : Check Log Level : warn
+2020-07-09 15:09:18.877 ERROR  : Check Log Level : error
+2020-07-09 15:09:18.878 INFO   : Start XPlug Cloud!!
+2020-07-09 15:09:18.880 INFO   : Web App listening at 8090
+2020-07-09 15:09:27.764 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-20' , TEL_NO = 'null' , ADDR = '서울시지원센터' , BIGO = 'null'  WHERE  STE_SQ='17'
+2020-07-09 15:11:59.109 INFO   : Log Level      = info
+2020-07-09 15:11:59.109 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 15:11:59.228 INFO   : [QueryOwners] Created 
+2020-07-09 15:11:59.232 INFO   : [QuerySites] Created 
+2020-07-09 15:11:59.233 INFO   : [QueryUsers] Created 
+2020-07-09 15:11:59.235 INFO   : [QueryPlugs] Created !!
+2020-07-09 15:11:59.236 INFO   : [QueryReports] Created 
+2020-07-09 15:11:59.237 INFO   : [QuerySites] Created 
+2020-07-09 15:11:59.238 INFO   : [database] Created 
+2020-07-09 15:11:59.416 INFO   : Check Log Level : info
+2020-07-09 15:11:59.417 WARN   : Check Log Level : warn
+2020-07-09 15:11:59.417 ERROR  : Check Log Level : error
+2020-07-09 15:11:59.417 INFO   : Start XPlug Cloud!!
+2020-07-09 15:11:59.419 INFO   : Web App listening at 8090
+2020-07-09 15:12:16.936 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-20' , TEL_NO = null , ADDR = '서울시지원센터' , BIGO = null  WHERE  STE_SQ='17'
+2020-07-09 15:12:29.727 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-01' , TEL_NO = null , ADDR = '서울시지원센터' , BIGO = null  WHERE  STE_SQ='17'
+2020-07-09 16:34:08.060 INFO   : UPDATE TB_SITE SET   OWN_SQ = '3' , STE_ID = 'shub03' , STE_NM = '서울시지원센터' , INS_DT = '2020-03-01' , TEL_NO = '010-222-3333' , ADDR = '서울시지원센터' , BIGO = null  WHERE  STE_SQ='17'
+2020-07-09 16:38:02.574 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'testid' , '테스트현장명' , '2020-07-09' , '011-333-444' , '주소' , '비고' , null , null , null , null ) 
+2020-07-09 16:38:03.000 ERROR  : { Error: (conn=124361, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'testid' , '테스트현장명' , '2020-07-09' , '011-333-444' , '주소' , '비고' , null , null , null , null )  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 16:38:03.001 ERROR  : { Error: (conn=124361, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'testid' , '테스트현장명' , '2020-07-09' , '011-333-444' , '주소' , '비고' , null , null , null , null )  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 16:38:03.001 ERROR  : { Error: (conn=124361, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'testid' , '테스트현장명' , '2020-07-09' , '011-333-444' , '주소' , '비고' , null , null , null , null )  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 16:38:03.001 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124361, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'\nsql: INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'testid' , '테스트현장명' , '2020-07-09' , '011-333-444' , '주소' , '비고' , null , null , null , null )  - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 16:39:18.261 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'ㅅㄷㄴㅁ' , 'ㄹㅇㄴㅁㄹㅇ' , null , '' , '' , '' , null , null , null , null ) 
+2020-07-09 16:39:18.682 ERROR  : { Error: (conn=124363, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'ㅅㄷㄴㅁ' , 'ㄹㅇㄴㅁㄹㅇ' , null , '' , '' , '' , null , null , null , null )  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 16:39:18.683 ERROR  : { Error: (conn=124363, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'ㅅㄷㄴㅁ' , 'ㄹㅇㄴㅁㄹㅇ' , null , '' , '' , '' , null , null , null , null )  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 16:39:18.683 ERROR  : { Error: (conn=124363, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'
+sql: INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'ㅅㄷㄴㅁ' , 'ㄹㅇㄴㅁㄹㅇ' , null , '' , '' , '' , null , null , null , null )  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 16:39:18.684 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124363, no: 1054, SQLState: 42S22) Unknown column 'STAT_NM' in 'field list'\nsql: INSERT INTO TB_SITE ( OWN_SQ, STE_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO, STAT, STAT_NM, EDT_DT, REG_DT) VALUES (  null , null , 'ㅅㄷㄴㅁ' , 'ㄹㅇㄴㅁㄹㅇ' , null , '' , '' , '' , null , null , null , null )  - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 16:44:57.414 INFO   : Log Level      = info
+2020-07-09 16:44:57.415 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 16:44:57.787 INFO   : [QueryOwners] Created 
+2020-07-09 16:44:57.791 INFO   : [QuerySites] Created 
+2020-07-09 16:44:57.795 INFO   : [QueryUsers] Created 
+2020-07-09 16:44:57.799 INFO   : [QueryPlugs] Created !!
+2020-07-09 16:44:57.805 INFO   : [QueryReports] Created 
+2020-07-09 16:44:57.809 INFO   : [QuerySites] Created 
+2020-07-09 16:44:57.809 INFO   : [database] Created 
+2020-07-09 16:44:58.326 INFO   : Check Log Level : info
+2020-07-09 16:44:58.326 WARN   : Check Log Level : warn
+2020-07-09 16:44:58.326 ERROR  : Check Log Level : error
+2020-07-09 16:44:58.326 INFO   : Start XPlug Cloud!!
+2020-07-09 16:44:58.329 INFO   : Web App listening at 8090
+2020-07-09 16:45:53.250 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'centertestid' , '현장명테스트 ' , '2020-07-09' , '010-333-4444' , '주소' , '비고' ) 
+2020-07-09 16:47:32.219 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test2' , 'test2 현장' , '2020-07-08' , '032-222-3333' , '운영사무실' , '비고' ) 
+2020-07-09 16:53:42.510 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test3' , 'test3' , null , '' , '' , '' ) 
+2020-07-09 16:54:36.188 INFO   : Log Level      = info
+2020-07-09 16:54:36.189 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 16:54:36.303 INFO   : [QueryOwners] Created 
+2020-07-09 16:54:36.306 INFO   : [QuerySites] Created 
+2020-07-09 16:54:36.307 INFO   : [QueryUsers] Created 
+2020-07-09 16:54:36.308 INFO   : [QueryPlugs] Created !!
+2020-07-09 16:54:36.310 INFO   : [QueryReports] Created 
+2020-07-09 16:54:36.311 INFO   : [QuerySites] Created 
+2020-07-09 16:54:36.311 INFO   : [database] Created 
+2020-07-09 16:54:36.492 INFO   : Check Log Level : info
+2020-07-09 16:54:36.493 WARN   : Check Log Level : warn
+2020-07-09 16:54:36.493 ERROR  : Check Log Level : error
+2020-07-09 16:54:36.493 INFO   : Start XPlug Cloud!!
+2020-07-09 16:54:36.496 INFO   : Web App listening at 8090
+2020-07-09 16:54:53.586 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test4' , 'test4' , null , '' , '' , '' ) 
+2020-07-09 16:57:07.434 INFO   : Log Level      = info
+2020-07-09 16:57:07.435 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 16:57:07.553 INFO   : [QueryOwners] Created 
+2020-07-09 16:57:07.556 INFO   : [QuerySites] Created 
+2020-07-09 16:57:07.557 INFO   : [QueryUsers] Created 
+2020-07-09 16:57:07.558 INFO   : [QueryPlugs] Created !!
+2020-07-09 16:57:07.560 INFO   : [QueryReports] Created 
+2020-07-09 16:57:07.562 INFO   : [QuerySites] Created 
+2020-07-09 16:57:07.562 INFO   : [database] Created 
+2020-07-09 16:57:07.742 INFO   : Check Log Level : info
+2020-07-09 16:57:07.742 WARN   : Check Log Level : warn
+2020-07-09 16:57:07.742 ERROR  : Check Log Level : error
+2020-07-09 16:57:07.742 INFO   : Start XPlug Cloud!!
+2020-07-09 16:57:07.745 INFO   : Web App listening at 8090
+2020-07-09 16:57:45.365 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test5' , 'test5' , null , '' , '' , '' ) 
+2020-07-09 17:00:50.786 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test6' , 'test6' , null , '' , '' , '' ) 
+2020-07-09 17:01:14.669 INFO   : Log Level      = info
+2020-07-09 17:01:14.670 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 17:01:14.787 INFO   : [QueryOwners] Created 
+2020-07-09 17:01:14.789 INFO   : [QuerySites] Created 
+2020-07-09 17:01:14.790 INFO   : [QueryUsers] Created 
+2020-07-09 17:01:14.791 INFO   : [QueryPlugs] Created !!
+2020-07-09 17:01:14.793 INFO   : [QueryReports] Created 
+2020-07-09 17:01:14.794 INFO   : [QuerySites] Created 
+2020-07-09 17:01:14.794 INFO   : [database] Created 
+2020-07-09 17:01:14.978 INFO   : Check Log Level : info
+2020-07-09 17:01:14.978 WARN   : Check Log Level : warn
+2020-07-09 17:01:14.978 ERROR  : Check Log Level : error
+2020-07-09 17:01:14.979 INFO   : Start XPlug Cloud!!
+2020-07-09 17:01:14.981 INFO   : Web App listening at 8090
+2020-07-09 17:01:15.204 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test6' , 'test6' , null , '' , '' , '' ) 
+2020-07-09 17:01:59.718 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test7' , 'test7' , null , '' , '' , '' ) 
+2020-07-09 17:02:43.749 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test9' , 'test9' , null , '' , '' , '' ) 
+2020-07-09 17:02:56.807 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test10' , 'test10' , null , '' , '' , '' ) 
+2020-07-09 17:04:44.977 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test20' , 'test20' , '2020-07-11' , '' , '' , '' ) 
+2020-07-09 17:05:12.416 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test21' , 'test21' , '2020-07-20' , '010-222-3333' , '푸드코트' , 'ㅂ.고' ) 
+2020-07-09 17:13:45.706 ERROR  : ReferenceError: ste_sq is not defined
+    at router.delete (c:\Work\workspace.nodejs\03.xplug-cloud\src\web\center_api.js:224:43)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:281:22
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:354:14)
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:410:3)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:275:10)
+2020-07-09 17:13:45.706 ERROR  : Response Error : {"rcd":1,"rms":"ste_sq is not defined","data":{}}
+2020-07-09 17:14:57.776 ERROR  : ReferenceError: ste_sq is not defined
+    at router.delete (c:\Work\workspace.nodejs\03.xplug-cloud\src\web\center_api.js:224:43)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:281:22
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:354:14)
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:410:3)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:275:10)
+2020-07-09 17:14:57.777 ERROR  : Response Error : {"rcd":1,"rms":"ste_sq is not defined","data":{}}
+2020-07-09 17:15:11.853 ERROR  : ReferenceError: ste_sq is not defined
+    at router.delete (c:\Work\workspace.nodejs\03.xplug-cloud\src\web\center_api.js:224:43)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:281:22
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:354:14)
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:410:3)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:275:10)
+2020-07-09 17:15:11.853 ERROR  : Response Error : {"rcd":1,"rms":"ste_sq is not defined","data":{}}
+2020-07-09 17:15:53.042 INFO   : Log Level      = info
+2020-07-09 17:15:53.043 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 17:15:53.157 INFO   : [QueryOwners] Created 
+2020-07-09 17:15:53.159 INFO   : [QuerySites] Created 
+2020-07-09 17:15:53.160 INFO   : [QueryUsers] Created 
+2020-07-09 17:15:53.163 INFO   : [QueryPlugs] Created !!
+2020-07-09 17:15:53.165 INFO   : [QueryReports] Created 
+2020-07-09 17:15:53.166 INFO   : [QuerySites] Created 
+2020-07-09 17:15:53.166 INFO   : [database] Created 
+2020-07-09 17:15:53.334 INFO   : Check Log Level : info
+2020-07-09 17:15:53.334 WARN   : Check Log Level : warn
+2020-07-09 17:15:53.335 ERROR  : Check Log Level : error
+2020-07-09 17:15:53.335 INFO   : Start XPlug Cloud!!
+2020-07-09 17:15:53.337 INFO   : Web App listening at 8090
+2020-07-09 17:15:56.875 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='49'
+2020-07-09 17:16:08.869 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='47'
+2020-07-09 17:27:48.292 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='51'
+2020-07-09 17:27:54.277 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='50'
+2020-07-09 17:29:06.261 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test32' , 'test32' , null , '' , '' , '' ) 
+2020-07-09 17:29:16.407 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test33' , 'test33' , null , '' , '' , '' ) 
+2020-07-09 17:29:24.937 INFO   : INSERT INTO TB_SITE ( OWN_SQ, STE_ID, STE_NM, INS_DT, TEL_NO, ADDR, BIGO) VALUES (  '3' , 'test34' , 'test34' , null , '' , '' , '' ) 
+2020-07-09 17:30:23.481 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='59'
+2020-07-09 17:30:28.992 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='58'
+2020-07-09 17:30:49.778 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='57'
+2020-07-09 17:31:01.549 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='52'
+2020-07-09 19:39:04.917 INFO   : Log Level      = info
+2020-07-09 19:39:04.918 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 19:39:05.262 INFO   : [QueryOwners] Created 
+2020-07-09 19:39:05.266 INFO   : [QuerySites] Created 
+2020-07-09 19:39:05.269 INFO   : [QueryUsers] Created 
+2020-07-09 19:39:05.271 INFO   : [QueryPlugs] Created !!
+2020-07-09 19:39:05.275 INFO   : [QueryReports] Created 
+2020-07-09 19:39:05.277 INFO   : [QuerySites] Created 
+2020-07-09 19:39:05.277 INFO   : [database] Created 
+2020-07-09 19:39:05.749 INFO   : Check Log Level : info
+2020-07-09 19:39:05.749 WARN   : Check Log Level : warn
+2020-07-09 19:39:05.749 ERROR  : Check Log Level : error
+2020-07-09 19:39:05.750 INFO   : Start XPlug Cloud!!
+2020-07-09 19:39:05.752 INFO   : Web App listening at 8090
+2020-07-09 19:58:57.673 ERROR  : { Error: (conn=124857, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'
+sql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 19:58:57.675 ERROR  : { Error: (conn=124857, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'
+sql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 19:58:57.675 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124857, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'\nsql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 19:59:00.001 ERROR  : { Error: (conn=124831, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'
+sql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 19:59:00.002 ERROR  : { Error: (conn=124831, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'
+sql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 19:59:00.002 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124831, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'\nsql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 19:59:02.017 ERROR  : { Error: (conn=124830, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'
+sql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 19:59:02.017 ERROR  : { Error: (conn=124830, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'
+sql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1054,
+  sqlState: '42S22',
+  code: 'ER_BAD_FIELD_ERROR' }
+2020-07-09 19:59:02.018 ERROR  : Response Error : {"rcd":1,"rms":"(conn=124830, no: 1054, SQLState: 42S22) Unknown column 'S.GTW_NM' in 'order clause'\nsql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY S.GTW_NM  - parameters:[]","data":{"fatal":false,"errno":1054,"sqlState":"42S22","code":"ER_BAD_FIELD_ERROR"}}
+2020-07-09 20:16:20.445 INFO   : Log Level      = info
+2020-07-09 20:16:20.446 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-09 20:16:20.562 INFO   : [QueryOwners] Created 
+2020-07-09 20:16:20.566 INFO   : [QuerySites] Created 
+2020-07-09 20:16:20.567 INFO   : [QueryUsers] Created 
+2020-07-09 20:16:20.569 INFO   : [QueryPlugs] Created !!
+2020-07-09 20:16:20.570 INFO   : [QueryReports] Created 
+2020-07-09 20:16:20.571 INFO   : [QuerySites] Created 
+2020-07-09 20:16:20.571 INFO   : [database] Created 
+2020-07-09 20:16:20.768 INFO   : Check Log Level : info
+2020-07-09 20:16:20.768 WARN   : Check Log Level : warn
+2020-07-09 20:16:20.769 ERROR  : Check Log Level : error
+2020-07-09 20:16:20.769 INFO   : Start XPlug Cloud!!
+2020-07-09 20:16:20.771 INFO   : Web App listening at 8090

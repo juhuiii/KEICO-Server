@@ -1,0 +1,29 @@
+import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+import { ApiService } from 'src/app/services/api.service';
+ 
+@Component({
+  selector: 'app-bottom',
+  templateUrl: './bottom.component.html',
+  styleUrls: ['./bottom.component.scss']
+})
+export class BottomComponent implements OnInit {
+
+  now = "";
+  
+  constructor(public api: ApiService) { }
+
+  ngOnInit() {
+
+    this.updateTime();
+
+    setInterval(() => { this.updateTime(); }, 1000 );
+
+  } 
+
+  updateTime() {
+
+    this.now = moment().format("YYYY-MM-DD HH:mm:ss");
+   
+  }
+}

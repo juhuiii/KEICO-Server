@@ -1,0 +1,57 @@
+<div fxLayout="column" fxLayoutGap="20px" class="xg-page">  
+  
+  <div fxFlex="100" fxLayout="row" fxLayoutGap="20px" class="board-test">
+    <div class="xg-card h-100" fxFlex="50" >
+      <div class="xg-card-header">
+        유선네트워크 - {{ eth0_info?.name || '' }} <fa class="float-right pr-2" name="ellipsis-v"></fa>
+      </div>
+      <div class="xg-card-body" style="padding: 20px 10px;">        
+          <form>
+       
+              <div class="form-group row">
+                <label for="" class="col-sm-2 col-form-label">파일</label>
+                <div class="col-sm-10" style="color:black;">
+                    <textarea  #taNetwork class="bg-transparent form-control" rows="12"></textarea>
+                </div>
+              </div>
+
+              <div class="form-group row" style="display: flex; justify-content: flex-end;padding-right: 15px;">                            
+                <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="readNetwork()">조회</button>
+                <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="saveNetwork()">저장</button>                
+              </div>
+            </form>
+          
+      </div>          
+    </div>
+
+
+    
+    <div class="xg-card h-100" fxFlex="50">
+        <div class="xg-card-header">
+          무선네트워크 - {{wlan0_info?.name }}<fa class="float-right pr-2" name="ellipsis-v"></fa>
+        </div>
+        <div class="xg-card-body" style="padding: 20px 10px;" >
+            <form>
+
+                <div class="form-group row">
+                  <label for="" class="col-sm-2 col-form-label">파일</label>
+                  <div class="col-sm-10" style="color:black;">
+                      <textarea  #taWifi class="bg-transparent form-control" rows="12"></textarea>
+                  </div>
+                </div>
+  
+                <div class="form-group row" style="display: flex; justify-content: flex-end;padding-right: 15px;">                            
+                  <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="readWifi()">조회</button>
+                  <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="saveWifi()">저장</button>                  
+                </div>
+
+
+              </form>
+
+
+
+        </div>    
+    </div>
+    
+  </div>    
+</div>    

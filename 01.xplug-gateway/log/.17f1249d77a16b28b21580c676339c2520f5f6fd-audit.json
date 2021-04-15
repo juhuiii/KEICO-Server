@@ -1,0 +1,14 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 10
+    },
+    "auditLog": "c:\\Work\\workspace.nodejs\\01.xplug-gateway\\log\\.17f1249d77a16b28b21580c676339c2520f5f6fd-audit.json",
+    "files": [
+        {
+            "date": 1592549397470,
+            "name": "c:\\Work\\workspace.nodejs\\01.xplug-gateway\\log\\xplug-gateway.log.2020-06-19",
+            "hash": "305682df1f52fc8ee0c9174f8bba2fc8"
+        }
+    ]
+}

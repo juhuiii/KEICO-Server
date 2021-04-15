@@ -1,0 +1,615 @@
+2020-06-19 15:49:55.561 DEBUG  : Check Log Level : debug
+2020-06-19 15:49:55.561 VERBOSE: Check Log Level : verbose
+2020-06-19 15:49:55.562 INFO   : Check Log Level : info
+2020-06-19 15:49:55.562 WARN   : Check Log Level : warn
+2020-06-19 15:49:55.562 ERROR  : Check Log Level : error
+2020-06-19 15:49:55.562 INFO   : >>>>>>>>>>>> Start xPlug Application <<<<<<<<<<<<
+2020-06-19 15:49:55.986 INFO   : [Database] Creating database: c:\Work\workspace.nodejs\01.xplug-gateway\data\sqlite3.db
+2020-06-19 15:49:55.988 INFO   : Populating database with default values...
+2020-06-19 15:49:56.269 INFO   : [AdapterMqtt] try connnect to adapter MQTT
+2020-06-19 15:49:56.296 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:49:57.291 INFO   : [WorkerThread] Worker Thread Startup OK .
+2020-06-19 15:49:57.329 INFO   : [CloudMqtt] Startup...
+2020-06-19 15:49:57.344 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:49:57.344 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:49:57.469 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:49:57.473 INFO   : [WebController] web server started port 80
+2020-06-19 15:49:57.478 INFO   : [AdapterMqtt] adapter MQTT connected OK
+2020-06-19 15:49:57.479 INFO   : [AdapterMqtt] adapter MQTT subscribe OK 'gw/#'
+2020-06-19 15:49:57.633 INFO   : Saved default TB_SITE 현장명
+2020-06-19 15:49:57.636 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:49:57.636 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:49:58.294 INFO   : [WorkerThread] clearOldHoliyday: 0
+2020-06-19 15:49:58.294 INFO   : [WorkerThread] Create HOUR Report :  0
+2020-06-19 15:49:58.295 INFO   : [WorkerThread] Create Day Report :  0
+2020-06-19 15:49:58.296 INFO   : [WorkerThread] clearOldZbCommand: 0
+2020-06-19 15:49:58.297 INFO   : [WorkerThread] clearOldSyslog: 0
+2020-06-19 15:49:58.298 INFO   : [WorkerThread] clearOldSwEvent: 0
+2020-06-19 15:49:58.298 INFO   : [WorkerThread] clearOldControl: 0
+2020-06-19 15:49:58.299 INFO   : [WorkerThread] clearOldDayReport: 0
+2020-06-19 15:49:58.300 INFO   : [WorkerThread] clearOldHourReport: 0
+2020-06-19 15:49:59.587 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:00.040 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:00.639 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:03.651 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:06.031 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:06.667 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:07.469 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:50:07.638 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:50:07.638 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:50:08.790 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:09.668 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:12.670 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:15.670 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:16.045 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:17.470 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:50:17.640 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:50:17.641 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:50:18.673 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:18.791 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:21.674 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:24.682 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:26.038 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:27.344 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:50:27.345 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:50:27.471 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:50:27.641 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:50:27.642 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:50:27.683 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:28.794 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:30.698 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:33.707 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:36.039 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:36.709 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:37.473 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:50:37.642 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:50:37.644 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:50:39.065 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:39.711 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:42.713 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:45.714 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:46.041 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:47.473 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:50:47.645 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:50:47.646 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:50:48.716 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:49.065 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:51.717 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:54.730 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:50:56.042 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:50:57.345 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:50:57.345 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:50:57.473 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:50:57.647 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:50:57.649 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:50:57.731 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:00.741 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:03.745 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:06.043 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:51:06.748 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:07.474 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:51:07.648 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:51:07.654 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:51:09.749 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:12.752 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:15.753 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:16.033 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:51:17.473 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:51:17.650 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:51:17.656 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:51:18.755 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:21.756 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:24.758 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:26.046 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:51:27.347 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:51:27.347 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:51:27.474 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:51:27.652 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:51:27.658 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:51:27.759 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:30.761 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:33.762 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:36.043 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:51:36.764 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:37.475 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:51:37.654 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:51:37.659 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:51:39.767 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:42.780 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:45.794 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:46.033 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:51:47.475 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:51:47.655 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:51:47.660 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:51:48.796 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:51.797 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:54.814 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:51:56.032 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:51:57.349 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:51:57.350 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:51:57.476 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:51:57.657 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:51:57.663 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:51:57.815 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:00.817 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:03.823 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:06.039 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:52:06.825 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:07.478 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:52:07.658 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:52:07.665 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:52:09.839 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:12.841 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:15.843 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:16.045 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:52:17.479 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:52:17.659 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:52:17.668 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:52:18.846 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:21.846 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:24.849 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:26.049 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:52:27.350 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:52:27.351 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:52:27.480 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:52:27.660 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:52:27.671 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:52:27.849 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:30.852 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:33.852 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:36.037 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:52:36.854 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:37.480 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:52:37.661 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:52:37.674 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:52:39.855 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:42.857 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:45.857 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:46.038 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:52:47.481 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:52:47.663 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:52:47.677 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:52:48.859 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:51.860 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:54.874 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:52:56.038 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:52:57.352 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:52:57.353 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:52:57.482 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:52:57.664 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:52:57.680 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:52:57.887 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:00.902 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:03.903 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:06.039 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:53:06.905 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:07.483 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:53:07.665 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:53:07.682 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:53:09.919 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:12.935 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:15.936 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:16.048 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:53:17.484 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:53:17.666 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:53:17.684 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:53:18.939 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:21.947 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:24.950 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:26.048 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:53:27.354 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:53:27.355 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:53:27.485 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:53:27.668 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:53:27.685 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:53:27.963 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:30.975 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:33.987 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:36.036 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:53:36.989 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:37.486 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:53:37.669 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:53:37.700 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:53:39.989 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:42.991 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:45.992 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:46.043 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:53:47.488 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:53:47.670 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:53:47.702 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:53:48.995 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:51.996 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:54.998 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:53:56.042 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:53:57.355 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:53:57.355 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:53:57.489 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:53:57.671 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:53:57.704 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:53:57.998 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:01.000 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:04.001 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:06.035 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:54:07.002 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:07.490 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:54:07.673 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:54:07.731 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:54:10.003 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:13.006 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:16.007 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:16.033 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:54:17.491 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:54:17.674 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:54:17.734 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:54:19.009 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:22.011 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:25.024 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:26.046 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:54:27.356 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:54:27.356 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:54:27.492 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:54:27.675 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:54:27.736 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:54:28.029 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:31.032 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:34.034 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:36.036 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:54:37.036 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:37.492 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:54:37.676 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:54:37.738 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:54:40.046 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:43.047 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:46.034 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:54:46.052 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:47.493 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:54:47.677 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:54:47.740 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:54:49.055 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:52.056 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:55.074 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:54:56.039 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:54:57.357 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:54:57.357 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:54:57.494 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:54:57.679 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:54:57.743 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:54:58.077 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:01.080 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:04.082 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:06.050 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:55:07.084 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:07.496 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:55:07.681 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:55:07.746 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:55:10.095 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:13.110 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:16.037 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:55:16.110 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:17.496 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:55:17.683 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:55:17.749 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:55:19.114 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:22.115 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:25.121 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:26.044 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:55:27.359 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:55:27.360 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:55:27.498 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:55:27.684 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:55:27.762 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:55:28.123 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:31.138 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:34.139 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:36.046 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:55:37.141 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:37.511 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:55:37.685 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:55:37.778 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:55:40.155 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:43.157 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:46.041 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:55:46.159 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:47.512 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:55:47.686 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:55:47.779 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:55:49.161 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:52.163 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:55.164 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:55:56.043 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:55:57.360 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:55:57.361 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:55:57.513 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:55:57.688 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:55:57.794 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:55:58.168 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:01.170 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:04.172 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:06.050 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:56:07.174 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:07.514 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:56:07.690 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:56:07.809 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:56:10.184 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:13.191 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:16.051 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:56:16.193 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:17.514 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:56:17.691 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:56:17.813 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:56:19.195 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:22.196 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:25.199 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:26.043 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:56:27.361 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:56:27.362 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:56:27.515 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:56:27.691 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:56:27.815 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:56:28.200 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:31.203 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:34.203 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:36.047 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:56:37.205 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:37.516 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:56:37.694 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:56:37.817 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:56:40.206 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:43.208 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:46.051 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:56:46.209 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:47.516 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:56:47.696 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:56:47.819 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:56:49.212 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:52.213 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:55.215 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:56:56.044 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:56:57.363 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:56:57.364 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:56:57.517 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:56:57.698 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:56:57.821 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:56:58.216 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:01.219 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:04.221 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:06.049 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:57:07.224 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:07.517 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:57:07.700 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:57:07.823 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:57:10.229 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:13.246 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:16.039 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:57:16.247 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:17.518 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:57:17.702 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:57:17.826 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:57:19.248 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:22.249 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:25.262 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:26.042 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:57:27.364 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:57:27.364 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:57:27.518 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:57:27.703 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:57:27.829 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:57:28.270 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:31.279 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:34.279 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:36.049 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:57:37.283 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:37.519 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:57:37.704 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:57:37.832 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:57:40.297 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:43.299 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:46.052 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:57:46.299 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:47.520 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:57:47.705 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:57:47.833 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:57:49.302 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:52.302 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:55.317 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:57:56.038 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:57:57.365 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:57:57.366 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:57:57.522 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:57:57.707 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:57:57.835 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:57:58.326 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:01.339 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:04.342 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:06.051 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:58:07.344 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:07.521 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:58:07.708 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:58:07.838 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:58:10.348 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:13.355 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:16.041 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:58:16.356 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:17.521 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:58:17.710 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:58:17.840 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:58:19.358 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:22.362 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:25.366 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:26.040 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:58:27.366 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:58:27.366 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:58:27.522 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:58:27.711 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:58:27.843 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:58:28.367 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:31.369 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:34.376 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:36.046 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:58:37.378 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:37.522 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:58:37.712 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:58:37.844 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:58:40.382 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:43.386 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:46.050 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:58:46.387 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:47.524 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:58:47.713 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:58:47.846 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:58:49.389 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:52.390 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:55.393 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:58:56.048 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:58:57.368 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:58:57.369 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:58:57.525 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:58:57.715 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:58:57.848 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:58:58.395 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:01.410 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:04.412 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:06.040 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:59:07.415 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:07.526 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:59:07.716 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:59:07.850 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:59:10.416 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:13.418 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:16.048 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:59:16.418 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:17.526 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:59:17.717 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:59:17.853 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:59:19.434 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:22.449 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:25.453 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:26.050 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:59:27.370 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:59:27.370 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:59:27.528 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:59:27.719 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:59:27.856 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:59:28.454 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:31.456 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:34.456 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:36.044 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:59:37.459 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:37.529 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:59:37.719 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:59:37.859 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:59:40.459 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:43.460 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:46.044 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:59:46.465 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:47.529 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:59:47.722 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:59:47.862 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:59:49.467 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:52.467 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:55.470 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 15:59:56.049 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 15:59:57.371 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 15:59:57.371 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 15:59:57.530 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 15:59:57.723 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 15:59:57.863 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 15:59:58.480 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:00.608 INFO   : [WorkerThread] Create HOUR Report :  0
+2020-06-19 16:00:01.482 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:04.496 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:06.050 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:00:07.498 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:07.531 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:00:07.725 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:00:07.865 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:00:10.498 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:13.500 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:16.043 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:00:16.501 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:17.531 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:00:17.727 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:00:17.868 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:00:19.512 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:22.513 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:25.515 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:26.050 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:00:27.372 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 16:00:27.373 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 16:00:27.532 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:00:27.729 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:00:27.870 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:00:28.517 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:31.519 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:34.521 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:36.048 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:00:37.524 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:37.532 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:00:37.729 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:00:37.872 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:00:40.524 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:43.532 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:46.041 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:00:46.534 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:47.534 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:00:47.731 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:00:47.874 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:00:49.549 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:52.553 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:55.563 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:00:56.046 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:00:57.373 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 16:00:57.373 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 16:00:57.534 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:00:57.732 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:00:57.877 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:00:58.565 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:01.574 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:04.584 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:06.041 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:01:07.535 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:01:07.586 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:07.733 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:01:07.879 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:01:10.594 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:13.605 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:16.052 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:01:16.606 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:17.536 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:01:17.735 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:01:17.881 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:01:19.621 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:22.622 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:25.637 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:26.040 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:01:27.374 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 16:01:27.375 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 16:01:27.537 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:01:27.736 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:01:27.883 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:01:28.637 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:31.639 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:34.654 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:36.052 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:01:37.538 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:01:37.657 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:37.737 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:01:37.884 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:01:40.669 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:43.678 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:46.042 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:01:46.683 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:47.538 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:01:47.740 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:01:47.886 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:01:49.700 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:52.715 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:55.730 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:01:56.049 ERROR  : 시간동기실패 게이트웨이가 아닙니다.
+2020-06-19 16:01:57.375 INFO   : [DbSyncThread] report Data Sync...
+2020-06-19 16:01:57.376 INFO   : [DbSyncThread:reportSync()] cloud is not use!
+2020-06-19 16:01:57.539 INFO   : [IPTimeThread  ] IPTime Plug Not Found ! 
+2020-06-19 16:01:57.741 DEBUG  : [CloudMqtt] cloud MQTT already disconnect
+2020-06-19 16:01:57.889 DEBUG  : [ZbGroupThread ] New Group Assign ID Count :  0
+2020-06-19 16:01:58.731 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!
+2020-06-19 16:02:01.734 INFO   : [ZbGroupThread ] zigbee group ID sync with smartplug device !!

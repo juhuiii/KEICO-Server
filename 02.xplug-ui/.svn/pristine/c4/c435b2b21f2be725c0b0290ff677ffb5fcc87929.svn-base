@@ -1,0 +1,55 @@
+<div class="xg-card h-100">
+  <div class="xg-card-header">
+    Plugs
+    <fa class="float-right pr-2" name="ellipsis-v"></fa>
+  </div>
+  <div class="xg-card-body" fxFlex fxLayout="column" class="pl-3 pr-3">
+    <div fxFlex="10" class="text-right h7">(max: {{barMax| number :'0.3-3'}} kW)</div>
+
+
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between " class="overflow-auto">
+      <div class="bar-container text-center" fxLayout="column"
+        *ngFor="let item of PLUGS; let i=index; trackBy: trackPlug">
+        <app-barchart fxFlex="90" [background]="item.background" [label]="i"
+            [max]="barMax" [value]="item.value"></app-barchart>
+        <div fxFlex style="margin-top:-6px; font-size:8px">
+          <span *ngIf="(i+1)===1 || (i+1)%5===0 || (i+1)===PLUGS.length">{{i+1}}</span>
+          <span *ngIf="(i+1)!==1 && (i+1)%5!==0 && (i+1)!==PLUGS.length">&nbsp;</span>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div fxFlex="10"></div>
+    <div fxFlex="30" fxLayout="row" fxLayoutAlign="space-between">
+      <div>
+        <div class="text-white text-left ">
+          {{KW_AVG | number: '0.3-3'}} <small><small>kW</small></small>
+        </div>
+        <div class="">
+          <!-- <fa name="circle" class="text-orange"></fa>  -->
+          <small>Avarage Energy</small>
+        </div>
+      </div>
+      <div>
+        <div class="text-white text-left">
+          {{KW_MAX | number: '0.3-3'}} <small><small>kW</small></small>
+        </div>
+        <div class="">
+          <fa style="font-size: 6px" name="circle" class="text-green"></fa>&nbsp;
+          <small>Max Energy</small>
+        </div>
+      </div>
+      <div>
+        <div class="text-white text-left">
+          {{KW_TOT | number: '0.3-3'}} <small><small>kW</small></small>
+        </div>
+        <div class=""><small><small>
+              <!-- <fa name="circle" class="text-purple"></fa>  -->
+              Total Energy
+            </small></small></div>
+      </div>
+    </div>
+  </div>
+</div>

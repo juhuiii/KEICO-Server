@@ -1,0 +1,54 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100 board-test">
+
+  <div fxFlex class="xg-card">
+    <div class="xg-card-header text-white">
+      시간 보고서
+      <fa class="float-right pr-2" name="ellipsis-v"></fa>
+    </div>
+    <div fxFlex class="xg-card-body" fxLayout="column">
+
+      <div class="xg-form-group form-group row mb-0 align-items-center">
+
+        <label for="txdate" class="col-2 col-form-label">조회일자 :</label>
+        <div class="col-4">
+          <input type="date" class="form-control form-control-sm" id="txdate" name="txdate" [(ngModel)]="txdate">
+        </div>
+        <div class="col-6 pl-0">
+          <div class="btn-group mr-4" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-sm btn-primary text-white" (click)="updateData()">조회</button>
+          </div>
+          <div class="btn-group mr-2" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-sm btn-info text-white" (click)="gotoPrev()">전일</button>
+            <button type="button" class="btn btn-sm btn-info text-white" (click)="gotoToday()">금일</button>
+            <button type="button" class="btn btn-sm btn-info text-white" (click)="gotoNext()">익일</button>
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex class="overflow-auto">
+        <table class="table xg-table table-striped">
+          <thead>
+            <tr>
+              <th class="text-center text-white">일자</th>
+              <th class="text-center text-white">시간</th>
+              <th class="text-right  text-white">적산시작(kWh)</th>
+              <th class="text-right  text-white">적산종료(kWh)</th>
+              <th class="text-right  text-white">소비량(kWh)</th>
+              <th class="text-right  text-white">절감량(kWh)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of reports; trackBy: trackIndex">
+              <td class="text-center">{{item.TXDATE | date: 'yyyy-MM-dd'}}</td>
+              <td class="text-center">{{item.TX_TM}}시</td>
+              <td class="text-right ">{{item.S_AKWH * 0.001 | number: '0.3-3'}}</td>
+              <td class="text-right ">{{item.E_AKWH * 0.001 | number: '0.3-3'}}</td>
+              <td class="text-right ">{{item.SKWH   * 0.001 | number: '0.3-3'}}</td>
+              <td class="text-right ">{{0}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

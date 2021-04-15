@@ -1,0 +1,46 @@
+<!-- unused -->
+<div *ngIf="group.GRP_ST==9" class="button off" fxFlex fxLayout="row" (click)="onClick()">
+  <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+    <img src="assets/purple/cancel.png" width="36px">
+  </div>
+</div>
+
+<!-- used -->
+<div *ngIf="group.GRP_ST!==9" 
+      [class.err]="group.GRP_ST!==1" 
+      [class.on] ="group.GRP_ST===1 && group.SW_ST===1"
+      [class.off]="group.GRP_ST===1 && group.SW_ST!==1" 
+      class="button" fxFlex 
+      fxLayout="row" fxLayoutAlign="start center"
+      (click)="onClick()">
+  <div fxFlex="25" class="text-center">
+    <img [src]="group.ICON" width="48px">
+  </div>
+
+  <div fxFlex="50" class="text-white">
+    {{group.GRP_NM}}<br>
+    <small *ngIf="group.GRP_ST===1 && group.SW_ST===1" class="text-black-50">
+      {{group.KW*0.001 | number: '0.1'}} W
+    </small>
+
+    <ng-container *ngIf="group.CNT_TOT <= 0">
+      <small class="text-warning">장비없음</small>
+    </ng-container>
+    <ng-container *ngIf="group.CNT_TOT > 0">
+      <small *ngIf="group.GRP_ST===1 && group.SW_ST!==1" class="text-orange">OFF</small>
+      <small *ngIf="group.GRP_ST!==1" class="text-warning">통신이상</small>
+    </ng-container>
+
+  </div>
+
+  <div fxFlex="25" class="text-center">
+    <img *ngIf="group.GRP_ST===1 && group.SW_ST === 1" src="assets/purple/theme1.on.png" width="36px">
+    <img *ngIf="group.GRP_ST===1 && group.SW_ST !== 1" src="assets/purple/theme1.off.png" width="36px">
+    <img *ngIf="group.GRP_ST!==1" src="assets/purple/theme1.disable.png" width="36px">
+    <br>
+    <small [class.text-black-50]="group.SW_ST===1" [class.text-white-50]="group.SW_ST!==1">
+      {{group.CNT_ON}}:{{group.CNT_OFF}}:{{group.CNT_ERR}}
+    </small>
+  </div>
+
+</div>

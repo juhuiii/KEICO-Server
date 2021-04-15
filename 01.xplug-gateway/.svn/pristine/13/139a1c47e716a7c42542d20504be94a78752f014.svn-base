@@ -1,0 +1,448 @@
+const EventEmitter = require('events');
+const util = require('util');
+const dbSql = require('./db-sql');
+const xpUtils = require("./utils");
+
+const DEBUG = true; 
+
+let _this;
+
+class ZbGroupThread extends EventEmitter
+{
+    constructor() 
+    {
+        super();
+        _this  = this;
+                
+        dbSql.open();    
+                       
+        /////////////////////// Zigbee Group ID 신규할당 /////////////////////
+        this.setZbGroupidAssign();
+        /////////////////////// Zigbee Group ID 신규할당 /////////////////////
+
+
+        /////////////////////// Zigbee Group ID  플러그와 동기화 /////////////////////        
+        this.syncStat = 0;            //0:End Sync, 1:Syning 
+
+        this.syncingList = null;      //그룹 동기화중인 디바이스+그룹 목록   
+        this.syncingListxCurIdx = 0;   //동기화 중인 Index
+        
+        this.syncMain();        
+        /////////////////////// Zigbee Group ID  플러그와 동기화 /////////////////////
+
+
+        /////////////////////// Read Schedule by ZbReadGoup  /////////////////////
+        this.readStat = 0;             // 0:읽기완료, 1: 읽기중
+        this.scheduleList = null;      // 스케쥴목록 
+        this.scheduleListCurIdx = 0;   // 현재 읽기 실행중인 Index
+
+        //this.readSchduleMain(); 
+        /////////////////////// Read Schedule by ZbReadGoup  /////////////////////
+        
+
+        // //장비단위로 KW/KWH 데이터 읽기 
+        // /////////////////////// Read Schedule by Deivce  /////////////////////
+        // this.readDevStat = 0;             // 0:읽기완료, 1: 읽기중
+        // this.scheduleListDev = null;      // 스케쥴목록 
+        // this.scheduleListDevCurIdx = 0;   // 현재 읽기 실행중인 Index
+        
+        // this.readDevSchduleMain(); 
+        // /////////////////////// Read Schedule by Deivce  /////////////////////
+
+
+        
+    }
+
+
+
+    /////////////////////// Zigbee Group ID 부여할당 /////////////////////
+    /////////////////////// Zigbee Group ID 부여할당 /////////////////////
+    /**
+     * Group ID 할당 
+     * @param {*} GROUP_TYPE 
+     */
+    async getNextGroupidAssign( GROUP_TYPE ){
+        
+        let GROUP_NODE_CNT  = 0 ;
+        let COLUMN = "";
+        if( GROUP_TYPE == 'ON')
+        {
+            GROUP_NODE_CNT = 150;    //그룹당 노드갯수 
+            COLUMN = 'ZB_ONGRP_AID';            
+        }else if( GROUP_TYPE == 'OFF')
+        {
+            GROUP_NODE_CNT = 150;    //그룹당 노드갯수 
+            COLUMN = 'ZB_OFFGRP_AID';            
+        }else if( GROUP_TYPE == 'READ')
+        {
+            GROUP_NODE_CNT = 15;    //그룹당 노드갯수 
+            COLUMN = 'ZB_RGRP_AID';            
+        }else
+        {
+            return -1;
+        }
+
+        let row = await dbSql.selectDeviceForNextGroupAssign(COLUMN);            
+        if( row == null || row === undefined || row.length <= 0) 
+        {
+            if( GROUP_TYPE == 'READ')
+            {
+                return 1001;   //최초 할당 
+            }else if( GROUP_TYPE == 'ON')
+            {
+                return 2001;   //최초 할당 
+            }else if( GROUP_TYPE == 'OFF')
+            {
+                return 3001;   //최초 할당 
+            }            
+        }
+
+        if( row[0].CNT < GROUP_NODE_CNT) 
+            return row[0][COLUMN]     //그룹아이디 재사용 (여유 있음 )
+            
+        return row[0][COLUMN] + 1;
+    }    
+    /**
+     * Zigbee group id Assign (논리적 지그비 그룹핑(그룹아이디 부여함) )
+     */
+    async setZbGroupidAssign(){        
+        
+        try{    //On GROUP 
+            let deviceRows = await dbSql.selectDevicesForOnGroupAssgin();   //On Group Assing ID 부여 대상 
+            for ( let dev of deviceRows )
+            {                
+                let assginGroupId = await _this.getNextGroupidAssign( "ON" );
+                if( assginGroupId <= 0 )
+                {
+                    DEBUG && console.error("get next group id fail", dev.ZB_ADDR, assginGroupId ); 
+                    continue;
+                }                                    
+                await dbSql.updateOnGroupAssign(dev.ZB_ADDR, assginGroupId);            
+            }
+            console.info("New Group Assign ID Count : ", deviceRows.length );
+        }catch  ( reason )
+        {
+            console.error(reason.message);            
+        }
+
+        
+        try{    //Off GROUP 
+            let deviceRows = await dbSql.selectDevicesForOffGroupAssgin();   //Off Group Assing ID 부여 대상 
+            for ( let dev of deviceRows )
+            {                
+                let assginGroupId = await _this.getNextGroupidAssign( "OFF" );
+                if( assginGroupId <= 0 )
+                {
+                    DEBUG && console.error("Get Next Group ID fail ", dev.ZB_ADDR, assginGroupId ); 
+                    continue;
+                }                                    
+                await dbSql.updateOffGroupAssign(dev.ZB_ADDR, assginGroupId);            
+            }
+        }catch  ( reason )
+        {
+            console.error(reason.message);            
+        }
+
+         
+         try{   //Read GROUP 
+            let deviceRows = await dbSql.selectDevicesForReadGroupAssgin();   //Off Group Assing ID 부여 대상 
+            for ( let dev of deviceRows )
+            {                
+                let assginGroupId = await _this.getNextGroupidAssign( "READ" );
+                if( assginGroupId <= 0 )
+                {
+                    DEBUG && console.error("Get Next Group ID fail ", dev.ZB_ADDR, assginGroupId ); 
+                    continue;
+                }                                    
+                await dbSql.updateReadGroupAssign(dev.ZB_ADDR, assginGroupId);            
+            }
+        }catch  ( reason )
+        {
+            console.error(reason.message);            
+        }
+
+        setTimeout( ()=>{ this.setZbGroupidAssign() } , 10000); //10초
+    }
+
+
+
+
+    
+
+
+     /////////////////////// Zigbee Group ID  플러그와 동기화 ///////////////////// 
+     /////////////////////// Zigbee Group ID  플러그와 동기화 ///////////////////// 
+    async syncMain() {
+
+        console.info("Zigbee Group ID sync with SmartPlug !!");
+        
+        if( this.syncStat == 0 ) //동기화중지 또는 완료상태 
+        {
+            await this.readDeviceForSync();
+        }
+        else if( this.syncStat == 1 ) //동기화중 
+        {
+            await this.zbGroupSyncAndView();  //그룹동기화 및 그룹확인 
+        }        
+        setTimeout( ()=>{ this.syncMain() } , 3000);   //3초
+    }
+
+    /**
+     * 동기화 대상 디비이스 목록 조회 
+     * 
+     */
+    async readDeviceForSync() {                
+
+        this.syncingList = null;
+        this.syncingList = new Array();      //그룹 동기화중인 디바이스+그룹 목록         
+        
+        
+        let arrAidColums = ['ZB_RGRP_AID', 'ZB_ONGRP_AID', 'ZB_OFFGRP_AID' ]
+        let arrRidColums = ['ZB_RGRP_RID', 'ZB_ONGRP_RID', 'ZB_OFFGRP_RID' ]
+
+        for ( let i = 0 ; i < arrAidColums.length; i++ )
+        {
+            try{
+                let deviceRows = await dbSql.selectDevicesForSyncZBGroup( arrAidColums[i], arrRidColums[i] );   //Group 아이디 동기화 대상 
+                for ( let dev of deviceRows )
+                {                
+                    let zb_addr = dev['ZB_ADDR'];
+                    let cmd_mode  ; //명령종류[0:등록, 1:삭제, 2:조회(확인)]                    
+                    let grp_id  ;
+
+                    if( dev[ arrAidColums[i] ] == 0 || 
+                        ( dev[ arrRidColums[i] ] > 0  && dev[ arrAidColums[i] ] != dev[ arrRidColums[i] ] ) )      //0으로 바꿨꺼나,  실제등록그룹 있으면서 요청과 현재아이디가  다른경우 --> 그룹삭제 
+                    {
+                        cmd_mode = 1;
+                        grp_id = dev[ arrRidColums[i] ];
+
+                        //동기화 삭제명령 추가 
+                        this.syncingList.push(
+                            {
+                                cmd_mode : cmd_mode, 
+                                zb_addr : zb_addr, 
+                                grp_id : grp_id
+                            }
+                        );
+                    }
+                    
+                    if( dev[ arrAidColums[i] ] > 0  )
+                    {
+                        cmd_mode = 0;
+                        grp_id = dev[ arrAidColums[i] ];
+
+                        //동기화 등록명령 추가 
+                        this.syncingList.push(
+                            {
+                                cmd_mode : cmd_mode, 
+                                zb_addr : zb_addr, 
+                                grp_id : grp_id
+                            }
+                        ) ;
+                    }
+
+                                
+                }
+            }catch  ( reason )
+            {
+                console.error(reason.message);            
+            }
+        }
+
+        this.syncingListxCurIdx = 0; 
+        this.syncStat = 1 ; //동기화중으로 상태 변경 
+    }
+
+    /**
+     * Zigbee Group ID 동기화 및 조회명령 실행 
+     */
+    async zbGroupSyncAndView() {
+
+        if( this.syncingListxCurIdx >= this.syncingList.length )
+        {
+            this.syncStat = 0;  //동기완료 동기대상 다시 로드 
+            return;
+        }        
+
+        let zbGrpData = this.syncingList[ this.syncingListxCurIdx ];
+
+        try{
+            
+            let set_param = `{"cmd_mode":${ zbGrpData["cmd_mode"] }, "zb_addr":"${ zbGrpData["zb_addr"] }", "grp_id":${ zbGrpData["grp_id"] }}`;   //그룹등록메세지 
+            let viw_param = `{"cmd_mode":2, "zb_addr":"${ zbGrpData["zb_addr"] }", "grp_id":${ zbGrpData["grp_id"] }}`;                            //그롭조회(확인)메세지 
+                
+            await dbSql.insertCommand("GROUP", set_param);
+            await dbSql.insertCommand("GROUP", viw_param);
+            
+        }catch  ( reason )
+        {
+            console.error(reason.message);            
+        }
+
+        this.syncingListxCurIdx++;
+    }
+
+
+
+    
+    /////////////////////// read data by zb Group 스케쥴 /////////////////////
+    /////////////////////// read data by zb Group 스케쥴 /////////////////////
+    async readSchduleMain() {
+
+        if( this.readStat == 0 )    //읽기완료되었다면 
+        {
+            await this.makeReadSchedule();            
+        }
+        else if( this.readStat == 1 ) //읽기중 
+        {
+            await this.readNextCommand();
+        }        
+        setTimeout( ()=>{ this.readSchduleMain() } , 10000); //1분에 한번씩
+    }
+
+    /**
+     * 읽기 스케쥴 생성 
+     */
+    async makeReadSchedule(){
+
+        this.scheduleList = null;
+        this.scheduleList = new Array();      //읽기 스케쥴 목록 
+               
+        try{
+            let readGroupRows = await dbSql.selectZbReadGroup();   //Read Group 목록 
+            for ( let group of readGroupRows )
+            {                
+                let ZB_RGRP_RID = group['ZB_RGRP_RID'];
+                
+          //      this.scheduleList.push( { grp_id : ZB_RGRP_RID, data_type : 0 } );  //ON/OFF --> 일단 제외 
+          
+                this.scheduleList.push( { grp_id : ZB_RGRP_RID, data_type : 1 } );  //KW
+                this.scheduleList.push( { grp_id : ZB_RGRP_RID, data_type : 2 } );  //KWH                    
+            }
+        }
+        catch  ( reason )
+        {
+            console.error(reason.message);            
+        }        
+
+        this.scheduleListCurIdx = 0; 
+        this.readStat = 1 ; //읽기중으로 상태 변경 
+    }
+
+    /**
+     * 읽기 명령전송
+     */
+    async readNextCommand() {
+
+        if( this.scheduleListCurIdx >= this.scheduleList.length )
+        {
+            this.readStat = 0;  //읽기완료 스케쥴 다시 읽기
+            return;
+        }        
+
+        let schdData = this.scheduleList[ this.scheduleListCurIdx ];
+
+        try{
+            
+            let read_param = `{"cmd_mode":1, "id" : ${ schdData["grp_id"] }, "data_type":${ schdData["data_type"]}}`;   //그룹등록메세지 
+                            
+            await dbSql.insertCommand("READ", read_param);            
+            
+        }catch  ( reason )
+        {
+            console.error(reason.message);            
+        }
+
+        this.scheduleListCurIdx++;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+    // /////////////////////// read data by zb device 스케쥴 /////////////////////
+    // /////////////////////// read data by zb device 스케쥴 /////////////////////
+    // async readSchduleMain() {
+
+    //     if( this.readStat == 0 )    //읽기완료되었다면 
+    //     {
+    //         await this.makeReadSchedule();            
+    //     }
+    //     else if( this.readStat == 1 ) //읽기중 
+    //     {
+    //         await this.readNextCommand();
+    //     }        
+    //     setTimeout( ()=>{ this.readSchduleMain() } , 10000); //1분에 한번씩
+    // }
+
+    // /**
+    //  * 읽기 스케쥴 생성 
+    //  */
+    // async makeReadSchedule(){
+
+    //     this.scheduleList = null;
+    //     this.scheduleList = new Array();      //읽기 스케쥴 목록 
+               
+    //     try{
+    //         let readGroupRows = await dbSql.selectZbReadGroup();   //Read Group 목록 
+    //         for ( let group of readGroupRows )
+    //         {                
+    //             let ZB_RGRP_RID = group['ZB_RGRP_RID'];
+                
+    //       //      this.scheduleList.push( { grp_id : ZB_RGRP_RID, data_type : 0 } );  //ON/OFF --> 일단 제외 
+          
+    //             this.scheduleList.push( { grp_id : ZB_RGRP_RID, data_type : 1 } );  //KW
+    //             this.scheduleList.push( { grp_id : ZB_RGRP_RID, data_type : 2 } );  //KWH                    
+    //         }
+    //     }
+    //     catch  ( reason )
+    //     {
+    //         console.error(reason.message);            
+    //     }        
+
+    //     this.scheduleListCurIdx = 0; 
+    //     this.readStat = 1 ; //읽기중으로 상태 변경 
+    // }
+
+    // /**
+    //  * 읽기 명령전송
+    //  */
+    // async readNextCommand() {
+
+    //     if( this.scheduleListCurIdx >= this.scheduleList.length )
+    //     {
+    //         this.readStat = 0;  //읽기완료 스케쥴 다시 읽기
+    //         return;
+    //     }        
+
+    //     let schdData = this.scheduleList[ this.scheduleListCurIdx ];
+
+    //     try{
+            
+    //         let read_param = `{"cmd_mode":1, "id" : ${ schdData["grp_id"] }, "data_type":${ schdData["data_type"]}}`;   //그룹등록메세지 
+                            
+    //         await dbSql.insertCommand("READ", read_param);            
+            
+    //     }catch  ( reason )
+    //     {
+    //         console.error(reason.message);            
+    //     }
+
+    //     this.scheduleListCurIdx++;
+    // }
+
+
+
+}
+
+module.exports = new ZbGroupThread();

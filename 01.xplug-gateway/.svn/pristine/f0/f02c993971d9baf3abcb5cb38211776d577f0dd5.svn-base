@@ -1,0 +1,1294 @@
+'use strict';
+
+const config = require('config');
+const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
+const xpUtils = require("../utils/xg_datetime");
+
+
+
+const Database = {
+  /**
+   * SQLite3 Database object.
+   */
+  db: null,
+
+  /**
+   * Open the database.
+   */
+  open: function() {
+    
+    if (this.db)  return;
+    
+    // Don't pull this from user-profile.js, because that would cause a
+    // circular dependency.
+    let filename = config.get('database.file');
+    let exists = false;
+
+    exists = fs.existsSync(filename);
+        
+    console.info( "[Database]", exists ? 'Opening' : 'Creating', 'database:', filename );
+    // Open database or create it if it doesn't exist
+    this.db = new sqlite3.Database(filename);
+
+    // Set a timeout in case the database is locked. 10 seconds is a bit long,
+    // but it's better than crashing.
+    this.db.configure('busyTimeout', 10000);
+
+    this.db.serialize(() => {
+      this.createTables();
+      if (!exists) {
+        this.populate();
+      }
+    });
+  },
+
+  /**
+   * Create Tables 
+   */
+  createTables: function() 
+  {    
+    this.db.run('CREATE TABLE IF NOT EXISTS TB_SITE ( ' +
+        ' STE_SQ               INTEGER PRIMARY KEY AUTOINCREMENT,' +
+        ' STE_NM               TEXT NULL,' +
+        ' CLOUD_ID             TEXT NULL,' +
+        ' GATEWAY_ID           TEXT NULL,' +
+        ' INS_DT               INTEGER NULL,' +
+        ' MNGR_PW              TEXT NULL,' +
+        ' OPER_PW              TEXT NULL,' +
+        ' REG_DTIME            TEXT NULL,' +
+        ' EDT_DTIME            TEXT NULL,' +
+        ' WORK_STM             INTEGER NULL,' +
+        ' WORK_ETM             INTEGER NULL) ' 
+    );
+
+    this.db.run('CREATE TABLE IF NOT EXISTS TZB_COMMAND ( ' +
+        ' CMD_SQ               INTEGER PRIMARY KEY AUTOINCREMENT, ' +
+        ' CMD_TYPE             INTEGER DEFAULT 0, ' + 
+        ' CMD_DT               INTEGER NULL, ' +
+        ' CMD_TM               INTEGER NULL, ' +
+        ' CMD_CD               TEXT NULL, ' +
+        ' CMD_PARAM            TEXT NULL, ' +
+        ' SND_DT               INTEGER NULL, ' +
+        ' SND_TM               INTEGER NULL, ' +
+        ' SND_ST               INTEGER NULL, ' +
+        ' RCV_DT               INTEGER NULL, ' +
+        ' RCV_TM               INTEGER NULL,  ' +
+        ' RCV_ST               INTEGER NULL, ' +
+        ' RSV_DT               INTEGER NULL,  ' +
+        ' RSV_TM               INTEGER NULL, ' +
+        ' ZDO_SQ               INTEGER NULL, ' +
+        ' PRCS_ST              INTEGER NULL, ' +
+        ' RST_CD               INTEGER NULL, ' +
+        ' RST_MSG              TEXT NULL ) ' 
+    );
+    
+    this.db.run(`CREATE TABLE IF NOT EXISTS TB_DEV (
+        ZB_ADDR              TEXT PRIMARY KEY ,
+        DEV_NM               TEXT NULL,
+        DEV_GB               INTEGER NULL,
+        DEV_ST               INTEGER NULL,
+        SW_ST                INTEGER NULL,
+        KW                   REAL DEFAULT 0,
+        AKWH                 REAL NULL,
+        STBY_KW              REAL DEFAULT 0,
+        OFF_DELY             INTEGER DEFAULT 0,  
+        MANU_CTL_ALLOW       INTEGER DEFAULT 1,       
+        RCV_DT               INTEGER NULL,
+        RCV_TM               INTEGER NULL,
+        BIGO                 TEXT NULL,
+        GRP_SQ               INTEGER NULL,
+        CHG_DT               INTEGER NULL,
+        CHG_TM               INTEGER NULL,
+        CHG_KW               REAL NULL,        
+        ZB_RGRP_AID          INTEGER DEFAULT 0,
+        ZB_ONGRP_AID         INTEGER DEFAULT 0,
+        ZB_OFFGRP_AID        INTEGER DEFAULT 0, 
+        ZB_RGRP_RID          INTEGER DEFAULT 0,        
+        ZB_ONGRP_RID         INTEGER DEFAULT 0,
+        ZB_OFFGRP_RID        INTEGER DEFAULT 0,         
+        EDT_DTIME            TEXT NULL,
+        REG_DTIME            TEXT NULL )`);
+
+    this.db.run(`CREATE TABLE IF NOT EXISTS TB_GROUP (
+        GRP_SQ               INTEGER PRIMARY KEY AUTOINCREMENT,  
+        GRP_NM               TEXT NULL,
+        BIGO                 TEXT NULL,
+        REG_DTIME            TEXT NULL,
+        EDT_DTIME            TEXT NULL ) `);
+
+    this.db.run(`CREATE TABLE IF NOT EXISTS TB_HOLIDAY(
+        HOLI_DT              INTEGER PRIMARY KEY ,
+        HOLI_NM              TEXT NULL,
+        REG_DTIME            TEXT NULL,
+        EDT_DTIME            TEXT NULL ) `);
+
+
+    this.db.run(`CREATE TABLE IF NOT EXISTS  TB_SCHD (
+        SCHD_SQ              INTEGER PRIMARY KEY AUTOINCREMENT,
+        SCHD_NM              TEXT NULL,
+        GRP_SQ               INTEGER NOT NULL,
+        WEEK_BIT             TEXT NULL,
+        HOLI_YN              INTEGER NULL,
+        BIGO                 TEXT NULL,
+        REG_DTIME            TEXT NULL,
+        EDT_DTIME            TEXT NULL ) `);
+
+    this.db.run(`CREATE TABLE IF NOT EXISTS TB_SCHD_TM (
+        SCHD_TM_SQ           INTEGER PRIMARY KEY AUTOINCREMENT,
+        SCHD_SQ              INTEGER NOT NULL,
+        CTL_TIME             INTEGER NULL,
+        CTL_CMD              INTEGER NULL,
+        LAST_RUN_DT          INTEGER NULL,        
+        REG_DTIME            TEXT NULL,
+        EDT_DTIME            TEXT NULL ) `);
+
+    this.db.run(`CREATE TABLE IF NOT EXISTS TR_CTRL (
+        CTL_SQ               INTEGER PRIMARY KEY AUTOINCREMENT,
+        CTL_DT               INTEGER NULL,
+        CTL_TM               INTEGER NULL,
+        ZB_ADDR              TEXT NULL,
+        GRP_SQ               INTEGER NULL,
+        CTL_TYPE             INTEGER NULL,
+        CTL_OBJ              INTEGER NULL,
+        CTL_CMD              INTEGER NULL,
+        SCHD_TM_SQ           INTEGER NULL,
+        SCHD_SQ              INTEGER NULL , 
+        KW                    REAL        ) `);
+
+    this.db.run(`CREATE TABLE IF NOT EXISTS TR_DAY(
+        ZB_ADDR              TEXT NOT NULL,
+        TX_DT                INTEGER NOT NULL,
+        S_AKWH               REAL NULL,
+        E_AKWH               REAL NULL,
+        SAVE_KW              REAL NULL,
+        SAVE_SEC             INTEGER NULL,
+        REG_DTIME            TEXT NULL,
+        EDT_DTIME            TEXT NULL ) `);
+
+    this.db.run(`CREATE TABLE IF NOT EXISTS TR_HOUR (
+        ZB_ADDR              TEXT NOT NULL,
+        TX_DT                INTEGER NOT NULL,
+        TX_TM                INTEGER NOT NULL,
+        S_AKWH               REAL NULL,
+        E_AKWH               REAL NULL,
+        REG_DTIME            TEXT NULL,
+        EDT_DTIME            TEXT NULL) `);
+
+    this.db.run(`CREATE TABLE  IF NOT EXISTS TR_SW_EVNT (
+        ZB_ADDR              TEXT NOT NULL,
+        TX_DT                INTEGER NOT NULL,
+        TX_TM                INTEGER NOT NULL,
+        SW_ST                INTEGER NULL , 
+        SAVE_KW	             REAL NULL, 
+	    SAVE_SEC             INTEGER NULL) `);
+        
+    
+    this.db.run(`CREATE TABLE IF NOT EXISTS TR_SYSLOG (
+        LOG_SQ               INTEGER PRIMARY KEY AUTOINCREMENT,
+        LOG_DT               INTEGER NULL,
+        LOG_TM               INTEGER NULL,
+        LOG_CD               TEXT NULL,
+        LOG_MSG              TEXT NULL ) `);
+  },
+  
+  /**
+   * Insert Default Data Values
+   */
+  populate: function() {
+
+    console.info('Populating database with default values...');
+
+    const defaultSiteName = config.get('default.siteName');
+    const defaultManagerPassword = config.get('default.managerPassword');
+    const defaultOperatorPassword = config.get('default.operatorPassword');
+
+    // const managerPasswordHash = Passwords.hashSync( defaultManagerPassword );
+    // const operatorPasswordHash = Passwords.hashSync( defaultOperatorPassword );
+
+    const yyyymmdd = xpUtils.getCurDate();
+    const yyyymmddHHMMss = xpUtils.getCurDateTime();
+
+    this.db.run(
+        'INSERT INTO TB_SITE (STE_NM, INS_DT, MNGR_PW, OPER_PW, REG_DTIME, EDT_DTIME ) VALUES (?, ?, ?, ?, ?, ?) ',
+        [defaultSiteName, yyyymmdd, defaultManagerPassword,  defaultOperatorPassword, yyyymmddHHMMss, yyyymmddHHMMss],
+        function(error) {
+            if (error) {
+                console.error('Failed to save default TB_SITE.');
+            } else {
+                console.info(`Saved default TB_SITE ${defaultSiteName}`);
+            }
+        }
+    );
+  },
+
+
+
+
+
+
+
+    //TZB_COMMAND 
+    selectCommands : function(offset) {
+        const sql =  `SELECT CMD_SQ, CMD_TYPE,  CMD_DT, CMD_TM, CMD_CD, CMD_PARAM, RSV_DT, RSV_TM, SND_ST, PRCS_ST FROM TZB_COMMAND  ORDER BY CMD_DT DESC, CMD_TM DESC LIMIT 10 OFFSET ${offset}`;
+        return this.doSelect(sql);
+    }, 
+    getNewCommand : function() {
+         const sql =   " SELECT CMD_SQ, CMD_TYPE, CMD_DT, CMD_TM, CMD_CD, CMD_PARAM, RSV_DT, RSV_TM, SND_ST, PRCS_ST FROM TZB_COMMAND " +
+                       " WHERE SND_ST = 0 AND PRCS_ST = 0 AND " +
+                       "  ( " + 
+                       "      ( CMD_TYPE = 0  AND  ( (CMD_DT * 1000000) + CMD_TM > CAST( STRFTIME('%Y%m%d%H%M%S','now', 'localtime', '-30 second' ) AS INTEGER )) )" + //즉시전송 
+                       "       OR  "      + 
+                       "      ( CMD_TYPE = 1  AND  RSV_DT = CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER )  AND  ( RSV_TM <= CAST( STRFTIME('%H%M%S','now', 'localtime') AS INTEGER )) )" + //예약전송 
+                       "  ) LIMIT 1";
+        return this.doSelect(sql);
+    },    
+    updateCommandPrcsStat: function(CMD_SQ, PRC_ST) {
+        let  curDate = xpUtils.getCurDate() ;
+        let  curTIme = xpUtils.getCurTime();
+
+        //SND_ST :송신상태(0:송신대기중,1:송신완료,2::송신실패)
+        //PRCS_ST:명령처리상태(0:대기중, 1:처리중, 2:완료성공, 3:실패완료)
+        const sql  =  "UPDATE TZB_COMMAND SET PRCS_ST=? WHERE CMD_SQ=?";
+        const val =  [PRC_ST, CMD_SQ ]
+        return this.doUpdate(sql, val);
+    },
+    updateCommandSend: function(dbCmd) {
+        let  curDate = xpUtils.getCurDate() ;
+        let  curTime = xpUtils.getCurTime();
+
+        //SND_ST :송신상태(0:송신대기중,1:송신완료,2::송신실패)
+        //PRCS_ST:명령처리상태(0:대기중, 1:처리중, 2:완료성공, 3:실패완료)
+        const sql  =  "UPDATE TZB_COMMAND SET SND_DT=?, SND_TM=?, SND_ST=?, PRCS_ST=? WHERE CMD_SQ=?";
+        const val  =  [curDate, curTime, dbCmd.SND_ST, dbCmd.PRCS_ST, dbCmd.CMD_SQ]
+        return this.doUpdate(sql, val);
+    },
+    updateCommandRecvAck: function(msg) {
+        let  rcv_dt = xpUtils.getCurDate() ;
+        let  rcv_tm = xpUtils.getCurTime();
+        
+        let rcv_st  = 1;        //RCV_ST : 응답상태(0:응답대기, 1:ACK응답수신완료, 2: Data응답수신완료, 3:응답수신실패)
+        let prcs_st = 1;        //PRCS_ST : 명령처리상태(0:대기중, 1:처리중, 2:완료성공, 3:실패완료)
+        if( msg.cmd === "SC" || 
+            msg.cmd === "JOIN_START"  ||
+            msg.cmd === "JOIN_STOP"   ||           
+            msg.cmd === "ON" || msg.cmd === "OFF" ||
+            msg.cmd === "DEV_DEL"  )           
+            prcs_st = 2;      //Send Ack만 받으면 절차가 끝나는 Commands 
+
+        
+
+        const sql  =  "UPDATE TZB_COMMAND SET RCV_DT=?, RCV_TM=?, RCV_ST=?, ZDO_SQ=?, PRCS_ST=? WHERE CMD_SQ=?";
+        const val =  [rcv_dt, rcv_tm, rcv_st, msg.zdoSeq, prcs_st, msg.tno]
+        return this.doUpdate(sql, val);        
+    },
+    updateCommandRecvData: function(msg) {
+        
+        if(  msg.cmd !== "CH" )         //요청 => 요청ACK => 데이터 응답하는  Command
+            return ;
+        
+        if( !msg.zdoSeq ) return ;      //Data응답은  zdoSeq 필수 
+
+        let  rcv_dt = xpUtils.getCurDate() ;
+        let  rcv_tm = xpUtils.getCurTime();
+        
+        let zdo_sq  = msg.zdoSeq;    
+        let rcv_st  = 2;        //RCV_ST  : 응답상태(0:응답대기, 1:ACK응답수신완료, 2: Data응답수신완료, 3:응답수신실패)
+        let prcs_st = 2;        //PRCS_ST : 명령처리상태(0:대기중, 1:처리중, 2:완료성공, 3:실패완료)
+        let rst_cd   = msg.rst;
+        let rst_msg  = msg.data  + " : "  + msg.rms;
+
+        const sql =  `UPDATE TZB_COMMAND SET RCV_DT=?, RCV_TM=?, RCV_ST=?, PRCS_ST=?, RST_CD=?, RST_MSG=? WHERE ZDO_SQ=? AND (CMD_DT * 1000000) + CMD_TM > CAST( STRFTIME('%Y%m%d%H%M%S','now', 'localtime', '-60 second' ) AS INTEGER ) `;
+        const val =  [rcv_dt, rcv_tm, rcv_st, prcs_st, rst_cd, rst_msg, zdo_sq]
+        return this.doUpdate(sql, val);
+    }, 
+    
+    recvMeasData: async function(msg) {
+
+        if( !msg )  return;
+
+        if ( msg.cmd === "KW" || msg.cmd === "KWH"){     //순시값 수신             
+            if( msg.data )
+            {
+                let  colName = (msg.cmd == "KWH") ? "AKWH" : "KW";
+                this.updateDeviceMeas(msg.data.addr64, colName, msg.data.value).then((result) => {
+                    if( result.changes == 0 )
+                    {
+                        let newDev = {};
+                        newDev["ZB_ADDR"]   = msg.data.addr64;                        
+                        //newDev["DEV_NM"]    = msg.data.addr64.substr(0,4);
+                        newDev["DEV_NM"]    = msg.data.addr64;
+                                                
+                        if( msg.cmd === "KWH" ){
+                            newDev["AKWH"]  = msg.data.value ;      //W단위 
+                        }
+                        else {
+                            newDev["KW"]     = msg.data.value ;                            
+                        }                        
+
+                        newDev["MANU_CTL_ALLOW"] = 1;   //수동제어 허용여부 (1:허용, 0:불허)
+                        newDev["OFF_DELY"]       = 0;   //OFF시 Delay 초 지연시간 
+                        newDev["STBY_KW"]        = 0;   //기준대기전력 (OFF 대기전력 이상 순시전력이 있을경우 OFF하지 않는다.) 
+
+                        newDev["DEV_ST"]    = 1; //상태(1:정상,2:통신이상<연결실패>)
+                        newDev["RCV_DT"]    = xpUtils.getCurDate() ; //
+                        newDev["RCV_TM"]    = xpUtils.getCurTime(); //
+                    
+                   
+
+                        this.insertDevice(newDev).then((result) => {
+                        }).catch(function (reason) {
+                            console.error( reason )
+                        });            
+                    }
+                }).catch(function (reason) {
+                    console.error( reason )
+                });            
+            }
+        }else 
+        if( msg.cmd === "ONOFF")    {   //ONOFF 상태수신
+            if( msg.data )
+            {
+                try
+                {                
+                    let devRow =  await this.selectDevice(msg.data.addr64);
+
+                    if( typeof devRow !== 'object' || devRow.length <= 0 ) 
+                    {
+                        let newDev = {};
+                        newDev["ZB_ADDR"]   = msg.data.addr64;                        
+                        //newDev["DEV_NM"]    = msg.data.addr64.substr(0,4);
+                        newDev["DEV_NM"]    = msg.data.addr64;
+                        newDev[msg.cmd]     = msg.data.value ;
+
+                        newDev["MANU_CTL_ALLOW"] = 1;   //수동제어 허용여부 (1:허용, 0:불허)
+                        newDev["OFF_DELY"]       = 0;   //OFF시 Delay 초 지연시간 
+                        newDev["STBY_KW"]        = 0;   //기준대기전력 (OFF 대기전력 이상 순시전력이 있을경우 OFF하지 않는다.) 
+                        
+                        newDev["DEV_ST"]    = 1; //상태(1:정상,2:통신이상<연결실패>)
+                        newDev["RCV_DT"]    = xpUtils.getCurDate() ; //
+                        newDev["RCV_TM"]    = xpUtils.getCurTime(); //                    
+                        
+                        await this.insertDevice(newDev);                                //스위치 추가 
+                        await this.insertSwEvent(msg.data.addr64,  msg.data.value );    //변경이력 
+                    }
+                    else
+                    {
+                       
+                        if( msg.data.value != devRow[0].SW_ST ) //상태가 바뀌었다면 
+                        {
+                            let PREV_CHG_DT = devRow[0]["CHG_DT"];  //이전변경일자
+                            let PREV_CHG_TM = devRow[0]["CHG_TM"];  //이전변경일시 
+                            let PREV_CHG_KW = devRow[0]["CHG_KW"];  //변경시점 전력 
+
+                            let  CUR_DT = parseInt(xpUtils.getCurDate());     //현재시간 
+                            let  CUR_TM = parseInt(xpUtils.getCurTime());
+                            let  CUR_KW = devRow[0]["KW"];
+
+                            let SAVE_KW = 0.0;
+                            let SAVE_SEC=0;
+
+                            await this.updateDeviceSwStatChange(msg.data.addr64, msg.data.value, CUR_DT, CUR_TM, CUR_KW);  //상태값 변경및 이전상태 저장 
+
+                            if( msg.data.value == 1 && PREV_CHG_KW > 0.0 )       //ON으로 변경되었다면 (절감량 계산)
+                            {                         
+                                //절감량 계산 
+                                let saveSec    = xpUtils.getDiffSec( ((PREV_CHG_DT * 1000000) + PREV_CHG_TM),  ((CUR_DT * 1000000) + CUR_TM) ) ;
+                                saveSec = saveSec/1000;
+                                let kWPerSec    = (PREV_CHG_KW / 3600.0 );    //초당 절감량 
+
+                                let saveKW      = kWPerSec * saveSec ;
+                                await this.insertSwEvent(msg.data.addr64,  msg.data.value,saveKW, saveSec);    //변경이력 
+                            }
+                            else    //OFF로 변경시
+                            {
+                                await this.insertSwEvent(msg.data.addr64,  msg.data.value, 0, 0); // 절감량 없음 
+                            }
+                        }
+                        else        //상태가 동일하다면  값만 업데이트 
+                        {
+                            await this.updateDeviceMeas(msg.data.addr64, "SW_ST", msg.data.value);  //계측값 업데이트 
+                        }
+                    }
+
+                    devRow = null;
+                }
+                catch ( reason )
+                {
+                    console.error( reason )
+                }
+            }
+        }else
+        if( msg.cmd === "DEV_ADD")  { //JOIN ANNOUNCE 
+            let obj = {};
+            obj["BIGO"]   = JSON.stringify(msg.data);            
+            obj["RCV_DT"] = xpUtils.getCurDate();
+            obj["RCV_TM"] = xpUtils.getCurTime();
+
+            this.updateDevice(obj, msg.data.addr64 ).then((result) => {
+                if( result.changes == 0 )
+                {
+                    let newDev = {}
+                    newDev["ZB_ADDR"]   = msg.data.addr64;
+                    //newDev["DEV_NM"]    = msg.data.addr64.substr(0,4);
+                    newDev["DEV_NM"]    = msg.data.addr64;
+
+                    newDev["MANU_CTL_ALLOW"] = 1;   //수동제어 허용여부 (1:허용, 0:불허)
+                    newDev["OFF_DELY"]       = 0;   //OFF시 Delay 초 지연시간 
+                    newDev["STBY_KW"]        = 0;   //기준대기전력 (OFF 대기전력 이상 순시전력이 있을경우 OFF하지 않는다.) 
+
+                    newDev["BIGO"]      = JSON.stringify(msg.data) ;
+                    newDev["DEV_ST"]    = 1; //상태(1:정상,2:통신이상<연결실패>)
+                    newDev["RCV_DT"]    = xpUtils.getCurDate() ; //
+                    newDev["RCV_TM"]    = xpUtils.getCurTime(); //
+                
+                    this.insertDevice(newDev).then((result) => {
+                    }).catch(function (reason) {
+                        console.error( reason )
+                    });  
+                }
+            }).catch(function (reason) {
+                console.error( reason )
+            });  
+            //onmessage MSG='{"cmd":"DEV_ADD","data":{"addr16":"94B6","addr64":"00158D0001A41EF6","devType":1,"deviceId":"0051","maker":"DAWON_DNS","manufact":"FA11","model":"PM-B430-ZB"},"opc":0,"pkn":0,"rms":"","rst":0,"tno":0}'
+        }
+    },
+
+    
+    
+
+
+    recvMeasDataV2: async function(msg) {       //V2버전 
+
+        if( !msg )  return;
+
+        if ( msg.cmd === "GROUP" ) {     //그룹확인  
+            
+            if( msg.data  && msg.data['cmd_mode'] == '2' ) {  // GROUP 조회             
+
+                let obj = {};
+
+                let zb_addr =  msg.data['zb_addr'];
+                let groups  = ( msg.data['groups'] && msg.data['groups'].split(",") ) || [] ;
+                
+                if( groups && groups.length > 0 ) {
+                    
+                    obj["ZB_RGRP_RID"]      = 0; 
+                    obj["ZB_ONGRP_RID"]     = 0; 
+                    obj["ZB_OFFGRP_RID"]    = 0; 
+                                             
+                    for (let grp_id of groups) {
+
+                        if(  grp_id > 1000 &&  grp_id < 2000 ) 
+                            obj["ZB_RGRP_RID"] = grp_id;
+                        else 
+                        if(  grp_id > 2000 &&  grp_id < 3000 ) 
+                            obj["ZB_ONGRP_RID"] = grp_id;                    
+                        else 
+                        if(  grp_id > 3000 &&  grp_id < 4000 ) 
+                            obj["ZB_OFFGRP_RID"] = grp_id;   
+                    }
+                    
+                    this.updateDevice(obj, msg.data['zb_addr'] ).then((result) => {                        
+                        console.info(`Sync Zigbee Group to DB OK [zb_addr:${zb_addr}, ZB_RGRP_RID:${obj["ZB_RGRP_RID"]}, ZB_ONGRP_RID:${obj["ZB_ONGRP_RID"]}, ZB_OFFGRP_RID:${obj["ZB_OFFGRP_RID"]}]`);
+
+                    }).catch(function (reason) {
+                        console.error( reason )
+                    });
+                }
+                else
+                {                    
+                    obj["ZB_RGRP_RID"] = 0;                    
+                    obj["ZB_ONGRP_RID"] = 0;                    
+                    obj["ZB_OFFGRP_RID"] = 0;                    
+                    obj["RCV_DT"] = xpUtils.getCurDate();
+                    obj["RCV_TM"] = xpUtils.getCurTime();
+
+                    this.updateDevice(obj, msg.data['zb_addr'] ).then((result) => {                        
+                        console.info(`Remove All Zigbee Group to DB OK [zb_addr:${zb_addr}]`);
+                    }).catch(function (reason) {
+                        console.error( reason )
+                    });
+                }
+
+            }
+        }       
+    },
+
+
+
+    insertCommand: async function( CMD_CD, CMD_PARAM ) {
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let cmd = {};        
+        cmd["CMD_CD"]   = CMD_CD;
+        cmd["CMD_PARAM"]= CMD_PARAM;
+
+        cmd["CMD_DT"]= xpUtils.getCurDate();
+        cmd["CMD_TM"]= xpUtils.getCurTime();
+
+        let sql = 'INSERT INTO TZB_COMMAND ( CMD_TYPE, CMD_DT, CMD_TM, CMD_CD, CMD_PARAM, SND_ST, PRCS_ST ) VALUES ( ?, ?, ?, ?, ?, ?, ?)';
+        let val = [ 0, cmd.CMD_DT, cmd.CMD_TM, cmd.CMD_CD, cmd.CMD_PARAM, 0, 0];
+        return this.doUpdate(sql, val);
+    },    
+    insertCommandReserv: async function( CMD_CD, CMD_PARAM, RSV_DT, RSV_TM ) {
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let cmd = {};        
+        cmd["CMD_CD"]   = CMD_CD;
+        cmd["CMD_PARAM"]= CMD_PARAM;
+
+        cmd["CMD_DT"]= xpUtils.getCurDate();
+        cmd["CMD_TM"]= xpUtils.getCurTime();
+
+        let sql = 'INSERT INTO TZB_COMMAND ( CMD_TYPE, CMD_DT, CMD_TM, CMD_CD, CMD_PARAM, RSV_DT, RSV_TM,  SND_ST, PRCS_ST ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )';
+        let val = [ 1, cmd.CMD_DT, cmd.CMD_TM, cmd.CMD_CD, cmd.CMD_PARAM, RSV_DT, RSV_TM, 0, 0];
+        return this.doUpdate(sql, val);
+    },
+
+    
+    //TB_SITE
+    selectSite: function() {
+        const sql = 'SELECT STE_SQ, STE_NM, CLOUD_ID, GATEWAY_ID, INS_DT, MNGR_PW, OPER_PW, REG_DTIME, EDT_DTIME, WORK_STM, WORK_ETM FROM TB_SITE';
+        return this.doSelect(sql);
+    },
+    updateSite: async function(objData, STE_SQ) {
+        let  curDateTime = xpUtils.getCurDateTime() ;            
+        objData['EDT_DTIME'] = curDateTime;
+
+        let where = { STE_SQ : STE_SQ };        
+        return this.doUpdateCommon('TB_SITE', objData,  where); 
+    },  
+    updateSitePassword: function(siteSq, managerPassword, operatorPassword ) {
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let sql = 'UPDATE TB_SITE SET MNGR_PW=?, OPER_PW=?, EDT_DTIME=?  WHERE id=?';
+        let val = [managerPassword, operatorPassword,yyyymmddHHMMss, siteSq ]
+        return this.doUpdate(sql, val);
+    },
+    
+    //TB_DEV
+    selectDevicesOrderByAddr: function() {
+        let sql = 'SELECT ZB_ADDR, DEV_NM, DEV_GB, DEV_ST, SW_ST, KW, AKWH, STBY_KW, OFF_DELY, MANU_CTL_ALLOW, CHG_DT, CHG_TM, CHG_KW, RCV_DT, RCV_TM, BIGO, GRP_SQ, EDT_DTIME, REG_DTIME , ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID,  ZB_ONGRP_RID, ZB_OFFGRP_RID, ZB_RGRP_RID FROM TB_DEV ORDER BY ZB_ADDR';
+        
+        return this.doSelect(sql);
+    },
+    selectDevices: function() {
+        let sql = 'SELECT ZB_ADDR, DEV_NM, DEV_GB, DEV_ST, SW_ST, KW, AKWH, STBY_KW, OFF_DELY, MANU_CTL_ALLOW, CHG_DT, CHG_TM, CHG_KW, RCV_DT, RCV_TM, BIGO, GRP_SQ, EDT_DTIME, REG_DTIME , ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID,  ZB_ONGRP_RID, ZB_OFFGRP_RID, ZB_RGRP_RID FROM TB_DEV ORDER BY DEV_NM';
+        
+        return this.doSelect(sql);
+    },
+    selectDevicesByGroup: function(GRP_SQ) {
+        let sql = `SELECT ZB_ADDR, DEV_NM, DEV_GB, DEV_ST, SW_ST, KW, AKWH, STBY_KW, OFF_DELY,  MANU_CTL_ALLOW, CHG_DT, CHG_TM, CHG_KW, RCV_DT, RCV_TM, BIGO, GRP_SQ, EDT_DTIME, REG_DTIME, ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID,  ZB_ONGRP_RID, ZB_OFFGRP_RID, ZB_RGRP_RID  FROM TB_DEV WHERE GRP_SQ = ${GRP_SQ} ORDER BY DEV_NM`;
+        return this.doSelect(sql);
+    },
+    selectDevice: function(zb_addr) {
+        let sql = `SELECT ZB_ADDR, DEV_NM, DEV_GB, DEV_ST, SW_ST, KW, AKWH, STBY_KW, OFF_DELY,  MANU_CTL_ALLOW, CHG_DT, CHG_TM, CHG_KW, RCV_DT, RCV_TM, BIGO, GRP_SQ, EDT_DTIME, REG_DTIME, ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID,  ZB_ONGRP_RID, ZB_OFFGRP_RID, ZB_RGRP_RID FROM TB_DEV WHERE ZB_ADDR = '${zb_addr}'`;
+        return this.doSelect(sql);
+    },    
+    insertDevice: async function( dev ) {
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        dev.REG_DTIME = curDateTime;
+        dev.EDT_DTIME = curDateTime;
+
+        let sql = 'INSERT INTO TB_DEV( ZB_ADDR, DEV_NM, DEV_GB, DEV_ST, SW_ST, KW, AKWH, STBY_KW, OFF_DELY,  MANU_CTL_ALLOW, CHG_DT, CHG_TM, CHG_KW, RCV_DT, RCV_TM, BIGO, GRP_SQ, EDT_DTIME, REG_DTIME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        let val = [ dev.ZB_ADDR, dev.DEV_NM, dev.DEV_GB, dev.DEV_ST, dev.SW_ST, dev.KW, dev.AKWH, dev.STBY_KW, dev.OFF_DELY, dev.MANU_CTL_ALLOW, dev.CHG_DT, dev.CHG_TM, dev.CHG_KW, dev.RCV_DT, dev.RCV_TM, dev.BIGO, dev.GRP_SQ, dev.EDT_DTIME, dev.REG_DTIME ];
+        return this.doUpdate(sql, val);
+    },
+    updateDevice: async function(objData, ZB_ADDR) { 
+
+        objData['EDT_DTIME'] = xpUtils.getCurDateTime();
+        let where = { ZB_ADDR : ZB_ADDR };
+        return this.doUpdateCommon('TB_DEV', objData,  where);        
+    }, 
+    updateDeviceMeas: async function( zb_addr, colname, colval ) {
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let  rcv_dt      = xpUtils.getCurDate() ;
+        let  rcv_tm      = xpUtils.getCurTime();
+
+        let sql = `UPDATE TB_DEV SET ${colname}=?, DEV_ST=1, RCV_DT=?, RCV_TM=?, EDT_DTIME=? WHERE ZB_ADDR =?` ;        
+        let val = [ colval, rcv_dt, rcv_tm ,curDateTime, zb_addr ];
+        return this.doUpdate(sql, val);
+    },
+    updateDeviceSwStatChange: async function( zb_addr, SW_ST, CHG_DT, CHG_TM, CHG_KW ) {
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let  rcv_dt      = xpUtils.getCurDate() ;
+        let  rcv_tm      = xpUtils.getCurTime();
+
+        let sql = `UPDATE TB_DEV SET SW_ST=?, CHG_DT=?, CHG_TM=?, CHG_KW=?,  DEV_ST=1, RCV_DT=?, RCV_TM=?, EDT_DTIME=? WHERE ZB_ADDR =?` ;        
+        let val = [ SW_ST, CHG_DT, CHG_TM, CHG_KW, rcv_dt, rcv_tm ,curDateTime, zb_addr ];
+        return this.doUpdate(sql, val);
+    },    
+    updateDeviceComError: async function() {       
+        let uSql = `UPDATE TB_DEV SET DEV_ST = 2, KW=0, EDT_DTIME=${xpUtils.getCurDateTime()}  WHERE DEV_ST <> 2 AND ((RCV_DT * 1000000) + RCV_TM) < CAST( STRFTIME('%Y%m%d%H%M%S','now', 'localtime', '-5400 second' ) AS INTEGER )`;
+        return this.doUpdate(uSql);        
+    }, 
+    deleteDevice: async function( zb_addr ) {
+        let sql = `DELETE FROM TB_DEV WHERE ZB_ADDR='${zb_addr}'`;
+        return this.run(sql);        
+    },
+    updateDeviceGroupNull: async function(grp_sq) {       
+        let uSql = `UPDATE TB_DEV SET GRP_SQ = null  WHERE GRP_SQ = ${grp_sq}`;
+        return this.doUpdate(uSql);        
+    },    
+
+
+
+    //Start for zigbee group cluster 
+    // selectOffGroupDevice: function( zbgrp_rid ) {
+    //     let sql = `SELECT ZB_ADDR, DEV_NM, DEV_GB, DEV_ST, SW_ST, KW, AKWH, STBY_KW, OFF_DELY,  MANU_CTL_ALLOW, CHG_DT, CHG_TM, CHG_KW, RCV_DT, RCV_TM, BIGO, GRP_SQ, EDT_DTIME, REG_DTIME, ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID,  ZB_ONGRP_RID, ZB_OFFGRP_RID, ZB_RGRP_RID FROM TB_DEV WHERE ZB_OFFGRP_RID = '${zbgrp_rid}'`;
+    //     return this.doSelect(sql);
+    // },  
+    // selectOnGroupDevice: function( zbgrp_rid ) {
+    //     let sql = `SELECT ZB_ADDR, DEV_NM, DEV_GB, DEV_ST, SW_ST, KW, AKWH, STBY_KW, OFF_DELY,  MANU_CTL_ALLOW, CHG_DT, CHG_TM, CHG_KW, RCV_DT, RCV_TM, BIGO, GRP_SQ, EDT_DTIME, REG_DTIME, ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID,  ZB_ONGRP_RID, ZB_OFFGRP_RID, ZB_RGRP_RID FROM TB_DEV WHERE ZB_ONGRP_RID = '${zbgrp_rid}'`;
+    //     return this.doSelect(sql);
+    // },  
+    selectDeviceForNextGroupAssign( COL_NAME ){         //Select For Getting Next Assign Group id 
+        let sql = ` SELECT ${COL_NAME}, COUNT(*) CNT  
+                    FROM TB_DEV 
+                    WHERE ${COL_NAME} != 0
+                    GROUP BY ${COL_NAME}
+                    ORDER BY CNT ASC, ${COL_NAME} DESC
+                    LIMIT 1`;
+                    //COL_NAME : ZB_ONGRP_AID or ZB_OFFGRP_AID or  ZB_RGRP_AID 
+        return this.doSelect(sql);
+    },
+    selectDevicesForOnGroupAssgin: function() { //ON Group Assing ID 할당 대상 
+        let sql = ` SELECT ZB_ADDR, DEV_NM, DEV_GB, STBY_KW, OFF_DELY, MANU_CTL_ALLOW,  GRP_SQ, ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID
+                    FROM TB_DEV 
+                    WHERE ZB_ONGRP_AID = 0 AND MANU_CTL_ALLOW = 1`;        
+        return this.doSelect(sql);
+    },
+    selectDevicesForOffGroupAssgin: function() { //OFF Group Assing ID 할당 대상 
+        let sql = ` SELECT ZB_ADDR, DEV_NM, DEV_GB, STBY_KW, OFF_DELY, MANU_CTL_ALLOW,  GRP_SQ, ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID
+                    FROM TB_DEV 
+                    WHERE  ZB_OFFGRP_AID = 0
+                        AND ( OFF_DELY IS NULL OR OFF_DELY <= 0 )
+                        AND MANU_CTL_ALLOW = 1`;
+        
+        return this.doSelect(sql);
+    },    
+    selectDevicesForReadGroupAssgin: function() { //Read Group Assing ID 할당 대상 
+        let sql = ` SELECT ZB_ADDR, DEV_NM, DEV_GB, STBY_KW, OFF_DELY, MANU_CTL_ALLOW,  GRP_SQ, ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID
+                    FROM TB_DEV 
+                    WHERE ZB_RGRP_AID = 0`;        
+        return this.doSelect(sql);
+    },    
+    updateOnGroupAssign(zb_addr, zb_ongrp_aid){
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let sql = `UPDATE TB_DEV SET ZB_ONGRP_AID=?, EDT_DTIME=? WHERE ZB_ADDR =?` ;        
+        let val = [ zb_ongrp_aid ,curDateTime, zb_addr ];
+        return this.doUpdate(sql, val);
+    }, 
+    updateOffGroupAssign(zb_addr, zb_offgrp_aid){
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let sql = `UPDATE TB_DEV SET ZB_OFFGRP_AID=?, EDT_DTIME=? WHERE ZB_ADDR =?` ;        
+        let val = [ zb_offgrp_aid ,curDateTime, zb_addr ];
+        return this.doUpdate(sql, val);
+    }, 
+    updateReadGroupAssign(zb_addr, zb_rgrp_aid){
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let sql = `UPDATE TB_DEV SET ZB_RGRP_AID=?, EDT_DTIME=? WHERE ZB_ADDR =?` ;        
+        let val = [ zb_rgrp_aid ,curDateTime, zb_addr ];
+        return this.doUpdate(sql, val);
+    }, 
+
+    //GROUP ID 동기해야할 목록 
+    selectDevicesForSyncZBGroup(AID_COL, RID_COL){
+        let sql = ` SELECT ZB_ADDR, ZB_ONGRP_AID, ZB_OFFGRP_AID, ZB_RGRP_AID, ZB_ONGRP_RID, ZB_OFFGRP_RID, ZB_RGRP_RID
+                    FROM TB_DEV 
+                    WHERE ${AID_COL} != ${RID_COL}`
+                        // AND DEV_ST = 1`;  
+                    //AID_COL : ZB_ONGRP_AID or ZB_OFFGRP_AID or  ZB_RGRP_AID 
+                    //RID_COL : ZB_ONGRP_RID or ZB_OFFGRP_RID or  ZB_RGRP_RID                     
+        return this.doSelect(sql);
+    }, 
+    updateOnGroupRegist(zb_addr, zb_ongrp_rid){
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let sql = `UPDATE TB_DEV SET ZB_ONGRP_RID=?, EDT_DTIME=? WHERE ZB_ADDR =?` ;        
+        let val = [ zb_ongrp_rid ,curDateTime, zb_addr ];
+        return this.doUpdate(sql, val);
+    }, 
+    updateOffGroupRegist(zb_addr, zb_offgrp_rid){
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let sql = `UPDATE TB_DEV SET ZB_OFFGRP_RID=?, EDT_DTIME=? WHERE ZB_ADDR =?` ;        
+        let val = [ zb_offgrp_rid ,curDateTime, zb_addr ];
+        return this.doUpdate(sql, val);
+    }, 
+    updateReadGroupRegist(zb_addr, zb_rgrp_rid){
+        let  curDateTime = xpUtils.getCurDateTime() ;    
+        let sql = `UPDATE TB_DEV SET ZB_RGRP_RID=?, EDT_DTIME=? WHERE ZB_ADDR =?` ;        
+        let val = [ zb_rgrp_ard ,curDateTime, zb_addr ];
+        return this.doUpdate(sql, val);
+    }, 
+    updateZbGroupResetAll(){       
+        let sql = `UPDATE TB_DEV SET ZB_ONGRP_AID = 0, ZB_OFFGRP_AID= 0, ZB_RGRP_AID= 0, ZB_ONGRP_RID= 0, ZB_OFFGRP_RID= 0, ZB_RGRP_RID = 0 WHERE 1 = ?` ;
+
+        let val = [ 1 ] ;
+       
+        return this.doUpdate(sql, val);
+    }, 
+    
+    
+
+    
+    selectZbReadGroup: function() { // Read     group 조회
+        let sql = ` SELECT ZB_RGRP_RID FROM TB_DEV WHERE ZB_RGRP_RID != 0  GROUP BY ZB_RGRP_RID`;
+        return this.doSelect(sql);
+    }, 
+    selectZbOnGroup: function() { // On  제어 group 조회    
+        let sql = ` SELECT ZB_ONGRP_RID FROM TB_DEV WHERE ZB_ONGRP_RID != 0 GROUP BY ZB_ONGRP_RID`;        
+        return this.doSelect(sql);
+    }, 
+    selectZbOnGroupDev: function() { // On  제어 group 조회    
+        let sql = ` SELECT ZB_ADDR, ZB_ONGRP_RID FROM TB_DEV WHERE ZB_ONGRP_RID != 0 `;        
+        return this.doSelect(sql);
+    },     
+    selectZbOffGroup: function() { /// Off 제어 group 조회
+        let sql = ` SELECT ZB_OFFGRP_RID FROM TB_DEV WHERE ZB_OFFGRP_RID != 0 GROUP BY ZB_OFFGRP_RID`;        
+        return this.doSelect(sql);
+    },
+    selectZbOffGroupDevs: function() { /// Off 제어 group 조회
+        let sql = ` SELECT ZB_ADDR, ZB_OFFGRP_RID FROM TB_DEV WHERE ZB_OFFGRP_RID != 0`;
+        return this.doSelect(sql);
+    },
+    selectOnGroupDevMissStat: function() { // On 그룹에 속해 있지만 ON상태가 아닌 플러그 
+        let sql = ` SELECT ZB_ADDR, SW_ST, ZB_ONGRP_RID FROM TB_DEV WHERE ZB_ONGRP_RID != 0 AND SW_ST != 1`;        
+        return this.doSelect(sql);
+    }, 
+    selectOffGroupDevMissStat: function() { // off 그룹에 속해 있지만 off상태가 아닌 플러그 
+        let sql = ` SELECT ZB_ADDR, SW_ST, ZB_OFFGRP_RID FROM TB_DEV WHERE ZB_OFFGRP_RID != 0 AND SW_ST != 0`;        
+        return this.doSelect(sql);
+    }, 
+    selectZbGroupingStat: function() {  //지그비 그룹핑 진행상태 
+
+        let sql = ` SELECT SUM(ONGRP)  ONGRP_SYNC_CNT       
+                            , SUM(OFFGRP) OFFGRP_SYNC_CNT
+                            , SUM(READGRP) READGRP_SYNC_CNT
+                            , COUNT(*) TOT_DEV_CNT
+                            , SUM(ONGRP_DEV) ONGRP_DEV_CNT
+                            , SUM(OFFGRP_DEV) OFFGRP_DEV_CNT
+                            , SUM(RGRP_DEV) READGRP_DEV_CNT
+                    FROM (
+                    SELECT 
+                          CASE WHEN ZB_ONGRP_AID  = ZB_ONGRP_RID  THEN 1 ELSE 0 END ONGRP
+                        , CASE WHEN ZB_OFFGRP_AID = ZB_OFFGRP_RID THEN 1 ELSE 0 END OFFGRP 
+                        , CASE WHEN ZB_RGRP_AID   = ZB_RGRP_RID THEN 1 ELSE 0 END READGRP 
+                        , CASE WHEN ZB_ONGRP_RID   > 0 THEN 1 ELSE 0 END ONGRP_DEV
+                        , CASE WHEN ZB_OFFGRP_RID  > 0 THEN 1 ELSE 0 END OFFGRP_DEV
+                        , CASE WHEN ZB_RGRP_RID    > 0 THEN 1 ELSE 0 END RGRP_DEV
+                    FROM TB_DEV 
+                    )`; 
+        return this.doSelect(sql);
+    },
+
+
+
+   
+
+
+    //End for zigbee group cluster 
+
+
+
+
+
+
+
+    //TB_GROUP
+    selectGroups: function() {
+        const sql = 'SELECT GRP_SQ, GRP_NM, BIGO, REG_DTIME, EDT_DTIME FROM TB_GROUP ORDER BY GRP_SQ ASC ';
+        return this.doSelect(sql);
+    },
+    selectGroup: function(GRP_SQ) {
+        const sql = `SELECT GRP_SQ, GRP_NM, BIGO, REG_DTIME, EDT_DTIME FROM TB_GROUP WHERE  GRP_SQ = ${GRP_SQ}`;
+        return this.doSelect(sql);
+    },    
+    insertGroup: function( grp ) {        
+        grp.REG_DTIME = xpUtils.getCurDateTime() ;    
+        grp.EDT_DTIME = grp.REG_DTIME;
+
+        let sql = 'INSERT INTO TB_GROUP(GRP_NM, BIGO, EDT_DTIME, REG_DTIME) VALUES (?, ?, ?, ?)';
+        let val = [ grp.GRP_NM, grp.BIGO, grp.EDT_DTIME, grp.REG_DTIME];
+        return this.doUpdate(sql, val);
+    },
+    updateGroup: function( objData ) {
+        objData.EDT_DTIME = xpUtils.getCurDateTime();
+
+        let sql = 'UPDATE TB_GROUP SET GRP_NM = ?, BIGO = ?, EDT_DTIME = ? WHERE GRP_SQ = ?';
+        let val = [ objData.GRP_NM, objData.BIGO, objData.EDT_DTIME, objData.GRP_SQ];
+        return this.doUpdate(sql, val);
+    },
+    deleteGroup: async function( grp_sq ) {
+        let sql = `DELETE FROM TB_GROUP WHERE GRP_SQ='${grp_sq}'`;
+        return this.run(sql);        
+    },
+
+
+
+    //TB_HOLIDAY
+    selectHolidays: function(yyyymm) {
+        //const sql = `SELECT HOLI_DT, HOLI_NM, REG_DTIME, EDT_DTIME FROM TB_HOLIDAY WHERE CAST(HOLI_DT/100 AS INTEGER)=${yyyymm} ORDER BY HOLI_DT DESC `;
+        const sql = `SELECT HOLI_DT, HOLI_NM, REG_DTIME, EDT_DTIME FROM TB_HOLIDAY ORDER BY HOLI_DT DESC `;
+        return this.doSelect(sql);
+    },
+    selectHoliday: function(HOLI_DT) {
+        const sql = `SELECT HOLI_DT, HOLI_NM, REG_DTIME, EDT_DTIME FROM TB_HOLIDAY WHERE HOLI_DT=${HOLI_DT}`;
+        return this.doSelect(sql);
+    },
+    selectTodayIsHoliday: function() {  //오늘이 휴일인지 조회 
+        const sql = `SELECT HOLI_DT, HOLI_NM, REG_DTIME, EDT_DTIME FROM TB_HOLIDAY WHERE HOLI_DT=CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER )`;
+        return this.doSelect(sql);
+    },    
+    insertHoliday: function( holi ) {        
+        holi.REG_DTIME = xpUtils.getCurDateTime() ;    
+        holi.EDT_DTIME = holi.REG_DTIME;
+
+        let sql = 'INSERT INTO TB_HOLIDAY(HOLI_DT, HOLI_NM, EDT_DTIME, REG_DTIME) VALUES (?, ?, ?, ?)';
+        let val = [ holi.HOLI_DT, holi.HOLI_NM, holi.EDT_DTIME, holi.REG_DTIME];
+        return this.doUpdate(sql, val);
+    },
+    updateHoliday: function( holi, holi_dt ) {
+        holi.EDT_DTIME = xpUtils.getCurDateTime();
+
+        let sql = 'UPDATE TB_HOLIDAY SET HOLI_NM = ?, EDT_DTIME = ? WHERE HOLI_DT = ?';
+        let val = [ holi.HOLI_NM, holi.EDT_DTIME, holi_dt];
+        return this.doUpdate(sql, val);
+    },
+    deleteHoliday: async function( holi ) {
+        let sql = `DELETE FROM TB_HOLIDAY WHERE HOLI_DT='${holi}'`;
+        return this.run(sql);        
+    },
+
+
+
+
+    //TB_SCHD
+    selectSchedules: function() {
+        const sql = 'SELECT SCHD_SQ, SCHD_NM, GRP_SQ, WEEK_BIT, HOLI_YN, BIGO, REG_DTIME, EDT_DTIME FROM TB_SCHD'; // LIMIT 10 OFFSET 10
+        return this.doSelect(sql);
+    },
+    selectSchedule: function(SCHD_SQ) {
+        const sql = `SELECT SCHD_SQ,  SCHD_NM, GRP_SQ, WEEK_BIT, HOLI_YN, BIGO, REG_DTIME, EDT_DTIME FROM TB_SCHD WHERE SCHD_SQ=${SCHD_SQ}`; 
+        return this.doSelect(sql);
+    },
+    selectScheduleByGroup: function(grp_sq) {
+        const sql = `SELECT SCHD_SQ,  SCHD_NM, GRP_SQ, WEEK_BIT, HOLI_YN, BIGO, REG_DTIME, EDT_DTIME FROM TB_SCHD WHERE GRP_SQ =${grp_sq}`; // LIMIT 10 OFFSET 10
+        return this.doSelect(sql);
+    },
+    insertSchedule: function( sch ) {        
+        sch.REG_DTIME = xpUtils.getCurDateTime() ;    
+        sch.EDT_DTIME =  sch.REG_DTIME;
+
+        let sql = 'INSERT INTO TB_SCHD(GRP_SQ, SCHD_NM,WEEK_BIT, HOLI_YN, BIGO, EDT_DTIME, REG_DTIME) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        let val = [ sch.GRP_SQ, sch.SCHD_NM, sch.WEEK_BIT, sch.HOLI_YN, sch.BIGO, sch.EDT_DTIME, sch.REG_DTIME];
+        return this.doUpdate(sql, val);
+    },
+    updateSchedule: function( sch ) {
+        sch.EDT_DTIME = xpUtils.getCurDateTime();
+
+        let sql = 'UPDATE TB_SCHD SET GRP_SQ=?,  SCHD_NM=?, WEEK_BIT=?, HOLI_YN=?, BIGO=?, EDT_DTIME=? WHERE SCHD_SQ=?';
+        let val = [ sch.GRP_SQ, sch.SCHD_NM, sch.WEEK_BIT, sch.HOLI_YN, sch.BIGO, sch.EDT_DTIME, sch.SCHD_SQ];
+        return this.doUpdate(sql, val);
+    },
+    deleteSchedule: async function( schd_sq ) {
+        let sql = `DELETE FROM TB_SCHD WHERE SCHD_SQ='${schd_sq}'`;
+        return this.run(sql);        
+    },
+    deleteScheduleByGroup: async function( gropu_sq ) {
+        let sql = `DELETE FROM TB_SCHD WHERE GRP_SQ='${gropu_sq}'`;
+        return this.run(sql);        
+    },
+
+    //TB_SCHD_TM
+    selectScheduleTimes: function() {
+        const sql = 'SELECT SC.SCHD_SQ,	SC.GRP_SQ, SC.SCHD_NM, SC.WEEK_BIT, SC.HOLI_YN, TM.SCHD_TM_SQ, TM.CTL_TIME, TM.CTL_CMD, TM.REG_DTIME, TM.EDT_DTIME FROM TB_SCHD_TM TM JOIN TB_SCHD SC ON SC.SCHD_SQ = TM.SCHD_SQ'; 
+        return this.doSelect(sql);
+    },
+    selectScheduleTime: function(SCHD_TM_SQ) {
+        const sql = `SELECT SC.SCHD_SQ,	SC.GRP_SQ, SC.SCHD_NM, SC.WEEK_BIT, SC.HOLI_YN, TM.SCHD_TM_SQ, TM.CTL_TIME, TM.CTL_CMD, TM.REG_DTIME, TM.EDT_DTIME FROM TB_SCHD_TM TM JOIN TB_SCHD SC ON SC.SCHD_SQ = TM.SCHD_SQ WHERE TM.SCHD_TM_SQ=${SCHD_TM_SQ}`;
+        return this.doSelect(sql);
+    },
+    selectDoRunScheduleTime: function(isHoliday = false ) { //현지시간(HH24MI) 스케쥴 대상 조회 
+        let  sql = `SELECT 
+                      S.SCHD_SQ
+                    , S.SCHD_NM
+                    , S.GRP_SQ
+                    , S.WEEK_BIT
+                    , S.HOLI_YN 
+                    , M.SCHD_TM_SQ
+                    , M.CTL_TIME
+                    , M.CTL_CMD
+                    , M.LAST_RUN_DT	
+                    , CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER ) TO_DATE
+                FROM TB_SCHD S JOIN TB_SCHD_TM M ON S.SCHD_SQ = M.SCHD_SQ
+                WHERE  M.CTL_TIME = STRFTIME('%H%M','now', 'localtime')
+                    AND CAST( SUBSTR(S.WEEK_BIT, STRFTIME('%w','now', 'localtime')+1, 1) AS INTEGER ) = 1
+                    AND (M.LAST_RUN_DT IS NULL OR  M.LAST_RUN_DT <> CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER ) )`;
+        if( isHoliday )
+            sql +=  " AND M.HOLI_YN = 1";   //금일이 휴일이라면 휴일운전 허용한 스케쥴만 조회 
+
+        return this.doSelect(sql);
+    },
+    selectAutoDeviceScheduleTime: function(isHoliday = false ) { //자동화기기 그룹 스케쥴 설정내용 
+        let  sql = `SELECT 
+                      S.SCHD_SQ
+                    , S.SCHD_NM
+                    , S.GRP_SQ
+                    , G.GRP_NM
+                    , S.WEEK_BIT
+                    , S.HOLI_YN 
+                    , M.SCHD_TM_SQ
+                    , M.CTL_TIME
+                    , M.CTL_CMD
+                    , M.LAST_RUN_DT	
+                    , CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER ) TO_DATE
+                    FROM TB_SCHD S JOIN TB_SCHD_TM M ON S.SCHD_SQ = M.SCHD_SQ
+                    LEFT JOIN TB_GROUP G ON S.GRP_SQ = G.GRP_SQ
+                    WHERE  CAST( SUBSTR(S.WEEK_BIT, STRFTIME('%w','now', 'localtime')+1, 1) AS INTEGER ) = 1                    
+                    AND S.GRP_SQ = 1`;
+        if( isHoliday )
+            sql +=  " AND M.HOLI_YN = 1";   //금일이 휴일이라면 휴일운전 허용한 스케쥴만 조회 
+            
+            sql +=  " ORDER BY CTL_CMD, CTL_TIME ";
+
+        return this.doSelect(sql);
+    },
+    updateDoRunScheduleTimeComplete: function( SCHD_TM_SQ, LAST_RUN_DT  ) { //스케쥴운전 완료 처리 
+        
+        let EDT_DTIME = xpUtils.getCurDateTime();
+
+        let sql = 'UPDATE TB_SCHD_TM SET LAST_RUN_DT = ?, EDT_DTIME = ? WHERE SCHD_TM_SQ = ?';
+        let val = [ LAST_RUN_DT, EDT_DTIME, SCHD_TM_SQ];
+        return this.doUpdate(sql, val);
+    },    
+    insertScheduleTime: function( sch ) {        
+        sch.REG_DTIME = xpUtils.getCurDateTime() ;    
+        sch.EDT_DTIME = sch.REG_DTIME;
+
+        let sql = 'INSERT INTO TB_SCHD_TM( SCHD_SQ, CTL_TIME, CTL_CMD, EDT_DTIME, REG_DTIME ) VALUES (?, ?, ?, ?, ?)';
+        let val = [ sch.SCHD_SQ, sch.CTL_TIME, sch.CTL_CMD, sch.EDT_DTIME, sch.REG_DTIME];
+        return this.doUpdate(sql, val);
+    },
+    updateScheduleTime: function( sch ) {
+        sch.EDT_DTIME = xpUtils.getCurDateTime();
+
+        let sql = 'UPDATE TB_SCHD_TM SET SCHD_SQ = ?, CTL_TIME = ?, CTL_CMD = ?,  EDT_DTIME = ? WHERE SCHD_TM_SQ = ?';
+        let val = [ sch.SCHD_SQ, sch.CTL_TIME, sch.CTL_CMD, sch.EDT_DTIME, sch.SCHD_TM_SQ];
+        return this.doUpdate(sql, val);
+    },    
+    deleteScheduleTime: async function( schd_tm_sq ) {
+        let sql = `DELETE FROM TB_SCHD_TM WHERE SCHD_TM_SQ='${schd_tm_sq}'`;
+        return this.run(sql);        
+    },
+    deleteScheduleTimeBySchdSq: async function( schd_sq ) {
+        let sql = `DELETE FROM TB_SCHD_TM WHERE SCHD_SQ='${schd_sq}'`;
+        return this.run(sql);        
+    },
+
+
+
+
+    //TR_SW_EVNT
+    selectSwEvent: function() {
+        const sql = 'SELECT ZB_ADDR, TX_DT, TX_TM, SW_ST, SAVE_KW, SAVE_SEC FROM TR_SW_EVNT LIMIT 10'; // LIMIT 10 OFFSET 10
+        return this.doSelect(sql);
+    },
+    insertSwEvent: function( ZB_ADDR, SW_ST, SAVE_KW, SAVE_SEC ) {  
+        
+        if( ZB_ADDR === "" )  return;
+
+        let TX_DT = xpUtils.getCurDate() ;
+        let TX_TM = xpUtils.getCurTime() ;
+
+        let sql = 'INSERT INTO TR_SW_EVNT(ZB_ADDR, TX_DT, TX_TM, SW_ST, SAVE_KW, SAVE_SEC) VALUES (?, ?, ?, ?, ?, ?)';
+        let val = [ ZB_ADDR, TX_DT, TX_TM, SW_ST, SAVE_KW, SAVE_SEC ];
+        return this.doUpdate(sql, val);
+    },
+    deleteSwEvent: async function( zb_addr ) {
+        let sql = `DELETE FROM TR_SW_EVNT WHERE ZB_ADDR='${zb_addr}'`;
+        return this.run(sql);
+    },
+
+
+    //TR_CTRL
+    selectControl: function( offset = 0 ) {
+        const sql = `SELECT CTL_SQ, CTL_DT, CTL_TM, ZB_ADDR, GRP_SQ, CTL_TYPE, CTL_OBJ, CTL_CMD, SCHD_TM_SQ, KW  FROM TR_CTRL LIMIT 10 OFFSET ${offset}`; 
+        return this.doSelect(sql);
+    }, 
+    insertControl: function( dataObj ) {       
+
+        dataObj.CTL_DT = xpUtils.getCurDate() ;
+        dataObj.CTL_TM = xpUtils.getCurTime() ;
+
+        let sql = 'INSERT INTO TR_CTRL( CTL_DT, CTL_TM, ZB_ADDR, GRP_SQ, CTL_TYPE, CTL_OBJ, CTL_CMD, SCHD_TM_SQ, KW ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, (SELECT KW FROM TB_DEV WHERE ZB_ADDR = ?))';
+        let val = [ dataObj.CTL_DT, dataObj.CTL_TM, dataObj.ZB_ADDR, dataObj.GRP_SQ, dataObj.CTL_TYPE, dataObj.CTL_OBJ, dataObj.CTL_CMD, dataObj.SCHD_TM_SQ, dataObj.ZB_ADDR];
+        
+        return this.doUpdate(sql, val);
+    },
+    deleteControl: async function( zb_addr ) {
+        let sql = `DELETE FROM TR_CTRL WHERE ZB_ADDR='${zb_addr}'`;
+        return this.run(sql);
+    },
+    selectLatAllControl: function( ) {  // 최종 전체 제어 명령 찾기  (제어후 10초 ~ 5분 이내 유효한 제어 내용 ) -- 전체제어와 플러그 상태동기화를 위해 호출 
+        const sql = `SELECT CTL_DT
+                , CTL_TM
+                , CTL_TYPE
+                , CTL_CMD
+                , MIN_DTIME
+                , MAX_DTIME
+                , CUR_DTIME
+            FROM 
+            (
+                SELECT CTL_DT, CTL_TM, CTL_TYPE, CTL_CMD
+                    , CAST( STRFTIME('%Y%m%d%H%M%S', (CTL_DT / 10000) || '-' ||  SUBSTR('00'|| ((CTL_DT / 100) % 100), -2, 2)  || '-' ||   SUBSTR('00'|| ( CTL_DT % 100), -2, 2) || '  ' || SUBSTR('00'|| (CTL_TM / 10000), -2, 2) || ':' ||  SUBSTR('00'|| ((CTL_TM / 100) % 100), -2, 2)  || ':' ||   SUBSTR('00'|| (CTL_TM % 100), -2, 2)  , '10   second' ) AS INTEGER ) MIN_DTIME
+                    , CAST( STRFTIME('%Y%m%d%H%M%S', (CTL_DT / 10000) || '-' ||  SUBSTR('00'|| ((CTL_DT / 100) % 100), -2, 2)  || '-' ||   SUBSTR('00'|| ( CTL_DT % 100), -2, 2) || '  ' || SUBSTR('00'|| (CTL_TM / 10000), -2, 2) || ':' ||  SUBSTR('00'|| ((CTL_TM / 100) % 100), -2, 2)  || ':' ||   SUBSTR('00'|| (CTL_TM % 100), -2, 2)  , '300  second' ) AS INTEGER ) MAX_DTIME
+                    , CAST( STRFTIME('%Y%m%d%H%M%S','now','localtime') AS INTEGER )  CUR_DTIME
+                FROM TR_CTRL
+                WHERE CTL_OBJ = 3
+                ORDER BY CTL_DT DESC, CTL_TM DESC	
+            ) C 
+            WHERE C.CUR_DTIME > C.MIN_DTIME AND C.CUR_DTIME < C.MAX_DTIME
+            LIMIT 1`; 
+        return this.doSelect(sql);
+    }, 
+
+    selectMonthReportFromToAtTotal: function(fr_month, to_month, offset) {
+        const sql = `SELECT	CAST(((TX_DT)/100) AS INTEGER) TX_DT, SUM(S_AKWH) S_AKWH, SUM(E_AKWH) E_AKWH, SUM(E_AKWH) - SUM(S_AKWH) SKWH, SUM(SAVE_KW) SAVE_KW, SUM(SAVE_SEC) SAVE_SEC
+        FROM TR_DAY 
+        WHERE CAST(((TX_DT)/100) AS INTEGER) >= ${fr_month} AND CAST(((TX_DT)/100) AS INTEGER) <= ${to_month}
+        GROUP BY CAST(((TX_DT)/100) AS INTEGER)
+        ORDER BY CAST(((TX_DT)/100) AS INTEGER) DESC
+        LIMIT 10 OFFSET ${offset}`; 
+
+        return this.doSelect(sql);
+    },
+
+
+
+    //TR_DAY
+    selectDayReportFromTo: function(fr_date, to_date, offset) {
+
+        const sql = `SELECT	ZB_ADDR, TX_DT, S_AKWH, E_AKWH, (E_AKWH - S_AKWH) SKWH, SAVE_KW, SAVE_SEC, REG_DTIME, EDT_DTIME FROM TR_DAY WHERE  TX_DT >= ${fr_date} AND TX_DT <= ${to_date} ORDER BY TX_DT DESC`; 
+
+        return this.doSelect(sql);
+    },
+    selectDayReportFromToAtTotal: function(fr_date, to_date, offset) {
+        const sql = `SELECT	TX_DT, SUM(S_AKWH) S_AKWH, SUM(E_AKWH) E_AKWH, SUM(E_AKWH) - SUM(S_AKWH) SKWH, SUM(SAVE_KW) SAVE_KW, SUM(SAVE_SEC) SAVE_SEC
+        FROM TR_DAY 
+        WHERE TX_DT >= ${fr_date} AND TX_DT <= ${to_date}
+        GROUP BY TX_DT 
+        ORDER BY TX_DT DESC`; 
+
+        return this.doSelect(sql);
+    },
+    insertDayReport: function( dayr ) {     
+           
+        dayr.REG_DTIME = xpUtils.getCurDateTime() ;
+        dayr.EDT_DTIME = xpUtils.getCurDateTime() ;
+
+        let sql = 'INSERT INTO TR_DAY( ZB_ADDR, TX_DT, S_AKWH, E_AKWH, REG_DTIME, EDT_DTIME ) VALUES (?, ?, ?, ?, ?, ?)';
+        let val = [ dayr.ZB_ADDR, dayr.TX_DT, dayr.S_AKWH, dayr.E_AKWH, dayr.REG_DTIME, dayr.EDT_DTIME ];
+        return this.doUpdate(sql, val);
+    },    
+    updateDayReport: function( dayr ) {                
+        dayr.EDT_DTIME = xpUtils.getCurDateTime() ;
+
+        let sql = ` UPDATE TR_DAY SET 
+                          E_AKWH=?
+                        , SAVE_KW  = (SELECT SUM(SAVE_KW ) FROM TR_SW_EVNT WHERE TX_DT = ? AND ZB_ADDR = ?) 
+                        , SAVE_SEC = (SELECT SUM(SAVE_SEC) FROM TR_SW_EVNT WHERE TX_DT = ? AND ZB_ADDR = ?) 
+                        , EDT_DTIME=? 
+                    WHERE ZB_ADDR=? AND TX_DT = ?`;
+        let val = [ dayr.E_AKWH, dayr.TX_DT , dayr.ZB_ADDR, dayr.TX_DT, dayr.ZB_ADDR, dayr.EDT_DTIME, dayr.ZB_ADDR, dayr.TX_DT ];
+        return this.doUpdate(sql, val);
+    },
+    deleteDayReport: async function( zb_addr ) {
+        let sql = `DELETE FROM TR_DAY WHERE ZB_ADDR='${zb_addr}'`;
+        return this.run(sql);
+    },
+    insertTodayReport: function() {
+        let sql = `INSERT INTO TR_DAY( ZB_ADDR, TX_DT, S_AKWH, E_AKWH, SAVE_KW, SAVE_SEC, EDT_DTIME, REG_DTIME )
+        SELECT ZB_ADDR
+            , CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER) TX_DT
+            , AKWH S_AKWH
+            , AKWH E_AKWH
+            , (SELECT SUM(SAVE_KW ) FROM TR_SW_EVNT WHERE TX_DT = CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER) AND ZB_ADDR = TB_DEV.ZB_ADDR) SAVE_KW
+			, (SELECT SUM(SAVE_SEC) FROM TR_SW_EVNT WHERE TX_DT = CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER) AND ZB_ADDR = TB_DEV.ZB_ADDR) SAVE_SEC
+            , STRFTIME('%Y%m%d%H%M%S','now', 'localtime') EDT_DTIME
+            , STRFTIME('%Y%m%d%H%M%S','now', 'localtime') REG_DTIME  
+        FROM TB_DEV 
+        WHERE ZB_ADDR NOT IN (SELECT ZB_ADDR FROM TR_DAY WHERE TX_DT = CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER))`;
+
+        return this.run(sql);        
+    },    
+
+
+
+
+
+     //TR_HOUR
+     selectHourReportFromTo: function(fr_date, to_date, offset) {
+        
+        //const sql = `SELECT	ZB_ADDR, TX_DT, TX_TM, S_AKWH, E_AKWH, (E_AKWH - S_AKWH) SKWH,  REG_DTIME, EDT_DTIME FROM TR_HOUR WHERE  TX_DT >= ${fr_date} AND TX_DT <= ${to_date}  LIMIT 10 OFFSET ${offset}`; 
+        const sql = `SELECT	ZB_ADDR, TX_DT, TX_TM, S_AKWH, E_AKWH, (E_AKWH - S_AKWH) SKWH,  REG_DTIME, EDT_DTIME FROM TR_HOUR WHERE  TX_DT >= ${fr_date} AND TX_DT <= ${to_date} ORDER BY TX_DT DESC, TX_TM DESC`; 
+
+        return this.doSelect(sql);
+    },
+    selectHourReportFromToAtTotal: function(fr_date, to_date, offset) {
+        
+        const sql = `SELECT	TX_DT, TX_TM, SUM(S_AKWH) S_AKWH, SUM(E_AKWH) E_AKWH, SUM(E_AKWH) - SUM(S_AKWH) SKWH  
+                     FROM TR_HOUR 
+                     WHERE  TX_DT >= ${fr_date} AND TX_DT <= ${to_date}  
+                     GROUP BY TX_DT, TX_TM
+                     ORDER BY TX_DT DESC, TX_TM DESC`; 
+
+        return this.doSelect(sql);
+    },
+    insertHourReport: function( hourR ) {     
+           
+        hourR.REG_DTIME = xpUtils.getCurDateTime() ;
+        hourR.EDT_DTIME = xpUtils.getCurDateTime() ;
+
+        let sql = 'INSERT INTO TR_HOUR( ZB_ADDR, TX_DT, TX_TM, S_AKWH, E_AKWH, REG_DTIME, EDT_DTIME ) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        let val = [ hourR.ZB_ADDR, hourR.TX_DT, hourR.TX_TM, hourR.S_AKWH, hourR.E_AKWH, hourR.REG_DTIME, hourR.EDT_DTIME ];
+        return this.doUpdate(sql, val);
+    },    
+    updateHourReport: function( hourR ) {                
+        hourR.EDT_DTIME = xpUtils.getCurDateTime() ;
+
+        let sql = 'UPDATE TR_HOUR SET E_AKWH=?, EDT_DTIME=? WHERE ZB_ADDR=? AND TX_DT = ? AND TX_TM = ?';
+        let val = [ hourR.E_AKWH, hourR.EDT_DTIME, hourR.ZB_ADDR, hourR.TX_DT, hourR.TX_TM ];
+        return this.doUpdate(sql, val);
+    },
+    deleteHourReport: async function( zb_addr ) {
+        let sql = `DELETE FROM TR_HOUR WHERE ZB_ADDR='${zb_addr}'`;
+        return this.run(sql);
+    },
+    insertToHourReport: function() {
+        let sql = `INSERT INTO TR_HOUR( ZB_ADDR, TX_DT, TX_TM, S_AKWH, E_AKWH, EDT_DTIME, REG_DTIME )
+        SELECT ZB_ADDR
+            , CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER)
+            , CAST( STRFTIME('%H','now', 'localtime') AS INTEGER)
+            , AKWH S_AKWH
+            , AKWH E_AKWH
+            , STRFTIME('%Y%m%d%H%M%S','now', 'localtime') EDT_DTIME
+            , STRFTIME('%Y%m%d%H%M%S','now', 'localtime') REG_DTIME  
+        FROM TB_DEV 
+        WHERE ZB_ADDR NOT IN (SELECT ZB_ADDR FROM TR_HOUR WHERE TX_DT = CAST( STRFTIME('%Y%m%d','now', 'localtime') AS INTEGER) AND TX_TM = CAST( STRFTIME('%H','now', 'localtime') AS INTEGER) )`;
+
+        return this.run(sql);        
+    },    
+
+
+
+
+
+
+
+
+
+    //TR_SYSLOG
+    selectSysLog: function() {
+        const sql = 'SELECT LOG_SQ, LOG_DT, LOG_TM, LOG_CD, LOG_MSG FROM TR_SYSLOG LIMIT 10'; // LIMIT 10 OFFSET 10
+        return this.doSelect(sql);
+    }, 
+    insertSysLog: function( log ) {        
+        log.LOG_DT = xpUtils.getCurDate() ;
+        log.LOG_TM = xpUtils.getCurTime() ;
+
+        let sql = 'INSERT INTO TR_SYSLOG( LOG_DT, LOG_TM, LOG_CD, LOG_MSG ) VALUES (?, ?, ?, ?)';
+        let val = [ log.LOG_DT, log.LOG_TM, log.LOG_CD, log.LOG_MSG  ];
+        return this.doUpdate(sql, val);
+    },
+
+
+    clearOldHoliyday: function () { 
+        return this.run("DELETE FROM TB_HOLIDAY  WHERE HOLI_DT < CAST( STRFTIME('%Y%m%d','now', 'localtime', '-2 year'  ) AS INTEGER )");
+    },     
+    clearOldZbCommand: function () { 
+        return this.run("DELETE FROM TZB_COMMAND WHERE CMD_DT  < CAST( STRFTIME('%Y%m%d','now', 'localtime', '-30 day'  ) AS INTEGER )");
+    }, 
+    clearOldSyslog: function () { 
+        return this.run("DELETE FROM TR_SYSLOG   WHERE LOG_DT  < CAST( STRFTIME('%Y%m%d','now', 'localtime', '-7 day'   ) AS INTEGER )");
+    }, 
+    clearOldSwEvent: function () { 
+        return this.run("DELETE FROM TR_SW_EVNT  WHERE TX_DT   < CAST( STRFTIME('%Y%m%d','now', 'localtime', '-60 day'  ) AS INTEGER )");
+    }, 
+    clearOldControl: function () { 
+        return this.run("DELETE FROM TR_CTRL     WHERE CTL_DT  < CAST( STRFTIME('%Y%m%d','now', 'localtime', '-60 day'  ) AS INTEGER )");
+    }, 
+    clearOldDayReport: function () { 
+        return this.run("DELETE FROM TR_DAY      WHERE TX_DT   < CAST( STRFTIME('%Y%m%d','now', 'localtime', '-365 day' ) AS INTEGER )");
+    }, 
+    clearOldHourReport: function () { 
+        return this.run("DELETE FROM TR_HOUR      WHERE TX_DT   < CAST( STRFTIME('%Y%m%d','now', 'localtime', '-60 day' ) AS INTEGER )");
+    }, 
+
+
+    //Common Methods
+    doUpdateCommon : async function(table, values, wheres) {
+        
+        let updateColumns = '';
+        for (let colName of Object.keys(values))
+        {
+            if( updateColumns === '' )
+                updateColumns += `  ${colName}='${values[colName]}'`;
+            else
+                updateColumns += `, ${colName}='${values[colName]}'`;
+        }
+
+        let whereColums = '';
+        for (let colName of Object.keys(wheres))
+        {
+            if( whereColums === '' )
+                whereColums += `  ${colName}='${wheres[colName]}'`;
+            else
+                whereColums += `, ${colName}='${wheres[colName]}'`;
+        }
+
+        let sql = `UPDATE ${table} SET ${updateColumns} WHERE ${whereColums}`;
+        
+        console.debug(sql);
+
+        return this.run(sql);
+    },    
+    doUpdate : async function(sql, values ) {
+        return this.run(sql, values);
+    },
+    doSelect : async function( selectSQL ) {
+        return new Promise( (resolve, reject) => {
+            this.db.all(selectSQL , (err, rows) => {
+                if (err) {
+                    console.error("doSelect Err" + err);
+                    reject(err);
+                    return;
+                }
+                resolve(rows);                
+            });
+        });
+    },  
+
+    /**
+     * Run a SQL statement
+     * @param {String} sql
+     * @param {Array<any>} values
+     * @return {Promise<Object>} promise resolved to `this` of statement result
+     */
+    run: function(sql, values) {
+        return new Promise((accept, reject) => {
+            try {                
+                this.db.run(sql, values, function(err) {
+                    if (err) {
+                        console.error("err : " , err, sql);
+                        reject(err);
+                        return;
+                    }                
+                    accept(this); // node-sqlite puts results on "this" so avoid arrrow fn.
+                });                
+            } catch (err) {
+                console.error("err " , err);
+                reject(err);
+            }
+        });
+    }
+};
+
+module.exports = Database;

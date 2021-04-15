@@ -1,0 +1,38 @@
+<div class="xg-card h-100">
+  <div class="xg-card-header">
+    Devices
+    <fa class="float-right pr-2" name="ellipsis-v"></fa>
+  </div>
+  <div class="xg-card-body overflow-auto" fxFlex fxLayout="column" fxLayoutAlign="center">
+    <div class="row m-0">
+      <div class="col-4 text-center ">
+        <div class="title">TOTAL</div>
+        <div class="data total">{{cnt_total}}</div>
+      </div>
+      <div class="col-4 text-center ">
+        <div class="title">ON</div>
+        <!-- <div class="data on">{{cnt_on}}</div> -->
+        <div class="data on">{{cnt_on + cnt_warr}}</div>
+      </div>
+      <div class="col-4 text-center ">
+        <div class="title">OFF</div>
+        <div class="data off">{{cnt_off}}</div>
+      </div>
+      <!-- <div class="col-3 text-center ">
+        <div class="title">WARR</div>
+        <div class="data warr">{{cnt_warr}}</div>
+      </div> -->
+      <div class="col-12 text-center">
+        <hr style="margin: 20px 0px">
+      </div>
+      <div class="col-6 text-center ">
+        <div class="title">스케쥴</div>
+        <div class="data total">{{cnt_all_deny}}</div>
+      </div>
+      <div class="col-6 text-center" style="padding-right: 0px; padding-left: 0px;">
+        <div class="title">업무시간</div>
+        <div class="data time">{{api.siteInfo.WORK_STM_STR}} ~ {{api.siteInfo.WORK_ETM_STR}}</div>
+      </div>
+    </div>
+  </div>
+</div>

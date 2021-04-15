@@ -1,0 +1,76 @@
+ul {
+    width:100%;
+}
+
+.list-group-item {
+    color: rgb(168, 168, 168) !important;
+    border-top: 1px solid transparentize( #FFF, 0.95 );
+    border-bottom: 1px solid transparentize( #FFF, 0.95 );
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.list-item-value {
+    color: rgb(0, 255, 200) !important;
+}
+
+
+input {
+    border: solid 1px steelblue;
+    background: none;
+    color: rgb(0, 255, 200) !important;
+    text-align: right; 
+    outline: none;
+}
+
+.nav-link.active {
+    color: #495057 !important;
+    background-color: transparent !important;
+    border-color: #dee2e6 #dee2e6 #fff !important;
+}
+
+
+button
+{
+    width:100px;
+}
+
+
+/*
+
+
+div.form-group > label {
+    display: inline-block;
+    width : 130px !important;; 
+    margin-left:20px;  
+}
+
+div.form-group > input{
+    display: inline-block;    
+}
+
+div.form-group > input[type=text], div.form-group > input[type=number], div.form-group > select 
+{    
+    display: inline-block;
+    width : 200px ;   
+}
+
+div.form-group > div.btn-group > input[type=checkbox]{
+    width:45px;
+    display: inline-block;
+}
+
+
+#buttonBar button { width: 130px;}
+#buttonBar::after{ float:clearBoth;}
+
+#titleBar { font-size:1.2em; font-weight: bold;}
+
+.btn_del { padding : 0px; margin: 0px; width:55px; height:30px;}
+.btn_del_schedule { padding : 0px; margin: 0px; width:100px; height:40px; vertical-align: top;}
+
+
+.btn_onoff { padding : 0px; margin: 0px; width:60px; height:30px;}
+.timepicker {height: 40px; padding: 0px, 0px, 0px, 5px; width:150px;}
+
+*/

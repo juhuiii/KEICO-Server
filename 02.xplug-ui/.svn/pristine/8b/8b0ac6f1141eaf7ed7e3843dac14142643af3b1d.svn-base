@@ -1,0 +1,15 @@
+<div class="modal-body">
+  <div class="d-flex justify-content-center">{{this['message']}}...</div>  
+  <div class="d-flex justify-content-center">             
+        <div class="spinner-border" role="status">            
+          <span class="sr-only"></span>
+        </div>
+  </div>
+  <div *ngIf="this['displayShowTimeout']" class="d-flex justify-content-center">
+    {{remainTime}}
+  </div>
+  <div *ngIf="this['displayCancleBtn']" class="d-flex justify-content-center">
+      <button type="button" class="btn btn-cancel" (click)="close()">{{cancleBtnName}}</button>
+  </div>    
+</div>  
+  

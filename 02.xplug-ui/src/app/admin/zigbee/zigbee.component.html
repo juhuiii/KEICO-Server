@@ -1,0 +1,38 @@
+<div fxLayout="column" fxLayoutGap="20px" class="xg-page">  
+  <div fxFlex="100" fxLayout="column" fxLayoutGap="20px" class="board-test">
+      <div class="xg-card h-100">
+          <div class="xg-card-header">
+            ZIGBEE GROUP
+            <fa class="float-right pr-2" name="ellipsis-v"></fa>
+          </div>
+          <div class="xg-card-body" style="padding: 3px 20px;">                
+            <div class="mb-1">
+              <small><em>Read Group 동기화 (Plugs : {{READGRP_DEV_CNT}})</em></small>
+              <progressbar [max]="TOT_DEV_CNT" [value]="READGRP_SYNC_CNT" [animate]="READGRP_SYNC_CNT != TOT_DEV_CNT" type="success">
+                <span class="text-nowrap" style="color:white !important;">{{READGRP_SYNC_CNT}} / {{TOT_DEV_CNT}}</span>
+              </progressbar>
+            </div>
+            <div class="mb-2">
+              <small><em>On Group 동기화 (Plugs : {{ONGRP_DEV_CNT}})</em></small>
+              <progressbar [max]="TOT_DEV_CNT" [value]="ONGRP_SYNC_CNT" [animate]="ONGRP_SYNC_CNT != TOT_DEV_CNT"  type="info">
+                  <span class="text-nowrap" style="color:white !important;">{{ONGRP_SYNC_CNT}} / {{TOT_DEV_CNT}}</span>
+              </progressbar>          
+            </div>
+            <div class="mb-3">
+              <small><em>Off Group 동기화 (Plugs : {{OFFGRP_DEV_CNT}})</em></small>
+              <progressbar  [max]="TOT_DEV_CNT" [value]="OFFGRP_SYNC_CNT"  [animate]="OFFGRP_SYNC_CNT != TOT_DEV_CNT"  type="warning">
+                  <span class="text-nowrap" style="color:black !important;">{{OFFGRP_SYNC_CNT}} / {{TOT_DEV_CNT}}</span>
+              </progressbar>          
+            </div>
+            <div class="mb-4">
+              <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="initZigbeeGroup()">GROUP 초기화</button>    
+              <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="reportConfigAll(0, 1, 1800, 1)">ON/OFF RPT 활성(30분)</button>            
+              <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="reportConfigAll(1,  1800, 65534, 1000)">KW RPT 활성</button>
+              <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="reportConfigAll(1, 65534, 65534, 3000)">KW RPT 비활성</button>
+              <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="reportConfigAll(2,  1800, 65534, 1000)">KWH RPT 활성</button>
+              <button type="button" class="btn btn-sm btn-primary" style="margin-right: 5px;" (click)="reportConfigAll(2, 65534, 65534, 3000)">KWH RPT 비활성</button>
+            </div>
+          </div>    
+      </div>
+  </div>
+</div>

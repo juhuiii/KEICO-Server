@@ -1,0 +1,34 @@
+<!-- unused -->
+<div *ngIf="plug.DEV_ST===9" class="button off" fxFlex fxLayout="row" (click)="onClick()">
+  <div fxFlex fxLayout="row" fxLayoutAlign="center center">
+    <img src="assets/purple/cancel.png" width="36px">
+  </div>
+</div>
+
+<div *ngIf="plug.DEV_ST!==9"  
+    [class.err]="plug.DEV_ST!==1"
+    [class.on]="plug.DEV_ST===1 && plug.SW_ST===1"
+    [class.off]="plug.DEV_ST===1 && plug.SW_ST!==1"
+    class="button" 
+    fxFlex fxLayout="row" 
+    fxLayoutAlign="start center" 
+    (click)="onClick()"
+    >
+  <div fxFlex="25" class="text-center">
+    <img [src]="plug.ICON" width="48px">
+  </div>
+
+  <div fxFlex="50" class="text-white">
+    {{plug.DEV_NM}}<br>
+    <small *ngIf="plug.DEV_ST===1 && plug.SW_ST===1" class="text-black-50">{{plug.KW*0.001 | number: '0.1'}} kW</small>
+    <small *ngIf="plug.DEV_ST===1 && plug.SW_ST!==1" class="text-orange">OFF</small>
+    <small *ngIf="plug.DEV_ST!==1" class="text-warning">통신이상</small>
+  </div>
+
+  <div fxFlex="25" class="text-center">
+    <img *ngIf="plug.DEV_ST===1 && plug.SW_ST === 1" src="assets/purple/theme1.on.png" width="36px">
+    <img *ngIf="plug.DEV_ST===1 && plug.SW_ST !== 1" src="assets/purple/theme1.off.png" width="36px">
+    <img *ngIf="plug.DEV_ST!==1" src="assets/purple/theme1.disable.png" width="36px">
+  </div>
+
+</div>

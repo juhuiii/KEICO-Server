@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{this['title']}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancle()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <div class="form-group">
+          <label for="GRP_NM">그룹명</label>
+          <input type="text"  #INPUT_GRP_NM [class.border-danger]="!validate" class="form-control" id="GRP_NM" name="GRP_NM" [(ngModel)]="GRP_NM"/>
+          <span [class.invisible]="validate"  class="text-danger">그룹명을 입력하세요.</span>
+      </div>      
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-confirm" (click)="save()">{{this['confirmBtnName']}}</button>
+    <button type="button" class="btn btn-cancel" (click)="cancle()">{{this['declineBtnName']}}</button>
+  </div>

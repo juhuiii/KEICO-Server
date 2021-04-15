@@ -1,0 +1,21 @@
+.xg-navbar {
+    background: transparentize( #000, .72 );
+    color: #fff;
+}
+
+.accent {
+    color: #0cfaa3 !important;
+}
+
+.navbar-brand {
+    font-size: 1.4em;
+}
+
+.nav-item {
+    font-size: 1.4em;
+    min-width: 120px;
+}
+
+.nav-link.active, .nav-link.active > i {
+    color: #0cfaa3 !important;
+}

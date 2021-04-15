@@ -1,0 +1,75 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100" >  
+<div fxFlex class="xg-card">
+
+
+  <div fxFlex="30px"  class="xg-card-header text-white">
+      플러그상세 - {{plug['ZB_ADDR']}}  <fa class="float-right pr-2" name="ellipsis-v"></fa>
+  </div>
+  <div fxFlex class="xg-card-body overflow-auto" fxLayoutAlign="center top">
+    <form>    
+        <ul class="list-group">       
+            <li class="list-group-item bg-transparent" >              
+                플러그명
+              <span class="pull-right list-item-value" >
+                  <input type="text" class="bg-transparent form-control" id="DEV_NM" [(ngModel)]="plug['DEV_NM']" name="DEV_NM" required>
+              </span>            
+              <p [style.display]="VALID_DEV_NM"  class="text-danger">플러그명을 입력하세요.</p>
+            </li>
+            <li class="list-group-item bg-transparent" >
+                그룹
+              <span class="pull-right list-item-value" >
+                  <select class="bg-transparent form-control" name="GRP_SQ" [(ngModel)]="plug['GRP_SQ']">
+                      <option value="">없음</option>
+                      <option *ngFor="let group of api.groups" value="{{group['GRP_SQ']}}">
+                          {{ group['GRP_NM'] }}
+                      </option>
+                  </select>
+              </span>            
+            </li>
+            
+            <!-- <li class="list-group-item bg-transparent" >
+                기기구분
+              <span class="pull-right list-item-value" >
+                  <select class="bg-transparent form-control" name="DEV_GB" [(ngModel)]="plug.DEV_GB">
+                      <option value="">없음</option>
+                      <option *ngFor="let devGb of api.devGubuns" value="{{devGb.DEVGB_SQ}}">
+                          {{ devGb.DEVGB_NM }}
+                      </option>
+                  </select>
+              </span>            
+            </li> -->
+            <li class="list-group-item bg-transparent" >              
+                OFF지연시간(초)
+              <span class="pull-right list-item-value" >
+                  <input type="number" class="bg-transparent form-control" id="OFF_DELY" [(ngModel)]="plug['OFF_DELY']" name="OFF_DELY">
+              </span>            
+            </li>
+            <li class="list-group-item bg-transparent" >              
+                기준대기전력(W)
+              <span class="pull-right list-item-value" >
+                  <input type="number" class="bg-transparent form-control" id="STBY_KW" [(ngModel)]="plug['STBY_KW']" name="STBY_KW">            
+              </span>            
+            </li>            
+            <li class="list-group-item bg-transparent" >              
+                전체제어허용
+              <span class="pull-right list-item-value" >
+                  <input type="checkbox" class="bg-transparent form-control" id="MANU_CTL_ALLOW" [(ngModel)]="plug['MANU_CTL_ALLOW']" [ngModelOptions]="{standalone: true}" >
+              </span>            
+            </li>
+            <li class="list-group-item bg-transparent" >              
+              최종수신
+            <span class="pull-right list-item-value" >
+              {{plug['RCV_DT'] | amParse:'YYYYMMDD' | amDateFormat: 'YYYY-MM-DD'}} {{ plug['RCV_TM']  | amParse:'HHmmss' | amDateFormat: 'HH:mm:ss' }}
+            </span>            
+          </li>            
+        </ul>     
+  </form>
+  </div>
+  <div fxFlex="40px" class="m-2">        
+    <button class="pull-left btn btn-primary text-white" (click)="goBack()">뒤로</button>
+    <button class="ml-2 pull-right btn btn-primary text-white" (click)="goUpdate()">저장</button>
+    <button class="ml-2 pull-right btn btn-primary text-white" (click)="goDelete()">삭제</button>    
+  </div>
+</div>
+</div>
+

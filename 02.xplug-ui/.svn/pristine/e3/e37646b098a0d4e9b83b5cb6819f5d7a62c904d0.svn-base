@@ -1,0 +1,16 @@
+<div id="bottom" fxLayout="row" class="h-100 bg-light text-primary">
+    <!-- <div class="row"> -->
+    <div fxFlex fxLayoutAlign="center center">
+        <a routerLink="/admin" routerLinkActive="active">
+        <fa name="clock-o"></fa>&nbsp;</a>{{now}}        
+    </div>
+    <div fxFlex fxLayoutAlign="start center">
+        <!-- <fa name="bell"></fa>&nbsp;알람 -->
+    </div>
+    <div fxFlex fxLayoutAlign="start center">
+        <!-- <fa name="bell"></fa>&nbsp;알람 -->        
+    </div>
+    <div fxFlex fxLayoutAlign="start center">
+        <fa name="info-circle"></fa>&nbsp;업무시간 : {{api.siteInfo.WORK_STM_STR}} ~ {{api.siteInfo.WORK_ETM_STR}}
+    </div>
+</div>

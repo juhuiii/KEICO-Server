@@ -1,0 +1,25 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left">{{this['title']}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="cancle()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <label for="GRP_NM">공휴일명</label>
+    <input type="text" #INPUT_HOLI_NM [class.border-danger]="!validate_nm" class="form-control" id="HOLI_NM"
+      name="HOLI_NM" [(ngModel)]="HOLI_NM" />
+    <span [class.invisible]="validate_nm" class="text-danger">공휴일명을 입력하세요.</span>
+  </div>
+  <div class="form-group">
+    <label for="GRP_NM">일자</label>
+    <input type="date" #INPUT_HOLI_DT [class.border-danger]="!validate_dt" class="form-control" id="HOLI_DT"
+      name="HOLI_DT" [(ngModel)]="HOLI_DT" />
+    <span [class.invisible]="validate_dt" class="text-danger">일자을 입력하세요.</span>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-confirm" (click)="save()">{{this['confirmBtnName']}}</button>
+  <button type="button" class="btn btn-cancel" (click)="cancle()">{{this['declineBtnName']}}</button>
+</div>

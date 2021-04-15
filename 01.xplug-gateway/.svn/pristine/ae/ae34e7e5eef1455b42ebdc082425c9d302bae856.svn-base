@@ -1,0 +1,201 @@
+
+const xpUtils = require("../utils");
+const _BLService     = require("../web-api/bl-service");
+
+
+const DEBUG = false;
+
+
+// 클라우드에서 받은 수신 메세지 처리 
+
+class BLCloud {
+    
+    constructor( mqtt_gateway )    {
+        this.mqtt_gateway = mqtt_gateway;
+        this.blService = _BLService( mqtt_gateway );
+     }
+
+     
+    async onMessageColud( message ){
+        
+        let colud_msg = JSON.parse(message);
+        let cmd  = colud_msg["hd"]["cmd"];
+
+        let rtn ;
+        
+        switch ( cmd ){
+
+            case "ON"       : { //개별제어 ON
+                rtn = await this.pulgOn( colud_msg );
+                break;
+            }
+            case "OFF"      : { //개별제어 OFF                
+                rtn = await this.pulgOff( colud_msg );
+                break;
+            }
+            case "ALL_ON"   : { //전체제어 ON
+                rtn = await  this.pulgAllOn( colud_msg );
+                break;
+            }            
+            case "ALL_OFF"  : { //전체제어 OFF
+                rtn = await  this.pulgAllOff( colud_msg );
+                break;                
+            }
+        }
+
+        return rtn;
+    }
+
+    
+    async pulgOn( colud_msg ){
+
+        let zb_addr = colud_msg["bd"]["dev_id"];
+        let result = { rcd : 0, rms : "" };
+        
+        let ctlObj = {
+            ZB_ADDR: zb_addr,    //지그비주소(IEEE-64BIT ADDR)
+            GRP_SQ : null,      //그룹일련번호(그룹제어일경우 Not Null)
+            CTL_TYPE : 11,      //제어구분(1:수동제어,2:스케줄제어, 11:수동제어(클라우드),12:스케줄제어(클라우드)
+            CTL_OBJ : 1,        //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+            CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+            SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+            SCHD_SQ:null        //스케쥴일련번호                
+        };
+
+        let filter = await this.blService.plugOn(ctlObj);
+
+        
+        let manuFilterMsg = "";
+        if( filter.maun_ctl_allow_filter.length > 0 )
+            manuFilterMsg = `수동제어 불가(${filter.maun_ctl_allow_filter.length})`;
+
+        if( filter.direct_control.length <= 0 )
+        {
+            result.rcd = 1;
+            result.rms = `ON제어할 기기를 찾지 못했습니다. ${manuFilterMsg} `;
+            return result; 
+        }
+
+        let totControlCnt = filter.direct_control.length ;        //제어된 갯수 
+        let totExceptCnt  = filter.maun_ctl_allow_filter.length   //예외된 갯수
+        result.rcd = 0;
+        result.rms = `${totControlCnt}개의 기기를 ON하였습니다. 예외기기=${totExceptCnt}`;
+
+        return result;
+    }
+
+
+
+    async pulgOff( colud_msg ){
+
+        let zb_addr = colud_msg["bd"]["dev_id"];
+        let stdkw_filter  = colud_msg["bd"]["filter"];
+        let result = { rcd : 0, rms : "" };
+       
+        let ctlObj = {
+            ZB_ADDR:zb_addr,    //지그비주소(IEEE-64BIT ADDR)
+            GRP_SQ : null,      //그룹일련번호(그룹제어일경우 Not Null)
+            CTL_TYPE : 11,      //제어구분(1:수동제어,2:스케줄제어, 11:수동제어(클라우드),12:스케줄제어(클라우드)
+            CTL_OBJ : 1 ,       //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+            CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+            SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+            SCHD_SQ:null ,       //스케쥴일련번호                
+            FILTER_SDKWH : stdkw_filter  //대기전력 체크 여부 ""
+        };
+
+        let filter = await this.blService.plugOff( ctlObj );
+         
+        let manuFilterMsg = "";
+        if( filter.maun_ctl_allow_filter.length > 0 )
+            manuFilterMsg = `수동제어 불가(${filter.maun_ctl_allow_filter.length})`;    
+        
+        let useKwFilterMsg = "";
+        if( filter.use_kw_filter.length > 0 )
+            useKwFilterMsg = `사용중(${filter.use_kw_filter.length})`;
+        
+        if( filter.direct_control.length <= 0 && filter.reserv_control.length <= 0 )    //제어된 플러그가 없는경우 
+        {            
+            result.rcd = 1;
+            result.rms = `OFF 가능한 기기가 아닙니다. ${useKwFilterMsg},${manuFilterMsg}`;
+            return result;
+        }
+
+        let totControlCnt = filter.direct_control.length + filter.reserv_control.length;        //제어된 갯수 
+        let totExceptCnt  = filter.maun_ctl_allow_filter.length + filter.use_kw_filter.length;  //예외된 갯수(수동제어불허, 대기전력 체크)
+                
+        result.rcd = 0;
+        result.rms = `${totControlCnt}개의 기기를 OFF 하였습니다. 예외기기=${totExceptCnt}`;
+
+        return result;
+    }
+
+
+
+    async pulgAllOn( colud_msg ){
+        
+        let result = { rcd : 0, rms : "" };
+
+        let ctObj = {
+            ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+            GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)                    
+            CTL_TYPE : 11,      //제어구분(1:수동제어,2:스케줄제어, 11:수동제어(클라우드),12:스케줄제어(클라우드)
+            CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+            CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+            SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+            SCHD_SQ:null        //스케쥴일련번호                
+        };
+
+        let onGroupDevs = await this.blService.plugAllOn( ctObj );
+
+        if( onGroupDevs.length <= 0 )
+        {   
+            result.rcd = 1;
+            result.rms = `Zigbee ON Group을 찾지 못했습니다.`;
+            return result; 
+        }      
+
+        result.rcd = 0;
+        result.rms = `${onGroupDevs.length }개의 플러그를 ON하였습니다.`; 
+        return result;
+    }
+
+
+    async pulgAllOff( colud_msg ) {
+        
+        
+        let result = { rcd : 0, rms : "" };
+
+        let stdkw_filter  = colud_msg["bd"]["filter"];
+
+        let ctlObj = {
+                ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+                GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)                
+                CTL_TYPE : 11,      //제어구분(1:수동제어,2:스케줄제어, 11:수동제어(클라우드),12:스케줄제어(클라우드)
+                CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+                CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+                SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+                SCHD_SQ:null,        //스케쥴일련번호    
+                FILTER_SDKWH : stdkw_filter  //대기전력 체크 여부 ""            
+        };
+
+        let offGroupDevs = await this.blService.plugAllOff( ctlObj );
+        
+        if( offGroupDevs.length <= 0 )
+        {                 
+            result.rcd = 1;   
+            result.rms = `Zigbee OFF Group Dev 을 찾지 못했습니다.`;
+            return result; 
+        }               
+
+        result.rcd = 0;
+        result.rms = `${offGroupDevs.length }개의 플러그를 OFF하였습니다.`; 
+        return result; 
+    }
+}
+
+
+module.exports = ( mqtt_gateway )=>{
+
+    return new BLCloud (mqtt_gateway );
+
+}

@@ -1,0 +1,30 @@
+//  .curr {
+//     stroke-dasharray:100;
+// 	stroke-dashoffset:100;
+//     animation: dash 1.3s linear forwards;
+//  }
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}  
+
+// .base.on      { stroke: #2B3D71; }
+// .base.off     { stroke: transparentize( black, .55 ); }
+// .base.err     { stroke: transparentize( rgb(104, 67, 0), .75 ); }
+// .base.disable { stroke: transparentize( darkgray, .90 ); }
+
+.curr.on      { stroke: springgreen }
+.curr.off     { stroke: red }
+.curr.err     { stroke: springgreen }
+// .curr.err     { stroke: orange }
+// .curr.err { stroke: transparent }
+.curr.disable { stroke: transparent }
+
+.base.on      { stroke: #2B3D71; }
+.base.off     { stroke: #2B3D71; }
+// .base.err     { stroke: transparentize(orange, 0.9); }
+// .base.err     { stroke: #2B3D71; }
+.base.err     { stroke: #2B3D71; }
+.base.disable { stroke: darkgray; }

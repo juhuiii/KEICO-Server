@@ -1,0 +1,44 @@
+/**
+ * Watchdog Timer
+ * 5초 주기, MQTT를 이용하여 Adapter로 Polling 메세지를 던진다.
+ * Adapter는 해당 메세지를 수신하여 /dev/watchdog에 Signal을 전송한다.
+ */
+const DEBUG = true; 
+
+class WatchdogThread 
+{
+    constructor( mqttClient )
+    {
+        console.info( "WatchdogThread Startup...");
+
+
+        this.mqttClient  = mqttClient;
+
+        setInterval ( () => {
+
+            this.sendPoll();                        
+
+        }, 5000);
+    }
+
+    sendPoll() {
+
+        const topic   = "adapter/gw";
+        const payload = {
+            pkn: 0,
+            cmd: 'WDT',
+            tno: 0,
+            data: new Date,
+        };
+
+        this.mqttClient.publish(topic, JSON.stringify(payload) );
+        console.info( "Polling Watdog...", payload );
+    }
+}
+
+
+module.exports = function( mqttClient ){
+    new WatchdogThread( mqttClient );
+}
+
+

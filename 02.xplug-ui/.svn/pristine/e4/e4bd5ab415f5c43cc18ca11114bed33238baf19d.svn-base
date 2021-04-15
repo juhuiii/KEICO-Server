@@ -1,0 +1,57 @@
+$row-height: 70px;
+
+// .numpad-input {
+//     height: $row-height;
+//     width: calc( 100% - $row-height);
+//     border: 1px solid #d1d5db;
+//     background-color: #f7f7f7;
+
+
+
+// }
+
+.numpad input {
+    padding-left: 10px;
+    border: 1px solid #d1d5db;
+    background-color: #f7f7f7;
+    font-size: 1.6rem;
+}
+
+
+
+.numpad-btn {
+    height: $row-height;
+    line-height: $row-height;
+    text-align: center;
+    color: #2e2e2e;
+    font-size:  1.6rem;
+    font-weight: bold;
+    border-left: 0px solid #d1d5db;
+    border-top: 0px solid #d1d5db;
+    border-right: 1px solid #d1d5db;
+    border-bottom: 1px solid #d1d5db;
+    border-radius: 0px;
+    background: #f7f7f7;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.numpad-back {
+    width: $row-height;
+    border: 1px solid #d1d5db;
+    border-left: 0px solid #d1d5db;
+}
+
+.numpad-btn.lp {
+    border-left: 1px solid #d1d5db;
+}
+
+.numpad-btn.empty {
+    background: #d1d5db;
+}
+
+
+
+
+

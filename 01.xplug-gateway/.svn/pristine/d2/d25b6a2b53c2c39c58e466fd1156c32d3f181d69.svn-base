@@ -1,0 +1,302 @@
+const dbSql = require('../db-sql');
+const xpUtils = require("../utils");
+
+dbSql.open();
+const DEBUG = false;
+
+
+class BLService {
+
+    constructor( mqtt ){   
+        this.mqtt_gateway = mqtt;
+    }
+
+     /**
+      *  ON 개별제어, 그룹제어 
+      * @param {*} ctlJSON 
+      */
+    async plugOn( ctlJSON ){
+        
+        // let ctlJSON = {
+        //     ZB_ADDR:zb_addr,        //지그비주소(IEEE-64BIT ADDR)
+        //     GRP_SQ : grp_sq,        //그룹일련번호(그룹제어일경우 Not Null)
+        //     CTL_TYPE : ctl_type,    //제어구분(1:수동제어,2:스케줄제어, 11:클라우드에서 수동제어, 12:클라우드에서 스케쥴제어) 
+        //     CTL_OBJ : ctl_obj ,     //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+        //     CTL_CMD : 1,            //제어명령(0:OFF,1:ON)
+        //     SCHD_TM_SQ:schd_tm_sq,  //스케쥴시간 일련번호
+        //     SCHD_SQ:schd_sq         //스케쥴일련번호                
+        // };
+        
+        
+        let devs = await dbSql.selectDevice( ctlJSON.ZB_ADDR );         //플러그 정보 
+
+        let filter = await this.filterOn(devs, "each");                 //개별제어 
+        
+        if( filter.direct_control.length <= 0 )                         //제어할 대상 찾지 못함. 
+            return filter; 
+        
+        await dbSql.insertControl(ctlJSON);                             //제어명령이력         
+
+        let CMD_PARAM = "";                
+        for (let ZB_ADDR of filter.direct_control) {
+
+            if( CMD_PARAM === "" )  CMD_PARAM += `${ZB_ADDR}`;
+            else                    CMD_PARAM += `,${ZB_ADDR}`;
+        }
+            
+        await dbSql.insertCommand("ON", CMD_PARAM);        //즉시제어 
+
+        return filter;
+    }
+
+
+
+
+    /**
+     * OFF 개별제어, 그룹제어    
+     */
+    async plugOff( ctlJSON ){
+        
+        // let ctlJSON = {
+        //     ZB_ADDR:zb_addr,            //지그비주소(IEEE-64BIT ADDR)
+        //     GRP_SQ : grp_sq,            //그룹일련번호(그룹제어일경우 Not Null)
+        //     CTL_TYPE : ctl_type,        //제어구분(1:수동제어,2:스케줄제어, 11:클라우드에서 수동제어, 12:클라우드에서 스케쥴제어) 
+        //     CTL_OBJ : ctl_obj,          //제어대상구분(1:개별제어,2:그룹제어, 3:전체제어) 
+        //     CTL_CMD : 0,                //제어명령(0:OFF,1:ON)
+        //     SCHD_TM_SQ:schd_tm_sq,      //스케쥴시간 일련번호
+        //     SCHD_SQ:schd_sq             //스케쥴일련번호                
+        // };
+                
+        let devs = await dbSql.selectDevice( ctlJSON.ZB_ADDR );
+
+        let ischk_stdkw = ctlJSON["FILTER_SDKWH"] ;   //대기전력 체크 여부("Y"=체크함)
+        let filter = await this.filterOff(devs, ischk_stdkw, "each");
+            
+        if( filter.direct_control.length <= 0 && filter.reserv_control.length <= 0 )                
+            return filter; 
+
+
+        await dbSql.insertControl(ctlJSON);  //제어이력저장
+
+        let CMD_PARAM = "";                
+        for (let ZB_ADDR of filter.direct_control) {
+            if( CMD_PARAM === "" )  CMD_PARAM += `${ZB_ADDR}`;
+            else                    CMD_PARAM += `,${ZB_ADDR}`;
+        }
+        
+        if(filter.direct_control.length > 0 )
+            await dbSql.insertCommand('OFF', CMD_PARAM);        //즉시제어 
+                
+        for (let aResv of filter.reserv_control) {                                      
+            await dbSql.insertCommandReserv('OFF', aResv.ZB_ADDR, aResv.RSV_DT, aResv.RSV_TM );     //지연제어 
+        }
+
+        return filter;
+    }
+
+
+
+
+
+    async plugAllOn( ctlJSON ){
+
+        
+        // let controlObj = {
+        //     ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+        //     GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+        //     CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+        //     CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+        //     CTL_CMD : 1,        //제어명령(0:OFF,1:ON)
+        //     SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+        //     SCHD_SQ:null        //스케쥴일련번호                
+        // };
+
+                                  
+        let onGroupDevs = await dbSql.selectZbOnGroupDev();   //ON Group 
+
+        if( onGroupDevs.length <= 0 )            
+            return onGroupDevs; 
+        
+        await dbSql.insertControl(ctlJSON);    //명령기록 
+
+
+        let lists = "[";
+        for ( let dev of onGroupDevs )
+        {                
+            let ZB_ONGRP_RID = dev['ZB_ONGRP_RID'];             
+            let ZB_ADDR = dev['ZB_ADDR']; 
+            
+            if ( lists.length > 1 ) lists += ",";
+            lists += `{"gid":"${ZB_ONGRP_RID}","zb_addr":"${ZB_ADDR}"}`;
+        }
+        lists += "]"
+
+        let ctl_param = `{"cmd_mode":1, "id" : ${lists}, "status":1}`;   
+        await dbSql.insertCommand('CTL', ctl_param);        //즉시제어 
+
+        return onGroupDevs;     
+    }
+
+
+
+    async plugAllOff( ctlJSON ){
+            
+        // let controlObj = {
+        //     ZB_ADDR:null,       //지그비주소(IEEE-64BIT ADDR)
+        //     GRP_SQ:null,        //그룹일련번호(그룹제어일경우 Not Null)
+        //     CTL_TYPE : 1,       //제어구분(1:수동제어,2:스케줄제어) 
+        //     CTL_OBJ : 3 ,       //제어대상구분(1:개별제,2:그룹제어, 3:전체제어) 
+        //     CTL_CMD : 0,        //제어명령(0:OFF,1:ON)
+        //     SCHD_TM_SQ:null,    //스케쥴시간 일련번호
+        //     SCHD_SQ:null,        //스케쥴일련번호      
+        //      FILTER_SDKWH : FILTER  //대기전력 체크 여부 ""           
+        // };
+
+        let devs = await dbSql.selectDevices();
+
+        let filter = await this.filterOff(devs, ctlJSON.FILTER_SDKWH, "all");
+
+        let offGroupDevs = await dbSql.selectZbOffGroupDevs();   //Off Group 
+
+        if( offGroupDevs.length <= 0 )            
+            return offGroupDevs;
+
+        let effCnt  = await dbSql.insertControl(ctlJSON);        //제어 이력 저장 
+
+        let lists = "[";
+        for ( let dev of offGroupDevs )
+        {                
+            let ZB_OFFGRP_RID = dev['ZB_OFFGRP_RID'];             
+            let ZB_ADDR = dev['ZB_ADDR']; 
+            
+            if ( lists.length > 1 ) lists += ",";
+            lists += `{"gid":"${ZB_OFFGRP_RID}","zb_addr":"${ZB_ADDR}"}`;
+        }
+        lists += "]"
+
+        let ctl_param = `{"cmd_mode":1, "id" : ${lists}, "status":0}`;   
+        await dbSql.insertCommand('CTL', ctl_param);        //즉시 제어 
+
+        //지연 OFF제어 플러그 
+        for (let aResv of filter.reserv_control) {                                      
+            await dbSql.insertCommandReserv('OFF', aResv.ZB_ADDR, aResv.RSV_DT, aResv.RSV_TM ); 
+        }
+
+        return offGroupDevs; 
+    }
+
+
+
+
+
+
+    //수동 OFF시 제어 대상 기기  검색 
+    async filterOff( devRows , ischk_stdkw, ctl_kind="all" )  {
+        
+        let rtnResult =  {
+            maun_ctl_allow_filter : [],
+            use_kw_filter : [],    
+            direct_control : [],            
+            reserv_control : [],           
+        };
+        
+        if( typeof devRows !== 'object' && devRows.length <= 0 ) 
+            return rtnResult;
+
+        for (let row of devRows) {
+
+            if( ctl_kind == "all" && row.MANU_CTL_ALLOW !== 1 )              //전체제어  허용여부 체크 
+            {
+                DEBUG && console.info( `${row.ZB_ADDR} can not off because manual control not allow` );
+                rtnResult.maun_ctl_allow_filter.push(row.ZB_ADDR);
+                continue;
+            }
+
+
+            if( ischk_stdkw === 'y' ||  ischk_stdkw === '' )     //기준 대기전력 체크 
+            {
+                if( typeof row.STBY_KW === "number" && typeof row.KW === "number" && row.STBY_KW > 0 && row.KW > 0 )    //현재 순시전력이 뜨고 대기전력 기준이 있다면 비교
+                {
+                    if( row.KW > row.STBY_KW )
+                    {
+                        DEBUG && console.info( `${row.ZB_ADDR} can not off because using KW(${row.KW}) > STBY_KW(${row.STBY_KW})` );
+                        rtnResult.use_kw_filter.push(row.ZB_ADDR);
+                        continue;
+                    }                        
+                }
+            }
+
+            if( typeof row.OFF_DELY === "number" && row.OFF_DELY > 0  )  {  //OFF 지연시간 
+
+                let  cData = new Date();
+                cData.setSeconds(cData.getSeconds() + row.OFF_DELY );
+
+                let rsv_dt = xpUtils.getYYYYMMDD(cData);
+                let rsv_tm = xpUtils.getHH24MISS(cData);
+
+                rtnResult.reserv_control.push({ 
+                    ZB_ADDR : row.ZB_ADDR, 
+                    RSV_DT : rsv_dt, 
+                    RSV_TM : rsv_tm
+                    });
+                
+            } else {
+                rtnResult.direct_control.push(row.ZB_ADDR);                
+            }            
+        }
+        return rtnResult;
+    }
+
+
+
+
+    //수동 ON시 제어 대상기기  검색 
+    async filterOn( devRows, ctl_kind="all" )        
+    {
+        let rtnResult =  {
+            maun_ctl_allow_filter : [],
+            direct_control : []
+        };
+        
+        if( typeof devRows !== 'object' && devRows.length <= 0 ) 
+            return rtnResult;
+
+        for (let row of devRows) {
+            
+            if( ctl_kind == "all" && row.MANU_CTL_ALLOW !== 1 )              //전체제어 전체제어 허용여부 체크 
+            {
+                console.info( `${row.ZB_ADDR} can not on because manual control not allow` );
+                rtnResult.maun_ctl_allow_filter.push(row.ZB_ADDR);
+                continue;
+            }
+                  
+            rtnResult.direct_control.push(row.ZB_ADDR);           
+        }
+        return rtnResult;
+    }
+
+
+
+    //아답터로 메세지 보내기
+    sendAdapterMqtt( message ){    
+        this.mqtt_gateway.publish("adapter/gw", `${message}`);    
+    }
+
+    //아답터로 보낼 메세지 만들기 
+    makeAdapterMessage( cmd, cmd_param )
+    {
+        let obj = {
+            "pkn"  : 1,	            //M=패킷구분  			[0:통보(응답불필요),1:요청(응답요구),2:요청(응답불필요),3:응답 ]	                    
+            "cmd"  : cmd,	        //M=명령종류  				
+            "tno"  : 0, 	        //M=트랜잭션번호 		
+            "data" : JSON.parse(cmd_param) 
+        };
+
+        return  JSON.stringify(obj);
+    }
+
+}
+
+module.exports = function( mqtt_gateway ){
+    return new BLService( mqtt_gateway );
+}

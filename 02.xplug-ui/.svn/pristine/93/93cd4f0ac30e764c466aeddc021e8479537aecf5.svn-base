@@ -1,0 +1,10 @@
+// .xg-card-header {
+//     background: #0088CC;
+//     color: white !important;
+// }
+
+.nav-link.active {
+    // background: transparentize($color: #000000, $amount: 0);
+    background: #5575ffad;
+    color: white !important;
+}

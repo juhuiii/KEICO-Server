@@ -1,0 +1,66 @@
+<div fxLayout="column" fxLayoutGap="10px" class="h-100 board-test">
+
+  <div fxFlex class="xg-card">
+    <div class="xg-card-header text-white">
+      기본설정
+      <fa class="float-right pr-2" name="ellipsis-v"></fa>
+    </div>
+    <div fxFlex class="xg-card-body overflow-auto">
+      <ul class="list-group">
+        <li class="list-group-item bg-transparent" >
+          지점명 
+        <span class="pull-right list-item-value">     
+            <input type="text" class="bg-transparent form-control" id="STE_NM" [(ngModel)]="site['STE_NM']" name="STE_NM" required>     
+        </span>        
+      </li>
+      <li class="list-group-item bg-transparent" >
+          설치일자
+        <span class="pull-right list-item-value">     
+            <input type="text" class="bg-transparent form-control" id="INS_DT" readonly=true [(ngModel)]="site['INS_DT_STR']" name="INS_DT_STR" required>     
+        </span>        
+      </li>      
+      <li class="list-group-item bg-transparent" >
+          관리자 비밀번호 
+        <span class="pull-right list-item-value">     
+            <input type="password" class="bg-transparent form-control" id="MNGR_PW" [(ngModel)]="site['MNGR_PW']" name="MNGR_PW" required>     
+        </span>        
+      </li>
+      <li class="list-group-item bg-transparent" >
+          운영자 비밀번호 
+        <span class="pull-right list-item-value">     
+            <input type="password" class="bg-transparent form-control" id="OPER_PW" [(ngModel)]="site['OPER_PW']" name="OPER_PW" required>     
+        </span>        
+      </li>      
+      <li class="list-group-item bg-transparent" >
+          업무시작시간
+        <span class="pull-right list-item-value">     
+            <input type="time" class="bg-transparent form-control" id="WORK_STM" [(ngModel)]="site['WORK_STM_STR']" name="WORK_STM_STR" required>     
+        </span>        
+      </li>       
+      <li class="list-group-item bg-transparent" >
+          업무종료시간
+        <span class="pull-right list-item-value">     
+            <input type="time" class="bg-transparent form-control" id="WORK_ETM" [(ngModel)]="site['WORK_ETM_STR']" name="WORK_ETM_STR" required>     
+        </span>        
+      </li>       
+        <!-- <li *ngFor="let item of list; let idx=index"
+            class="list-group-item bg-transparent" 
+            (click)="onClickItem(idx)">
+          {{item.label}}
+          <span class="pull-right list-item-value" *ngIf="item.type!=='password'">
+            {{item.data}}
+          </span>
+          <span class="pull-right list-item-value" *ngIf="item.type==='password'">
+            ********
+          </span>
+        </li> -->        
+      </ul>
+    </div>
+
+  <div fxFlex="40px" class="m-2">        
+    <button type="button" class="pull-left btn btn-primary text-white"  (click)="onReload()">새로고침</button>&nbsp;&nbsp;
+    <button type="button" class="pull-right btn btn-primary text-white" (click)="onSave()">저장</button>         
+  </div>
+
+
+  </div>

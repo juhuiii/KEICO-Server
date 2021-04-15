@@ -1,0 +1,47 @@
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
+
+@Component({
+  selector: 'app-mod-kw',
+  templateUrl: './mod-kw.component.html',
+  styleUrls: ['./mod-kw.component.scss']
+})
+export class ModKwComponent implements OnInit {
+  
+  timer1  : any;
+  value   = 0;      //  현재전력
+  max     = 100;    //  플러그용량
+  percent = 1;      //  현재전력 비율
+  
+  constructor(private api: ApiService) { 
+  }
+
+  ngOnInit() {
+        setTimeout( () => { this.init(); }, 1000 );
+  }
+
+  init() {
+    this.getKW();
+    this.timer1 = setInterval(() => { this.getKW(); }, 1000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.timer1);
+  }
+
+  getKW() {
+    let sum = 0;
+    let cnt = 0; 
+    let plugs = this.api.getPlugs();
+    
+    plugs.forEach(function (item) {
+      sum += item.KW;
+      cnt ++;
+    }) 
+
+    this.value = sum * 0.001;
+    this.max   = cnt * 1.000;
+    this.percent = this.value / this.max * 100.0;
+  }
+  
+}

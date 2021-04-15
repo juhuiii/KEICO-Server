@@ -1,0 +1,15 @@
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-rept-ctrl',
+  templateUrl: './rept-ctrl.component.html',
+  styleUrls: ['./rept-ctrl.component.scss']
+})
+export class ReptCtrlComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}

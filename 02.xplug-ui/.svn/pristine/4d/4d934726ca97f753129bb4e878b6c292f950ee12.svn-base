@@ -1,0 +1,36 @@
+ul {
+    width:100%;
+}
+
+.list-group-item {
+    color: rgb(168, 168, 168) !important;
+    border-top: 1px solid transparentize( #FFF, 0.95 );
+    border-bottom: 1px solid transparentize( #FFF, 0.95 );
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.list-item-value {
+    color: #00ffc8 !important;
+}
+
+input {
+    border: none;
+    background: none;
+    color: rgb(0, 255, 200) !important;
+    text-align: right; 
+    outline: none;
+}
+.nav-link.active {
+    color: #495057 !important;
+    background-color: transparent !important;
+    border-color: #dee2e6 #dee2e6 #fff !important;
+}
+
+button
+{
+    width:110px;
+}
+
+
+

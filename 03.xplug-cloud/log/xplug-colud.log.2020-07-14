@@ -1,0 +1,520 @@
+2020-07-14 05:57:07.229 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:07.234 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:07.234 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:57:08.479 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:08.479 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:08.479 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:57:11.849 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:11.849 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:11.850 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:57:12.613 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:12.614 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:12.614 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:57:13.346 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:13.347 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:13.347 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:57:13.903 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:13.903 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:13.905 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:57:16.758 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:16.758 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:16.759 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:57:26.773 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:26.774 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:26.774 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:57:28.621 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:28.621 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:57:28.622 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:58:03.865 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:58:03.866 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:58:03.866 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:58:14.486 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:58:14.487 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:58:14.487 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:58:24.494 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:58:24.494 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:58:24.495 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 05:58:34.501 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:58:34.501 ERROR  : { Error: retrieve connection from pool timeout
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at timeoutTask (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:297:16)
+    at Timeout.rejectAndResetTimeout [as _onTimeout] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\pool-base.js:317:5)
+    at ontimeout (timers.js:438:13)
+    at tryOnTimeout (timers.js:300:5)
+    at listOnTimeout (timers.js:263:5)
+    at Timer.processTimers (timers.js:223:10)
+  fatal: false,
+  errno: 45028,
+  sqlState: 'HY000',
+  code: 'ER_GET_CONNECTION_TIMEOUT' }
+2020-07-14 05:58:34.501 ERROR  : Response Error : {"rcd":1,"rms":"retrieve connection from pool timeout","data":{"fatal":false,"errno":45028,"sqlState":"HY000","code":"ER_GET_CONNECTION_TIMEOUT"}}
+2020-07-14 06:01:40.330 INFO   : Log Level      = info
+2020-07-14 06:01:40.331 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 06:01:40.751 INFO   : [QueryOwners] Created 
+2020-07-14 06:01:40.756 INFO   : [QuerySites] Created 
+2020-07-14 06:01:40.758 INFO   : [QueryUsers] Created 
+2020-07-14 06:01:40.762 INFO   : [QueryPlugs] Created !!
+2020-07-14 06:01:40.766 INFO   : [QueryReports] Created 
+2020-07-14 06:01:40.770 INFO   : [QuerySites] Created 
+2020-07-14 06:01:40.770 INFO   : [database] Created 
+2020-07-14 06:01:41.385 INFO   : Check Log Level : info
+2020-07-14 06:01:41.385 WARN   : Check Log Level : warn
+2020-07-14 06:01:41.385 ERROR  : Check Log Level : error
+2020-07-14 06:01:41.385 INFO   : Start XPlug Cloud!!
+2020-07-14 06:01:41.388 INFO   : Web App listening at 8090
+2020-07-14 06:03:19.137 INFO   : UPDATE TB_SITE SET   STAT = '0'  WHERE  STE_SQ='48'
+2020-07-14 07:00:30.700 INFO   : Log Level      = info
+2020-07-14 07:00:30.701 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 07:00:30.842 INFO   : [QueryOwners] Created 
+2020-07-14 07:00:30.844 INFO   : [QuerySites] Created 
+2020-07-14 07:00:30.846 INFO   : [QueryUsers] Created 
+2020-07-14 07:00:30.848 INFO   : [QueryPlugs] Created !!
+2020-07-14 07:00:30.850 INFO   : [QueryReports] Created 
+2020-07-14 07:00:30.851 INFO   : [QuerySites] Created 
+2020-07-14 07:00:30.851 INFO   : [database] Created 
+2020-07-14 07:00:31.061 INFO   : Check Log Level : info
+2020-07-14 07:00:31.062 WARN   : Check Log Level : warn
+2020-07-14 07:00:31.062 ERROR  : Check Log Level : error
+2020-07-14 07:00:31.062 INFO   : Start XPlug Cloud!!
+2020-07-14 07:00:31.065 INFO   : Web App listening at 8090
+2020-07-14 07:00:45.863 ERROR  : { Error: (conn=130461, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' CASE WHEN G.STAT = 1 THEN '정상' ELSE '해제' END STAT_NM  , DATE_FORMAT( G.' at line 1
+sql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    G.STAT,  , CASE WHEN G.STAT = 1 THEN '정상' ELSE '해제' END STAT_NM  , DATE_FORMAT( G.EDT_DT, '%Y-%m-%d %H:%i:%s' ) EDT_DT  , DATE_FORMAT( G.REG_DT, '%Y-%m-%d %H:%i:%s' ) REG_DT    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY G.GTW_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1064,
+  sqlState: '42000',
+  code: 'ER_PARSE_ERROR' }
+2020-07-14 07:00:45.865 ERROR  : { Error: (conn=130461, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' CASE WHEN G.STAT = 1 THEN '정상' ELSE '해제' END STAT_NM  , DATE_FORMAT( G.' at line 1
+sql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    G.STAT,  , CASE WHEN G.STAT = 1 THEN '정상' ELSE '해제' END STAT_NM  , DATE_FORMAT( G.EDT_DT, '%Y-%m-%d %H:%i:%s' ) EDT_DT  , DATE_FORMAT( G.REG_DT, '%Y-%m-%d %H:%i:%s' ) REG_DT    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY G.GTW_NM  - parameters:[]
+    at Object.module.exports.createError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\misc\errors.js:55:10)
+    at PacketNodeEncoded.readError (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet.js:510:19)
+    at Query.readResponsePacket (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\cmd\resultset.js:46:28)
+    at PacketInputStream.receivePacketBasic (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:104:9)
+    at PacketInputStream.onData (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\mariadb\lib\io\packet-input-stream.js:160:20)
+    at Socket.emit (events.js:198:13)
+    at addChunk (_stream_readable.js:288:12)
+    at readableAddChunk (_stream_readable.js:269:11)
+    at Socket.Readable.push (_stream_readable.js:224:10)
+    at TCP.onStreamRead [as onread] (internal/stream_base_commons.js:94:17)
+  fatal: false,
+  errno: 1064,
+  sqlState: '42000',
+  code: 'ER_PARSE_ERROR' }
+2020-07-14 07:00:45.865 ERROR  : Response Error : {"rcd":1,"rms":"(conn=130461, no: 1064, SQLState: 42000) You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' CASE WHEN G.STAT = 1 THEN '정상' ELSE '해제' END STAT_NM  , DATE_FORMAT( G.' at line 1\nsql:  SELECT    G.GTW_SQ,    G.STE_ID,    G.GTW_ID,    G.GTW_NM,    G.HW_MDL_CD,    G.SW_MDL_CD,    G.BIGO,    G.RCV_DT,    G.STAT,  , CASE WHEN G.STAT = 1 THEN '정상' ELSE '해제' END STAT_NM  , DATE_FORMAT( G.EDT_DT, '%Y-%m-%d %H:%i:%s' ) EDT_DT  , DATE_FORMAT( G.REG_DT, '%Y-%m-%d %H:%i:%s' ) REG_DT    S.STE_SQ,    S.STE_NM,    O.OWN_SQ,    O.OWN_NM  FROM TB_GATEWAY G    LEFT JOIN TB_SITE  S ON G.STE_SQ = S.STE_SQ    LEFT JOIN TB_OWNER O ON S.OWN_SQ = O.OWN_SQ  WHERE G.STAT = 1 AND O.OWN_SQ = 3 ORDER BY G.GTW_NM  - parameters:[]","data":{"fatal":false,"errno":1064,"sqlState":"42000","code":"ER_PARSE_ERROR"}}
+2020-07-14 07:01:37.323 INFO   : Log Level      = info
+2020-07-14 07:01:37.324 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 07:01:37.437 INFO   : [QueryOwners] Created 
+2020-07-14 07:01:37.438 INFO   : [QuerySites] Created 
+2020-07-14 07:01:37.440 INFO   : [QueryUsers] Created 
+2020-07-14 07:01:37.441 INFO   : [QueryPlugs] Created !!
+2020-07-14 07:01:37.442 INFO   : [QueryReports] Created 
+2020-07-14 07:01:37.443 INFO   : [QuerySites] Created 
+2020-07-14 07:01:37.443 INFO   : [database] Created 
+2020-07-14 07:01:37.611 INFO   : Check Log Level : info
+2020-07-14 07:01:37.611 WARN   : Check Log Level : warn
+2020-07-14 07:01:37.611 ERROR  : Check Log Level : error
+2020-07-14 07:01:37.612 INFO   : Start XPlug Cloud!!
+2020-07-14 07:01:37.614 INFO   : Web App listening at 8090
+2020-07-14 07:38:34.667 INFO   : INSERT INTO TB_GATEWAY ( STE_SQ, STE_ID, GTW_ID, GTW_NM, HW_MDL_CD, SW_MDL_CD, BIGO) VALUES (  '53' , '' , '10' , 'TESTGATE' , '' , '' , '' ) 
+2020-07-14 07:55:09.212 INFO   : UPDATE TB_GATEWAY SET   STE_SQ = '53' , STE_ID = 'test9' , GTW_ID = '10' , GTW_NM = 'TESTGATE' , HW_MDL_CD = '' , SW_MDL_CD = '' , BIGO = ''  WHERE  GTW_SQ='43'
+2020-07-14 07:55:36.309 INFO   : UPDATE TB_GATEWAY SET   STE_SQ = '53' , STE_ID = 'test9' , GTW_ID = '10' , GTW_NM = 'TESTGATE' , HW_MDL_CD = 'HW' , SW_MDL_CD = 'SW' , BIGO = 'BI'  WHERE  GTW_SQ='43'
+2020-07-14 07:55:51.652 INFO   : UPDATE TB_GATEWAY SET   STE_SQ = '54' , STE_ID = 'test10' , GTW_ID = '10' , GTW_NM = 'TESTGATE' , HW_MDL_CD = 'HW' , SW_MDL_CD = 'SW' , BIGO = 'BI'  WHERE  GTW_SQ='43'
+2020-07-14 07:56:09.473 INFO   : UPDATE TB_GATEWAY SET   STE_SQ = '55' , STE_ID = 'test20' , GTW_ID = '10' , GTW_NM = 'TESTGATE' , HW_MDL_CD = 'HW' , SW_MDL_CD = 'SW' , BIGO = 'BI'  WHERE  GTW_SQ='43'
+2020-07-14 07:56:41.977 INFO   : UPDATE TB_GATEWAY SET   STAT = '0'  WHERE  GTW_SQ='43'
+2020-07-14 15:21:24.616 INFO   : Log Level      = info
+2020-07-14 15:21:24.617 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 15:21:24.973 INFO   : [QueryOwners] Created 
+2020-07-14 15:21:24.976 INFO   : [QuerySites] Created 
+2020-07-14 15:21:24.979 INFO   : [QueryUsers] Created 
+2020-07-14 15:21:24.981 INFO   : [QueryPlugs] Created !!
+2020-07-14 15:21:24.985 INFO   : [QueryReports] Created 
+2020-07-14 15:21:24.987 INFO   : [QuerySites] Created 
+2020-07-14 15:21:24.988 INFO   : [database] Created 
+2020-07-14 15:21:25.515 INFO   : Check Log Level : info
+2020-07-14 15:21:25.516 WARN   : Check Log Level : warn
+2020-07-14 15:21:25.516 ERROR  : Check Log Level : error
+2020-07-14 15:21:25.516 INFO   : Start XPlug Cloud!!
+2020-07-14 15:21:25.518 INFO   : Web App listening at 8090
+2020-07-14 15:38:30.030 INFO   : Log Level      = info
+2020-07-14 15:38:30.031 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 15:38:30.144 INFO   : [QueryOwners] Created 
+2020-07-14 15:38:30.145 INFO   : [QuerySites] Created 
+2020-07-14 15:38:30.147 INFO   : [QueryUsers] Created 
+2020-07-14 15:38:30.148 INFO   : [QueryPlugs] Created !!
+2020-07-14 15:38:30.149 INFO   : [QueryReports] Created 
+2020-07-14 15:38:30.150 INFO   : [QuerySites] Created 
+2020-07-14 15:38:30.150 INFO   : [database] Created 
+2020-07-14 15:38:30.321 INFO   : Check Log Level : info
+2020-07-14 15:38:30.321 WARN   : Check Log Level : warn
+2020-07-14 15:38:30.321 ERROR  : Check Log Level : error
+2020-07-14 15:38:30.321 INFO   : Start XPlug Cloud!!
+2020-07-14 15:38:30.324 INFO   : Web App listening at 8090
+2020-07-14 15:39:05.319 INFO   : Log Level      = info
+2020-07-14 15:39:05.320 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 15:39:05.431 INFO   : [QueryOwners] Created 
+2020-07-14 15:39:05.434 INFO   : [QuerySites] Created 
+2020-07-14 15:39:05.435 INFO   : [QueryUsers] Created 
+2020-07-14 15:39:05.437 INFO   : [QueryPlugs] Created !!
+2020-07-14 15:39:05.438 INFO   : [QueryReports] Created 
+2020-07-14 15:39:05.439 INFO   : [QuerySites] Created 
+2020-07-14 15:39:05.440 INFO   : [database] Created 
+2020-07-14 15:39:05.613 INFO   : Check Log Level : info
+2020-07-14 15:39:05.614 WARN   : Check Log Level : warn
+2020-07-14 15:39:05.614 ERROR  : Check Log Level : error
+2020-07-14 15:39:05.614 INFO   : Start XPlug Cloud!!
+2020-07-14 15:39:05.617 INFO   : Web App listening at 8090
+2020-07-14 16:46:07.944 INFO   : Log Level      = info
+2020-07-14 16:46:07.945 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 16:46:08.092 INFO   : [QueryOwners] Created 
+2020-07-14 16:46:08.094 INFO   : [QuerySites] Created 
+2020-07-14 16:46:08.095 INFO   : [QueryUsers] Created 
+2020-07-14 16:46:08.097 INFO   : [QueryPlugs] Created !!
+2020-07-14 16:46:08.098 INFO   : [QueryReports] Created 
+2020-07-14 16:46:08.100 INFO   : [QuerySites] Created 
+2020-07-14 16:46:08.100 INFO   : [database] Created 
+2020-07-14 16:46:08.307 INFO   : Check Log Level : info
+2020-07-14 16:46:08.307 WARN   : Check Log Level : warn
+2020-07-14 16:46:08.307 ERROR  : Check Log Level : error
+2020-07-14 16:46:08.307 INFO   : Start XPlug Cloud!!
+2020-07-14 16:46:08.310 INFO   : Web App listening at 8090
+2020-07-14 17:03:28.449 INFO   : Log Level      = info
+2020-07-14 17:03:28.450 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 17:03:28.563 INFO   : [QueryOwners] Created 
+2020-07-14 17:03:28.565 INFO   : [QuerySites] Created 
+2020-07-14 17:03:28.566 INFO   : [QueryUsers] Created 
+2020-07-14 17:03:28.567 INFO   : [QueryPlugs] Created !!
+2020-07-14 17:03:28.569 INFO   : [QueryReports] Created 
+2020-07-14 17:03:28.570 INFO   : [QuerySites] Created 
+2020-07-14 17:03:28.570 INFO   : [database] Created 
+2020-07-14 17:03:28.739 INFO   : Check Log Level : info
+2020-07-14 17:03:28.739 WARN   : Check Log Level : warn
+2020-07-14 17:03:28.739 ERROR  : Check Log Level : error
+2020-07-14 17:03:28.740 INFO   : Start XPlug Cloud!!
+2020-07-14 17:03:28.742 INFO   : Web App listening at 8090
+2020-07-14 17:07:24.303 INFO   : INSERT INTO TB_USER ( USR_ID, PWD, USR_NM, USR_GB, OWN_SQ, STE_SQ, STE_ID) VALUES (  'TEST2' , '1234' , '테스트 ' , '1' , '' , '46' , 'test2' ) 
+2020-07-14 17:07:46.485 ERROR  : ReferenceError: ste_sq is not defined
+    at Database.updateUser (c:\Work\workspace.nodejs\03.xplug-cloud\src\database\index.js:790:34)
+    at router.post (c:\Work\workspace.nodejs\03.xplug-cloud\src\web\center_api.js:109:18)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:281:22
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:354:14)
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:410:3)
+2020-07-14 17:07:46.488 ERROR  : ReferenceError: ste_sq is not defined
+    at Database.updateUser (c:\Work\workspace.nodejs\03.xplug-cloud\src\database\index.js:790:34)
+    at router.post (c:\Work\workspace.nodejs\03.xplug-cloud\src\web\center_api.js:109:18)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at next (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\layer.js:95:5)
+    at c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:281:22
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:354:14)
+    at param (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:365:14)
+    at Function.process_params (c:\Work\workspace.nodejs\03.xplug-cloud\node_modules\express\lib\router\index.js:410:3)
+2020-07-14 17:07:46.488 ERROR  : Response Error : {"rcd":1,"rms":"ste_sq is not defined","data":{}}
+2020-07-14 17:08:13.551 INFO   : Log Level      = info
+2020-07-14 17:08:13.552 INFO   : Log Directory  = c:\Work\workspace.nodejs\03.xplug-cloud\log
+2020-07-14 17:08:13.666 INFO   : [QueryOwners] Created 
+2020-07-14 17:08:13.667 INFO   : [QuerySites] Created 
+2020-07-14 17:08:13.668 INFO   : [QueryUsers] Created 
+2020-07-14 17:08:13.670 INFO   : [QueryPlugs] Created !!
+2020-07-14 17:08:13.671 INFO   : [QueryReports] Created 
+2020-07-14 17:08:13.672 INFO   : [QuerySites] Created 
+2020-07-14 17:08:13.672 INFO   : [database] Created 
+2020-07-14 17:08:13.857 INFO   : Check Log Level : info
+2020-07-14 17:08:13.857 WARN   : Check Log Level : warn
+2020-07-14 17:08:13.857 ERROR  : Check Log Level : error
+2020-07-14 17:08:13.858 INFO   : Start XPlug Cloud!!
+2020-07-14 17:08:13.860 INFO   : Web App listening at 8090
+2020-07-14 17:08:21.572 INFO   : UPDATE TB_USER SET   USR_ID = 'TEST2' , PWD = '1234' , USR_NM = '테스트 ' , USR_GB = '1' , OWN_SQ = '0' , STE_SQ = '53' , STE_ID = 'test9'  WHERE  USR_SQ='41'
+2020-07-14 17:08:51.784 INFO   : UPDATE TB_USER SET   USR_ID = 'TEST9' , PWD = '12349' , USR_NM = '테스트 ' , USR_GB = '1' , OWN_SQ = '0' , STE_SQ = '53' , STE_ID = 'test9'  WHERE  USR_SQ='41'
+2020-07-14 17:09:58.238 INFO   : UPDATE TB_GATEWAY SET   STAT = '0'  WHERE  GTW_SQ='41'
+2020-07-14 17:12:39.038 INFO   : UPDATE TB_USER SET   STAT = '0'  WHERE  USR_SQ='41'
+2020-07-14 19:11:13.011 INFO   : INSERT INTO TB_USER ( USR_ID, PWD, USR_NM, USR_GB, OWN_SQ, STE_SQ, STE_ID) VALUES (  'USER' , '1234' , '사용자' , '1' , '' , '12' , 'shub01' ) 

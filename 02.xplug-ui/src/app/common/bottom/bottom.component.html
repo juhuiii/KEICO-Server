@@ -1,0 +1,18 @@
+<div id="bottom" fxLayout="row" class="h-100 bg-light text-primary">
+    <!-- <div class="row"> -->
+    <div fxFlex fxLayoutAlign="start center" style="padding-left: 15px;" fxFlex="22">
+        <a routerLink="/admin" routerLinkActive="active">
+        <fa name="clock-o"></fa>&nbsp;</a>{{now}}        
+    </div>
+    <div fxFlex fxLayoutAlign="center center">
+        <div *ngIf="api.isNetworkErr" class="css3-blink"><fa name="bell"></fa> 네트워크 연결을 확인 하세요</div>
+        <div *ngIf="!api.isNetworkErr && api.isGatewayErr"  class="css3-blink"><fa name="bell"></fa> 게이트웨이 연결을 확인하세요</div>
+        <div *ngIf="!api.isNetworkErr && !api.isGatewayErr" style="margin-left: auto;">            
+            <button type="button" class="btn btn-primary btn-sm text-gray" (click)="onClickRefresh()">새로고침</button>
+        </div>
+    </div>    
+    <div fxFlex fxLayoutAlign="end center" style="padding-right: 15px;" fxFlex="22">
+        <!-- <fa name="info-circle"></fa>&nbsp;업무시간 : {{api.siteInfo.WORK_STM_STR}} ~ {{api.siteInfo.WORK_ETM_STR}} -->
+        <fa name="headphones"></fa>&nbsp;문의전화 : 1899-3783
+    </div>
+</div>

@@ -1,0 +1,22 @@
+.button {
+    height: 86px;
+    width: 290px;
+
+    background: linear-gradient(120deg,
+        #14a7e8,
+        #57cafc);
+    color: #fff;
+    border: 2px solid transparentize($color: #4c93ac, $amount: 0.6);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.button.off {
+    background: #232c44;
+    border: 2px solid transparentize($color: #c4c6cd, $amount: 0.9);
+}
+
+.button.err {
+    background: linear-gradient(120deg, #676c74, #8e939f);
+    border: 2px solid transparentize($color: #c4c6cd, $amount: 0.9);
+}

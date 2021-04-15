@@ -1,0 +1,10 @@
+.btn {
+    // background: radial-gradient(ellipse at center, 
+    //     #3864b3 0%,
+    //     #3864b3 20%,
+    //     #2f5597 80%,
+    //     #2c4f8c 100%
+    //     );
+    //border: 1px solid transparentize(#3864b3, 0.8 );
+    border-radius: 6px;
+}

@@ -1,0 +1,184 @@
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';  //  HTTP 모듈
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GaugeModule } from 'angular-gauge';  //  angular-gauge
+import { TooltipModule } from 'ngx-bootstrap/tooltip'; // ngx bootstrap
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { ButtonsModule, TabsModule, ProgressbarModule, BsDropdownModule  } from "ngx-bootstrap";
+
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './common/header/header.component';
+import { BottomComponent } from './common/bottom/bottom.component';
+import { SettingsComponent } from './settings/settings.component';
+import { ReportsComponent } from './reports/reports.component';
+import { MenuComponent } from './common/menu/menu.component';
+import { ControlGroupComponent } from './controls/control-group/control-group.component';
+import { ControlPlugComponent } from './controls/control-plug/control-plug.component';
+import { ModKwComponent } from './home/mod-kw/mod-kw.component';
+import { MomentModule } from 'ngx-moment';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome'
+ 
+// Import angular-fusioncharts
+import { FusionChartsModule } from 'angular-fusioncharts';
+
+// Import FusionCharts library
+import * as FusionCharts from 'fusioncharts';
+import * as Charts from 'fusioncharts/fusioncharts.charts';
+import * as Widgets from 'fusioncharts/fusioncharts.widgets';
+import * as FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+FusionChartsModule.fcRoot(FusionCharts, Charts, Widgets, FusionTheme)
+
+import * as moment from 'moment';
+import { ModKwhComponent } from './home/mod-kwh/mod-kwh.component';
+import { ModTrendComponent } from './home/mod-trend/mod-trend.component';
+import { ModControlComponent } from './home/mod-control/mod-control.component';
+import { ModDevicesComponent } from './home/mod-devices/mod-devices.component';
+import { ModButtonComponent } from './controls/control-plug/mod-button/mod-button.component';
+import { CircleComponent } from './charts/circle/circle.component';
+import { BarchartComponent } from './charts/barchart/barchart.component';
+import { MeasPlugsComponent } from './reports/meas-plugs/meas-plugs.component';
+import { MeasRptHourComponent } from './reports/meas-rpt-hour/meas-rpt-hour.component';
+import { MeasRptDayComponent } from './reports/meas-rpt-day/meas-rpt-day.component';
+
+import { SetPlugsComponent } from './settings/plugs/set-plugs.component';
+import { SetPlugsDetailComponent } from './settings/plugs/set-plugs-detail/set-plugs-detail.component';
+import { SetGroupsComponent } from './settings/groups/set-groups.component';
+import { SetGroupsDetailComponent } from './settings/groups/set-groups-detail/set-groups-detail.component';
+import { ModalAlertComponent } from './commonUX/modal-alert.component';
+import { ModalConfirmComponent } from './commonUX/modal-confirm.component';
+import { ModalProgrssComponent } from './commonUX/modal-progrss.component';
+import { ModalInputComponent } from './commonUX/modal-input.component';
+import { ModalAddGroupComponent } from './commonUX/modal-add-group.component';
+
+import { ReptSwitchComponent } from './reports/rept-switch/rept-switch.component';
+import { ReptCtrlComponent } from './reports/rept-ctrl/rept-ctrl.component'; 
+import { ReptSchdComponent } from './reports/rept-schd/rept-schd.component';
+import { FindPlugComponent } from './settings/find-plug/find-plug.component';
+import { CallbackPipe } from './pipe/callback.pipe';
+import { SetDefaultComponent } from './settings/set-default/set-default.component';
+import { SetHolidaysComponent } from './settings/set-holidays/set-holidays.component';
+import { ModBtnGroupComponent } from './controls/control-group/mod-btn-group/mod-btn-group.component';
+import { ModalCtrlGroupComponent } from './commonUX/modal-ctrl-group.component';
+import { ModalAddHolidayComponent } from './commonUX/modal-add-holiday.component'; 
+
+import { SchdListComponent } from './settings/schd/schd-list/schd-list.component';
+import { SchdDetailComponent  } from './settings/schd/schd-detail/schd-detail.component';
+import { IndexComponent } from './index.component';
+import { ControlComponent } from './controls/control.component';
+
+
+import { AdminAppComponent } from './admin/admin-app.component';
+import { AdminHeaderComponent } from './admin/common/header/admin-header.component';
+import { AdminBottomComponent } from './admin/common/bottom/admin-bottom.component';
+import { ZigbeeComponent } from './admin/zigbee/zigbee.component';
+import { WifiComponent } from './admin/wifi/wifi.component';
+import { MeasRptMonComponent } from './reports/meas-rpt-mon/meas-rpt-mon.component';
+import { VersionComponent } from './admin/version/version.component';
+import { NetworkComponent } from './admin/network/network.component';
+import { ModLogoComponent } from './home/mod-logo/mod-logo.component';
+import { TestControlComponent } from './admin/test/test-control.component';
+
+
+moment.locale('ko');
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    BottomComponent,
+    MenuComponent,
+    HomeComponent,
+    ControlGroupComponent,
+    ControlPlugComponent,
+    ReportsComponent,
+    SettingsComponent,
+    ModKwComponent,
+    ModKwhComponent,
+    ModTrendComponent,
+    ModControlComponent,
+    ModDevicesComponent,
+    ModButtonComponent,
+    SetPlugsComponent,
+    SetPlugsDetailComponent,
+    CircleComponent,
+    BarchartComponent,
+    MeasPlugsComponent,
+    MeasRptHourComponent,
+    MeasRptDayComponent,
+    ModalAlertComponent,
+    ModalConfirmComponent,
+    ModalProgrssComponent,
+    SetGroupsComponent,
+    SetGroupsDetailComponent,
+    ModalAddGroupComponent , 
+    ModalInputComponent,
+    ReptSwitchComponent,
+    ReptCtrlComponent,
+    ReptSchdComponent,
+    FindPlugComponent,
+    CallbackPipe,
+    SetDefaultComponent,
+    SetHolidaysComponent,
+    ModBtnGroupComponent,
+    ModalCtrlGroupComponent,
+    ModalAddHolidayComponent,
+    SchdListComponent, 
+    SchdDetailComponent,
+    ControlComponent,
+    IndexComponent,
+    AdminAppComponent,
+    AdminHeaderComponent,
+    AdminBottomComponent,
+    ZigbeeComponent,
+    WifiComponent,
+    MeasRptMonComponent,
+    VersionComponent,    
+    NetworkComponent, ModLogoComponent, TestControlComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    CommonModule,
+    FormsModule,
+    Angular2FontawesomeModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MomentModule,
+    FlexLayoutModule,
+    FusionChartsModule,
+    GaugeModule.forRoot(),
+    TooltipModule.forRoot(),
+    CarouselModule.forRoot(),
+    ModalModule.forRoot(),
+    ButtonsModule.forRoot(),
+    TabsModule.forRoot(), 
+	  TimepickerModule.forRoot(),
+    Ng4LoadingSpinnerModule.forRoot(),
+    ProgressbarModule.forRoot(),
+    BsDropdownModule.forRoot(), 
+  ],
+  entryComponents: [
+    ModalAlertComponent,
+    ModalConfirmComponent, 
+    ModalProgrssComponent,
+    ModalInputComponent,
+    ModalAddGroupComponent, 
+    ModalCtrlGroupComponent,
+    ModalAddHolidayComponent
+  ],
+  providers: [],
+  // bootstrap: [AppComponent]
+  bootstrap: [IndexComponent]  
+})
+export class AppModule { }

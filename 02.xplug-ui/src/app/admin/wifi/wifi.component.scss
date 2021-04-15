@@ -1,0 +1,59 @@
+.card {
+    background-color: transparent;
+    font-size:14px;
+}
+.list-group-item {
+    background-color: transparent;    
+}
+.dropdown-menu {
+    background-color: #39456d;
+    min-width : 16em;
+}
+.dropdown-menu li {
+    padding : 3px 10px;
+    cursor: pointer;
+}
+
+input[type="password"]:focus {
+    background-color: transparent;
+}
+
+.dropdown-toggle {
+    background-color: #39456d;
+}
+
+
+.list-group-item {
+    color: rgb(168, 168, 168) !important;
+    border-top: 1px solid transparentize( #FFF, 0.95 );
+    border-bottom: 1px solid transparentize( #FFF, 0.95 );
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.list-item-value {
+    color: rgb(0, 255, 200) !important;
+}
+
+input {
+    border: solid 1px steelblue;
+    background: none;
+    color: rgb(0, 255, 200) !important;
+    text-align: left; 
+    outline: none;
+}
+
+button {
+    width:100px;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 300px;
+    overflow-x: hidden;
+}
+
+.form-group {
+    margin-bottom: 0.5rem ; 
+}
+

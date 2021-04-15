@@ -1,0 +1,59 @@
+<!-- 
+  <div class="modal-header">
+  <h4 class="modal-title pull-left">{{title}}</h4>
+  <button type="button" class="close pull-right" aria-label="Close" (click)="bsModalRef.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <form>
+    <div class="form-group">
+      <label for="input" [innerHtml]="message"></label>
+      <input type="password" [class.border-danger]="!validate" class="form-control" id="input" name="input"
+        [(ngModel)]="input" placeholder="password" autofocus>
+      <span *ngIf="!validate" class="text-danger">비밀번호를 입력하세요.</span>
+    </div>
+  </form>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-lg btn-primary text-white" *ngIf="confirmBtnName"
+    (click)="onConfirm()">{{confirmBtnName}}</button>
+  <button type="button" class="btn btn-lg btn-danger text-white" *ngIf="declineBtnName"
+    (click)="onCancel()">{{declineBtnName}}</button>
+</div> 
+-->
+
+<div class="modal-header">
+    <h4 class="modal-title pull-left ">{{this['title']}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="onClick('cancel')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+  
+      <div class="numpad" fxLayout="row wrap" fxLayoutAlign="center" fxLayoutGap="1x">
+        <input  type="password" fxFlex="70%"  id="input" placeholder="password" disabled>
+        <button type="button"   fxFlex="20%" (click)="onClick('b')" class="numpad-btn numpad-back fs-100 text-orange">BACK</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('7')" class="numpad-btn lp">7</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('8')" class="numpad-btn">8</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('9')" class="numpad-btn">9</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('4')" class="numpad-btn lp">4</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('5')" class="numpad-btn">5</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('6')" class="numpad-btn">6</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('1')" class="numpad-btn lp">1</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('2')" class="numpad-btn">2</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('3')" class="numpad-btn">3</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('0')" class="numpad-btn lp">0</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('ok') " class="numpad-btn text-success">Ok</button>
+        <button type="button"   fxFlex="30%" (click)="onClick('cancel') " class="numpad-btn text-secondary">Cancel</button>
+      </div>
+  
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-lg btn-primary text-white" *ngIf="confirmBtnName"
+      (click)="onConfirm()">{{confirmBtnName}}</button>
+    <button type="button" class="btn btn-lg btn-danger text-white" *ngIf="declineBtnName"
+      (click)="onCancel()">{{declineBtnName}}</button> -->
+  </div>
